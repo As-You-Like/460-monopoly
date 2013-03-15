@@ -22,15 +22,16 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/txtTitle"
+                android:id="@+id/txtGameName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Choose a Host"
+                android:text="-Game Name-"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_weight="2.88"
             android:orientation="vertical" >
 
