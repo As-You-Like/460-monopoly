@@ -1,5 +1,7 @@
 package com.example.monopoly;
 
+import com.example.controllers.HostDevice;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -33,6 +35,8 @@ public class CreateHostActivity extends Activity {
 			public void onClick(View v) {
 				String gameName = CreateHostActivity.activity.edtGameName.getText().toString();
 				
+				new HostDevice(true); //create host device object and indicate the current device is the host.
+				
 				Intent intent = new Intent(CreateHostActivity.activity, LobbyActivity.class);
 				startActivity(intent);
 			}
@@ -46,5 +50,7 @@ public class CreateHostActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	} 
+	
+	
 
 }
