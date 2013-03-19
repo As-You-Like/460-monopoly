@@ -81,6 +81,7 @@ public class HostDevice extends Device {
 				HostDevice.accept = Bluetooth.entity.new AcceptThread();
 			}
 		}
+		HostDevice.accept.start(); 
 		HostDevice.connectionStatus = HostDevice.CONNECTION_LISTENING;
 	}
 	
@@ -98,12 +99,17 @@ public class HostDevice extends Device {
 	public static synchronized void activate(BluetoothSocket socket, BluetoothDevice device){
 		//Assign a player number
 		int p = 0;
+		
+		//find empty slot number
 		boolean stop = false;
 		for (p=0; p<Device.player.length && !stop; p++){
-			if (Device.player[p] != null){
+			if (Device.player[p] == null){ 
 				stop = true;
 			}
 		}
+		
+		//account for the extra p++ that will always occur in the above loop after stop is set to true
+		p--;
 		
 		//Connect the device, and start the active thread
 		Device.player[p] = new PlayerDevice(true);
@@ -115,6 +121,8 @@ public class HostDevice extends Device {
 		
 		//Send message to the newly connected player giving him his player slot number
 		//to be created
+		
+		PlayerDevice.player[p].sendMessage(Device.MESSAGE_TYPE_SYSTEM, device.getAddress());
 	}
 	
 	/**
@@ -122,7 +130,6 @@ public class HostDevice extends Device {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

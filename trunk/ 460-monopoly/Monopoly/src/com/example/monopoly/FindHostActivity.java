@@ -3,6 +3,7 @@ package com.example.monopoly;
 import java.util.ArrayList;
 
 import com.example.bluetooth.Bluetooth;
+import com.example.controllers.PlayerDevice;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -15,6 +16,8 @@ import android.content.IntentFilter;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -25,6 +28,7 @@ import android.widget.Toast;
 public class FindHostActivity extends Activity {
 	
 	public static FindHostActivity activity = null;
+	public static String tmpGameName = "";
 	
 	private Button btnBack = null;
 	private Button btnRefresh = null;
@@ -33,6 +37,7 @@ public class FindHostActivity extends Activity {
 	
 	private ArrayAdapter<String> adapter;
 	private ArrayList<String> listItems = new ArrayList<String>();
+	private ArrayList<BluetoothDevice> devices = new ArrayList<BluetoothDevice>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,16 @@ public class FindHostActivity extends Activity {
 	            android.R.layout.simple_list_item_1,
 	            listItems);
 		this.lstHosts.setAdapter(adapter);
+		
+		this.lstHosts.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int index,long arg3) {
+				BluetoothDevice host = FindHostActivity.activity.devices.get(index);
+				PlayerDevice.connect(host);
+			}
+			
+		});
 		
 		//setup click listener for the refresh button
 		this.btnRefresh.setOnClickListener(new OnClickListener(){
@@ -74,6 +89,12 @@ public class FindHostActivity extends Activity {
 		this.registerReceiver(this.mReceiver, filter);
 	}
 	
+	protected void onStart(){
+		super.onStart();
+		
+		Bluetooth.startDiscovery();
+	}
+	
 	protected void onDestroy() {
         super.onDestroy();
         
@@ -85,9 +106,18 @@ public class FindHostActivity extends Activity {
     }
 	
 	//METHOD WHICH WILL HANDLE DYNAMIC INSERTION
-    public void addItem(String text) {
+    public void addItem(BluetoothDevice device, String text) {
         listItems.add(text);
         adapter.notifyDataSetChanged();
+        
+        devices.add(device);
+    }
+    
+    public static void goToLobby(){
+    	Intent intent = new Intent(FindHostActivity.activity, LobbyActivity.class);
+    	intent.putExtra("gn",tmpGameName);
+    	FindHostActivity.activity.startActivity(intent);
+    	
     }
 
 	@Override
@@ -107,16 +137,19 @@ public class FindHostActivity extends Activity {
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 // If it's already paired, skip it, because it's been listed already
-                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    addItem(device.getName() + "\n" + device.getAddress());
+                //if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
+                    //addItem(device.getName() + "\n" + device.getAddress());
                     
                     //game detection code on standby !!!!!!
-                    //String name = device.getName();
-                    //int gameNameLength = Bluetooth.mGameName.length()+2;
-                    //if (name.substring(0, gameNameLength).equals("["+Bluetooth.mGameName+"]")){
-                    //	addItem(name.substring(gameNameLength));
-                    //}
-                }
+                    String name = device.getName();
+                    int gameNameLength = Bluetooth.mGameName.length()+2;
+                    if (name.length() > gameNameLength){
+	                    if (name.substring(0, gameNameLength).equals("["+Bluetooth.mGameName+"]")){
+	                    	addItem(device, name.substring(gameNameLength) + "\n" + device.getAddress());
+	                    	FindHostActivity.tmpGameName = name.substring(gameNameLength);
+	                    }
+                    }
+               // }
             // When discovery is finished, change the Activity title
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 setProgressBarIndeterminateVisibility(false);

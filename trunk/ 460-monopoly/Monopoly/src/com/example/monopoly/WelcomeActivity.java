@@ -1,5 +1,7 @@
 package com.example.monopoly;
 
+import com.example.bluetooth.Bluetooth;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +21,7 @@ public class WelcomeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome); 
 		
+		new Bluetooth(this.getApplicationContext());
 		
 		// Setup this activity as needed
 		WelcomeActivity.activity = this;

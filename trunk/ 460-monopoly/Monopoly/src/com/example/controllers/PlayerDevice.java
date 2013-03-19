@@ -38,6 +38,9 @@ public class PlayerDevice extends Device {
 	//Tracks the connection status of the current player
 	public static int currentPlayerConnectionStatus = 0;
 	
+	//tracks the device object for the connection of the current player to the host
+	public static BluetoothDevice selfDevice;
+	
 	public PlayerDevice(boolean self){
 		//Device.player[index] = this;
 		this.self = self;
@@ -120,6 +123,8 @@ public class PlayerDevice extends Device {
 		//start the connection attempt
 		HostDevice.connect = Bluetooth.entity.new ConnectThread(device);
 		HostDevice.connect.start();
+		
+		
 		
 		//mark current player as trying to connect
 		PlayerDevice.currentPlayerConnectionStatus = PlayerDevice.CONNECTION_CONNECTING;

@@ -1,7 +1,13 @@
 package com.example.monopoly;
 
+import com.example.bluetooth.Bluetooth;
+import com.example.controllers.HostDevice;
+
 import android.os.Bundle;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,7 +20,7 @@ public class LobbyActivity extends Activity {
 	public static LobbyActivity activity = null;
 	
 	private Button btnBack = null;
-	private Button btnRefresh = null;
+	private Button btnStart = null;
 	private ListView lstPlayers = null;
 	private TextView txtGameName = null;
 
@@ -24,11 +30,17 @@ public class LobbyActivity extends Activity {
 		setContentView(R.layout.activity_lobby); 
 		
 		//this.btnBack    = (Button) this.findViewById(R.id.btnBack);
-		this.btnRefresh = (Button) this.findViewById(R.id.btnRefresh);
+		this.btnStart = (Button) this.findViewById(R.id.btnStart);
 		this.lstPlayers   = (ListView) this.findViewById(R.id.lstPlayers);
 		this.txtGameName   = (TextView) this.findViewById(R.id.txtGameName);
 		
-		this.btnRefresh.setOnClickListener(new OnClickListener(){
+		Bundle extras = this.getIntent().getExtras();
+		
+		this.txtGameName.setText("Game Name: " + extras.getString("gn"));
+		
+		Bluetooth.changeDeviceName(extras.getString("gn"));
+		
+		this.btnStart.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
@@ -38,7 +50,25 @@ public class LobbyActivity extends Activity {
 			}
 			
 		});
+		
+		
+		if (HostDevice.self == true){
+			//if the device is a host,
+			this.ensureDiscoverable();
+		} else {
+			//if the device is a client
+		}
 	}
+	
+	private void ensureDiscoverable() {
+       // if(D) Log.d(TAG, "ensure discoverable");
+        if (Bluetooth.mAdapter.getScanMode() !=
+            BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            this.startActivity(discoverableIntent);
+        }
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

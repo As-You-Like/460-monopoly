@@ -57,8 +57,13 @@ public abstract class Device {
 	//send message to all players (but not the host)
 	public static void sendMessageToAllPlayers(int type, String message){
 		for (int i=0; i<Device.player.length; i++){
-			if (Device.currentPlayer != i){ //Don't send message to self if player
+			//don't send messages to self if you are a player
+			//don't send messages if current player slot is empty
+			if (Device.currentPlayer != i && Device.player[i] != null){ //Don't send message to self if player
+			//Only send to play if the player is connected
+			if (Device.player[i].playerConnectionStatus == PlayerDevice.CONNECTION_ACTIVE){
 				Device.player[i].sendMessage(type, message);
+			}
 			}
 		}
 	}
