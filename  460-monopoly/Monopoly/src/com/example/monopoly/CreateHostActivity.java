@@ -35,9 +35,11 @@ public class CreateHostActivity extends Activity {
 			public void onClick(View v) {
 				String gameName = CreateHostActivity.activity.edtGameName.getText().toString();
 				
-				new HostDevice(true); //create host device object and indicate the current device is the host.
+				HostDevice host = new HostDevice(true); //create host device object and indicate the current device is the host.
+				host.listenStart(false);
 				
 				Intent intent = new Intent(CreateHostActivity.activity, LobbyActivity.class);
+				intent.putExtra("gn", gameName);
 				startActivity(intent);
 			}
 			

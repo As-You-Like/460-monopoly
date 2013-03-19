@@ -3,6 +3,8 @@ package com.example.bluetooth;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.UUID;
 
 import org.json.JSONException;
@@ -11,12 +13,14 @@ import org.json.JSONObject;
 import com.example.controllers.Device;
 import com.example.controllers.HostDevice;
 import com.example.controllers.PlayerDevice;
+import com.example.monopoly.FindHostActivity;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -41,6 +45,10 @@ public class Bluetooth {
 	public static final int USERTYPE_SERVER = 0;
 	public static final int USERTYPE_CLIENT = 1;
 	
+	//private static final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
+	private static final UUID MY_UUID = UUID.fromString("0f1e9a70-9030-11e2-9e96-0800200c9a66");
+	
+	
 	// Constructor
 	public Bluetooth(Context context){
 		Bluetooth.mAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -61,7 +69,7 @@ public class Bluetooth {
 	 * devices that are hosting an instance of this game
 	 * @param name
 	 */
-	public static void ChangeDeviceName(String name){
+	public static void changeDeviceName(String name){
 		Bluetooth.mAdapter.setName("[" + Bluetooth.mGameName + "]" + name);
     }
 	
@@ -81,22 +89,6 @@ public class Bluetooth {
 		
 	}
 	
-	/**
-     * Start the ConnectThread to initiate a connection to a remote device.
-     * @param device  The BluetoothDevice to connect
-     */
-	public synchronized void connect(BluetoothDevice device){
-		
-	} //End connect()
-	
-	/**
-     * Start the ConnectedThread to begin managing a Bluetooth connection
-     * @param socket  The BluetoothSocket on which the connection was made
-     * @param device  The BluetoothDevice that has been connected
-     */
-	public synchronized int connected(int p, BluetoothSocket socket, BluetoothDevice device){
-		return 0;
-	} //End connected()
 	
 	/**
      * Write to the ConnectedThread in an unsynchronized manner
@@ -144,6 +136,11 @@ public class Bluetooth {
             Bluetooth.mAdapter.cancelDiscovery();
         }
     }
+    
+    /**
+     * Makes sure the device is discoverable
+     */
+    
 	
 	// Inner Classes
 	public class AcceptThread extends Thread {
@@ -154,10 +151,9 @@ public class Bluetooth {
 			BluetoothServerSocket tmp = null;
 
             // Create a new listening server socket
-			//UUID uuid = Player.entities[Player.currentPlayer].uuid; 
             try {
             	
-                //tmp = mAdapter.listenUsingRfcommWithServiceRecord(NAME, uuid);
+                tmp = mAdapter.listenUsingRfcommWithServiceRecord(NAME, MY_UUID);
                 Log.d("Log1", "Succesfully created listener");
             } catch (Exception e) { 
                 //Toast.makeText(context, "AcceptThread failed to begin listening", Toast.LENGTH_SHORT).show();
@@ -173,15 +169,17 @@ public class Bluetooth {
 			BluetoothSocket socket = null;
 			
 			// Listen to the server socket if still listening
+			Log.e("5", "before while");
 			while(listen){
 				try {
 					socket = mmServerSocket.accept();
 				} catch (IOException e){
-					Toast.makeText(context, "AcceptThread server socket error", Toast.LENGTH_SHORT).show();
+					Log.e("1", "AcceptThread server socket error");
 					break; 
 				}
 				
 				if (socket != null){
+					Log.e("5", socket.getRemoteDevice().getName());
 					synchronized (Bluetooth.this){
 						HostDevice.activate(socket, socket.getRemoteDevice()); 
 						
@@ -190,11 +188,13 @@ public class Bluetooth {
 					}
 				}
 			}
+			Log.e("5", "after while");
 			
 		} //End run()
 		
 		public void cancel(){
 			try {
+				listen = false;
 				mmServerSocket.close();
 			} catch (IOException e) {
 				Toast.makeText(context, "AcceptThread failed to close socket", Toast.LENGTH_SHORT).show();
@@ -212,33 +212,44 @@ public class Bluetooth {
 
             // Get a BluetoothSocket for a connection with the
             // given BluetoothDevice
-            //try {
-            	//UUID uuid = Player.entities[Player.currentPlayer].uuid;
-                //tmp = device.createRfcommSocketToServiceRecord(uuid);
-            //} catch (IOException e) {
-            	//Toast.makeText(context, "ConnectedThread create failed", Toast.LENGTH_SHORT).show();
-            //}
+            try {
+                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
+                
+            	//Method m = device.getClass().getMethod("createRfcommSocket", new Class[] {int.class});
+                //tmp = (BluetoothSocket) m.invoke(device, 1);
+            } catch (IOException e) {
+            	Log.e("2", e.getMessage());
+            } 
             mmSocket = tmp;
 		} //End constructor
 		
 		public void run(){
 			setName("ConnectThread");
 			
+			mAdapter.cancelDiscovery();
+			
 			// Make a connection to the BluetoothSocket
             try {
                 // This is a blocking call and will only return on a
                 // successful connection or an exception
+            	Log.e("1", "1");
                 mmSocket.connect();
+                Log.e("1", "2");
             } catch (IOException e) {
                 connectionFailed();
+                Log.e("1", e.getMessage());
+                
                 // Close the socket
                 try {
                     mmSocket.close();
+                    Log.e("1", "4");
                 } catch (IOException e2) {
-                	Toast.makeText(context, "ConnectThread unable to close socket during connection failure", Toast.LENGTH_SHORT).show();
+                	Log.e("1", "5");
                 }
                 // Start the service over to restart listening mode
+                Log.e("1", "6");
                 Bluetooth.this.start();
+                Log.e("1", "7");
                 return;
             }
             
@@ -247,8 +258,8 @@ public class Bluetooth {
             	HostDevice.connect = null;
             }
 
-            // Start the connected thread
-            connected(0, mmSocket, mmDevice);
+            // Start the active connection thread
+            PlayerDevice.activate(mmSocket, mmDevice);
 		} //End run()
 		
 		public void cancel(){
@@ -359,14 +370,37 @@ public class Bluetooth {
 			case Bluetooth.MESSAGE_RECIEVE:
 				try {
 					Log.d("Handler", "Message Recieved!");
+					int sender = obj.getInt(Device.MESSAGE_COMPONENT_SENDER);
+					int reciever = obj.getInt(Device.MESSAGE_COMPONENT_RECIEVER);
+					int type = obj.getInt(Device.MESSAGE_COMPONENT_TYPE);
+					String message = obj.getString(Device.MESSAGE_COMPONENT_MESSAGE);
 					Toast.makeText(context, 
 							
-							"[from " + obj.getInt(Device.MESSAGE_COMPONENT_SENDER) 
-							+ " to " + obj.getInt(Device.MESSAGE_COMPONENT_RECIEVER) 
-							+ " type: " + obj.getInt(Device.MESSAGE_COMPONENT_TYPE) + "] " 
-							+ obj.getString(Device.MESSAGE_COMPONENT_MESSAGE)
+							"[from " + sender 
+							+ " to " + reciever
+							+ " type: " + type + "] " 
+							+ message
 							
 							, Toast.LENGTH_LONG).show();
+					
+					//SYSTEM - Handle system messages
+					Log.e("1", "before switch");
+					switch (type){
+					//Handle system messages
+					case Device.MESSAGE_TYPE_SYSTEM:
+						Log.e("1", "after case");
+						//handle player number assigns by the host
+						//Log.e("1", "\"" + message + "\"=\"" + PlayerDevice.selfDevice.getAddress() + "\"");
+						if (message.equals(Bluetooth.mAdapter.getAddress()) && sender == -1){
+							Log.e("1", "after if");
+							PlayerDevice.currentPlayerConnectionStatus = reciever;
+							Device.player[reciever] = Device.tmpCurrentPlayer;
+							FindHostActivity.goToLobby();
+						}
+						
+						//handle player entering lobby
+						break;
+					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
