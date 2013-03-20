@@ -11,6 +11,7 @@ public class NewLoadActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_newload); 
 		// Test comment
+		// Test comment2
 	}
 
 	@Override
