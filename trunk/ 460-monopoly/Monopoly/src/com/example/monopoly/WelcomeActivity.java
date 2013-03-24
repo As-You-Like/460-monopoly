@@ -21,7 +21,7 @@ public class WelcomeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome); 
 		
-		new Bluetooth(this.getApplicationContext());
+		//new Bluetooth(this.getApplicationContext());
 		
 		// Setup this activity as needed
 		WelcomeActivity.activity = this;

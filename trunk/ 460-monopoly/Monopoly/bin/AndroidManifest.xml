@@ -65,6 +65,10 @@
             android:name="com.example.monopoly.LoadingActivity"
             android:label="@string/title_activity_loading" >
         </activity>
+        <activity
+            android:name="com.example.monopoly.SplashActivity"
+            android:label="@string/title_activity_splash" >
+        </activity>
     </application>
 
 </manifest>
