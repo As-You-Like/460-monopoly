@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.bluetooth.Bluetooth;
 
@@ -15,6 +16,7 @@ public class PlayerDevice extends Device {
 	
 	public boolean self = false; //Indicates if the current device is this player slot
 	public int playerConnectionStatus = 0;
+	public String name = "";
 	
 	// === If CurrentDevice is the host ===
 	//Thread for the host to communicate with the connected player
@@ -47,6 +49,24 @@ public class PlayerDevice extends Device {
 		//if (self){
 		//	Device.currentPlayer = index;
 		//}
+	}
+	
+	public PlayerDevice(boolean self, int index){
+		this(self);
+		Device.player[index] = this;
+		if (self){
+			Device.currentPlayer = index;
+		}
+	}
+	
+	/**
+	 * Check if the indicated player name is available. if so, no error is returned (blank string), otherwise
+	 * a string indicating the problem is returned
+	 * @param String name
+	 * @return String
+	 */
+	public static String isNameAvailable(String name){
+		return null;
 	}
 	
 	public int getPlayerNumber(){
@@ -85,6 +105,7 @@ public class PlayerDevice extends Device {
 				//set the active connection to the host as the temporary active variable
 				tmpActive = HostDevice.active;
 			}
+			Log.e("sendMessage", "[from "+Device.getCurrentDevice()+" to "+this.getPlayerNumber()+" type: "+type+"] " + message);
 			tmpActive.write(bytes);
 		} else { //else send to target address
 			Bluetooth.ActiveThread tmpActive;
@@ -95,6 +116,7 @@ public class PlayerDevice extends Device {
 				//set the active connection to the host as the temporary active variable
 				tmpActive = this.active;
 			}
+			Log.e("sendMessage", "[from "+Device.getCurrentDevice()+" to "+this.getPlayerNumber()+" type: "+type+"] " + message);
 			tmpActive.write(bytes);
 		}
 	}
@@ -124,7 +146,8 @@ public class PlayerDevice extends Device {
 		HostDevice.connect = Bluetooth.entity.new ConnectThread(device);
 		HostDevice.connect.start();
 		
-		
+		//create host object, but set self = false (current device is not a host)
+		HostDevice.host = new HostDevice(false);
 		
 		//mark current player as trying to connect
 		PlayerDevice.currentPlayerConnectionStatus = PlayerDevice.CONNECTION_CONNECTING;
@@ -144,8 +167,9 @@ public class PlayerDevice extends Device {
 			HostDevice.active.cancel();
 			HostDevice.active = null;
 		}
-		HostDevice.active = Bluetooth.entity.new ActiveThread(socket, Device.tmpCurrentPlayer);
+		HostDevice.active = Bluetooth.entity.new ActiveThread(socket);
 		HostDevice.active.start();
+		
 		
 		//Mark as connected
 		PlayerDevice.currentPlayerConnectionStatus = PlayerDevice.CONNECTION_ACTIVE;

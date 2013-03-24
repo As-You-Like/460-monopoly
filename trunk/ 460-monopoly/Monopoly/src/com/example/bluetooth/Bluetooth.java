@@ -3,8 +3,6 @@ package com.example.bluetooth;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.UUID;
 
 import org.json.JSONException;
@@ -14,23 +12,22 @@ import com.example.controllers.Device;
 import com.example.controllers.HostDevice;
 import com.example.controllers.PlayerDevice;
 import com.example.monopoly.FindHostActivity;
+import com.example.monopoly.LobbyActivity;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 public class Bluetooth {
 	// Variables
 	public static String mGameName = "Monopoly";
+	public static String originalDeviceName = "";
 	
 	public static Handle mHandler;
 	public static BluetoothAdapter mAdapter;
@@ -52,6 +49,7 @@ public class Bluetooth {
 	// Constructor
 	public Bluetooth(Context context){
 		Bluetooth.mAdapter = BluetoothAdapter.getDefaultAdapter();
+		Bluetooth.originalDeviceName = Bluetooth.mAdapter.getName();
 		
 		if (mAdapter == null){
 			Toast.makeText(context, "Your device does not support Bluetooth, you cannot play this game", Toast.LENGTH_LONG)
@@ -194,6 +192,7 @@ public class Bluetooth {
 		
 		public void cancel(){
 			try {
+				Bluetooth.changeDeviceName(Bluetooth.originalDeviceName);
 				listen = false;
 				mmServerSocket.close();
 			} catch (IOException e) {
@@ -272,13 +271,11 @@ public class Bluetooth {
 	} //End class ConnectThread
 	
 	public class ActiveThread extends Thread {
-		private PlayerDevice player;
-		private final BluetoothSocket mmSocket;
+		public final BluetoothSocket mmSocket;
 		private final InputStream mmInStream;
 		private final OutputStream mmOutStream;
 		
-		public ActiveThread(BluetoothSocket socket, PlayerDevice player){
-			this.player = player;
+		public ActiveThread(BluetoothSocket socket){
 			mmSocket = socket;
 			
 			InputStream tmpIn = null;
@@ -289,7 +286,7 @@ public class Bluetooth {
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
             } catch (IOException e) {
-                Toast.makeText(context, "ConnectedThread failed to make temp sockets", Toast.LENGTH_SHORT).show();
+            	Log.e("ActiveThread", "Failed to make temp sockets, exception: " + e.getMessage());
                 connectionFailed();
             }
 
@@ -323,11 +320,13 @@ public class Bluetooth {
 	            		try {
 							obj = new JSONObject(json);
 						} catch (JSONException e) {
+							Log.e("AcceptThread", "JSON IS NULL");
 							obj = null;
 						}
 	            		if (obj != null){
 	            			
-	            			Bluetooth.mHandler.obtainMessage(Bluetooth.MESSAGE_RECIEVE, obj).sendToTarget();
+	            			Message msg = Bluetooth.mHandler.obtainMessage(Bluetooth.MESSAGE_RECIEVE, obj);
+	            			msg.sendToTarget();
 	            		}
 	            		
 	            	}
@@ -336,6 +335,7 @@ public class Bluetooth {
 	                
 				} catch (IOException e){
 					//Toast.makeText(context, "ConnectedThread player " + this.playerNum + " has disconnected", Toast.LENGTH_SHORT).show();
+					Log.e("ActiveThread", "A player has disconnected, exception: " + e.getMessage());
 					connectionLost();
 					break;
 				}
@@ -350,7 +350,7 @@ public class Bluetooth {
                 mmOutStream.write(buffer);
                 mmOutStream.flush();
             } catch (IOException e) {
-            	Toast.makeText(context, "ConnectedThread failed to write", Toast.LENGTH_SHORT).show();
+            	Log.e("ActiveThread", "failed to write: " + e.getMessage());
             }
 		} //End write()
 		
@@ -358,7 +358,7 @@ public class Bluetooth {
 			try {
 				mmSocket.close();
 			} catch (IOException e) {
-				Toast.makeText(context, "ConnectedThread failed to close socket", Toast.LENGTH_SHORT).show();
+				Log.e("ActiveThread", "failed to close socket: " + e.getMessage());
 			}
 		} //End cancel()
 	} //End class ConnectedThread
@@ -374,31 +374,102 @@ public class Bluetooth {
 					int reciever = obj.getInt(Device.MESSAGE_COMPONENT_RECIEVER);
 					int type = obj.getInt(Device.MESSAGE_COMPONENT_TYPE);
 					String message = obj.getString(Device.MESSAGE_COMPONENT_MESSAGE);
-					Toast.makeText(context, 
-							
-							"[from " + sender 
+					String debugMsg = "[from " + sender 
 							+ " to " + reciever
 							+ " type: " + type + "] " 
-							+ message
+							+ message;
+					
+					
+					Log.d("message", debugMsg);
+					Toast.makeText(context, 
+							
+							debugMsg
 							
 							, Toast.LENGTH_LONG).show();
 					
 					//SYSTEM - Handle system messages
-					Log.e("1", "before switch");
 					switch (type){
 					//Handle system messages
 					case Device.MESSAGE_TYPE_SYSTEM:
-						Log.e("1", "after case");
 						//handle player number assigns by the host
 						//Log.e("1", "\"" + message + "\"=\"" + PlayerDevice.selfDevice.getAddress() + "\"");
 						if (message.equals(Bluetooth.mAdapter.getAddress()) && sender == -1){
 							Log.e("1", "after if");
 							PlayerDevice.currentPlayerConnectionStatus = reciever;
 							Device.player[reciever] = Device.tmpCurrentPlayer;
+							Device.currentPlayer = reciever;
 							FindHostActivity.goToLobby();
+							
+							
 						}
 						
 						//handle player entering lobby
+						if (sender == -1 && message.substring(0, 9).equals("newPlayer")){
+							//extract player data
+							int playerNum = Integer.parseInt(message.substring(9));
+							
+							//create player object
+							PlayerDevice p = new PlayerDevice(false, playerNum);
+							p.name = "Player " + playerNum + " is connecting ...";
+							
+							
+							
+							//update lobby UI
+							LobbyActivity.activity.updatePlayerList();
+						}
+						
+						//handle name request (-1 reciever is the host)
+						if (reciever == -1 && message.substring(0, 11).equals("nameRequest")){
+							int playerNum = sender;
+							String playerName = message.substring(11);
+							
+							//check if name is available
+							String error = PlayerDevice.isNameAvailable(playerName);
+							
+							if (error == null){
+								//update data
+								//if (playerNum < 0){
+								//	playerNum
+								//}
+								PlayerDevice.player[playerNum].name = playerName;
+								
+								//update UI
+								LobbyActivity.activity.updatePlayerList();
+								
+								//send message to player indicating name is accepted
+								Log.d("System Message", "Name Accepted: " + playerName + " for Player " + playerNum);
+								PlayerDevice.player[playerNum].sendMessage(Device.MESSAGE_TYPE_SYSTEM, "nameRequestAccepted" + playerName);
+							} else {
+								//send message to player indicating name is rejected
+								Log.e("System Message", "Name Rejected: " + playerName + " for Player " + playerNum);
+								PlayerDevice.player[playerNum].sendMessage(Device.MESSAGE_TYPE_SYSTEM, "nameRequestRejected" + error);
+							}
+						}
+						
+						//handle nameRequestAccepted and nameRequestRejected (on player side)
+						if (message.length() >= 11){
+							if (sender == -1 &&  message.substring(0, 11).equals("nameRequest")){
+								boolean accepted = (message.substring(11, 19).equals("Accepted") ? true : false);
+								if (accepted){
+									String name = message.substring(19);
+									//Display accepted message
+									Log.d("Name Request", "Name Accepted: " + name);
+									
+									//change name
+									PlayerDevice.player[reciever].name = name;
+									
+									//update lobby UI
+									LobbyActivity.activity.updatePlayerList();
+								} else {
+									//Display error message
+									String error = message.substring(19);
+									Log.d("Name Request", "Name Rejected: " + error);
+									
+									//ask for name again
+									LobbyActivity.activity.requestName();
+								}
+							}
+						}
 						break;
 					}
 				} catch (JSONException e) {

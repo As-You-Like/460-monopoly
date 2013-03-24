@@ -36,7 +36,7 @@ public class CreateHostActivity extends Activity {
 				String gameName = CreateHostActivity.activity.edtGameName.getText().toString();
 				
 				HostDevice host = new HostDevice(true); //create host device object and indicate the current device is the host.
-				host.listenStart(false);
+				host.listenStart(false, gameName);
 				
 				Intent intent = new Intent(CreateHostActivity.activity, LobbyActivity.class);
 				intent.putExtra("gn", gameName);
