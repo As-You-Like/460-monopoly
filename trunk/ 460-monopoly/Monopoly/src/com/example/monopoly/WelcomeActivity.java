@@ -32,7 +32,7 @@ public class WelcomeActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(WelcomeActivity.activity, CreateHostActivity.class);
+				Intent intent = new Intent(WelcomeActivity.activity, NewLoadActivity.class);
 				startActivity(intent);
 			}
 			
