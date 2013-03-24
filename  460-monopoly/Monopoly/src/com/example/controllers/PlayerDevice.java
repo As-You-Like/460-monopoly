@@ -65,8 +65,23 @@ public class PlayerDevice extends Device {
 	 * @param String name
 	 * @return String
 	 */
-	public static String isNameAvailable(String name){
-		return null;
+	public static String isNameAvailable(String playerName){
+		boolean taken = false;
+		
+		for(int i = 0; i < player.length; i++){
+			if(playerName == player[i].name){
+				taken = true;
+			}
+		}
+		
+		if(taken == true){
+			String errorMessage = playerName + " is taken. Please type another name.";
+			return errorMessage;
+		}
+		
+		else{
+			return null;
+		}
 	}
 	
 	public int getPlayerNumber(){
@@ -174,7 +189,7 @@ public class PlayerDevice extends Device {
 		//Mark as connected
 		PlayerDevice.currentPlayerConnectionStatus = PlayerDevice.CONNECTION_ACTIVE;
 		HostDevice.connectionStatus = HostDevice.CONNECTION_ACTIVE;
-	}
+	}	
 	
 	/**
 	 * @param args
