@@ -415,7 +415,7 @@ public class Bluetooth {
 							
 							
 							//update lobby UI
-							LobbyActivity.activity.updatePlayerList();
+							//LobbyActivity.activity.updatePlayerList(); 
 						}
 						
 						//handle name request (-1 reciever is the host)
@@ -428,9 +428,9 @@ public class Bluetooth {
 							
 							if (error == null){
 								//update data
-								//if (playerNum < 0){
-								//	playerNum
-								//}
+								if (playerNum < 0){
+									playerNum = 0; //temporary crash prevention
+								}
 								PlayerDevice.player[playerNum].name = playerName;
 								
 								//update UI
