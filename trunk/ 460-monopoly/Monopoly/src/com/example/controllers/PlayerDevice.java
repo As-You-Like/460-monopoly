@@ -66,7 +66,9 @@ public class PlayerDevice extends Device {
 	 * @return String
 	 */
 	public static String isNameAvailable(String playerName){
-		boolean taken = false;
+		
+		return null;
+		/*boolean taken = false;
 		
 		for(int i = 0; i < player.length; i++){
 			if (player[i] != null){
@@ -83,7 +85,7 @@ public class PlayerDevice extends Device {
 		
 		else{
 			return null;
-		}
+		}*/
 	}
 	
 	public int getPlayerNumber(){
