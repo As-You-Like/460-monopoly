@@ -17,24 +17,30 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class NewLoadActivity extends Activity {
+	
+	public static NewLoadActivity activity;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_newload);
+		
+		NewLoadActivity.activity = this;
+		
+		
 		Button buttonNewGame = (Button) this.findViewById(R.id.btnNewGame);
 		buttonNewGame.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				makeText(getApplicationContext(), "Go to CreateHostActivity", Toast.LENGTH_LONG).show();
-
+				Intent intent = new Intent(WelcomeActivity.activity, CreateHostActivity.class);
+				startActivity(intent);
 			}
 		});
 
 		Button buttonLoadGame = (Button) this.findViewById(R.id.btnLoadGame);
 		buttonLoadGame.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				String actionName = "android.intent.action.SaveGameActivity";
-				Intent intent = new Intent(actionName);
+				Intent intent = new Intent(NewLoadActivity.activity, SaveGameActivity.class);
 				startActivity(intent);
 
 			}
