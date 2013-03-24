@@ -18,6 +18,7 @@ public class SplashActivity extends Activity {
 		setContentView(R.layout.activity_splash);
 		new Bluetooth(this.getApplicationContext());
 		Intent intent = new Intent(SplashActivity.activity, WelcomeActivity.class);
+		startActivity(intent);
 	}
 
 	@Override

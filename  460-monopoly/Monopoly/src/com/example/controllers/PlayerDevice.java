@@ -69,8 +69,10 @@ public class PlayerDevice extends Device {
 		boolean taken = false;
 		
 		for(int i = 0; i < player.length; i++){
-			if(playerName == player[i].name){
-				taken = true;
+			if (player[i] != null){
+				if(playerName.equals(player[i].name)){
+					taken = true;
+				}
 			}
 		}
 		
