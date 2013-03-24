@@ -5,14 +5,15 @@ import org.json.JSONObject;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 import com.example.bluetooth.Bluetooth;
-import com.example.bluetooth.Bluetooth.ActiveThread;
 
 public class HostDevice extends Device {
 	
 	public static boolean self = false; //indiciates if the current device is the host
 	public static int connectionStatus = 0;
+	
 	
 	// === Attributes if self is FALSE ===
 	public static final int CONNECTION_IDLE         = 0; //The host slot is empty
@@ -61,18 +62,30 @@ public class HostDevice extends Device {
 			Bluetooth.ActiveThread tmpActive;
 			synchronized (this){
 				//if not connected, abort message send attempt
-				if (HostDevice.connectionStatus != HostDevice.CONNECTION_ACTIVE) return;
+				
+				if (HostDevice.active == null){
+					Log.e("sendMessage", "HostDevice.active is null!");
+					return;
+				}
+				
+				if (HostDevice.connectionStatus != HostDevice.CONNECTION_ACTIVE) {
+					Log.e("sendMessage", "Host is not connected!");
+					return;
+				}
+				
+				
 				
 				//set the active connection to the host as the temporary active variable
 				tmpActive = HostDevice.active;
 			}
+			Log.e("sendMessage", "[from "+Device.getCurrentDevice()+" to "+(-1)+" type: "+type+"] " + message);
 			tmpActive.write(bytes);
 		} else { //else do nothing (host can't self messages to himself)
-			
+			Log.e("sendMessage", "Host attempted to send a message to himself: " + message);
 		}
 	}
 	
-	public synchronized void listenStart(boolean refresh){
+	public synchronized void listenStart(boolean refresh, String deviceName){
 		if (HostDevice.self){ //if the current device is the host
 			if (HostDevice.accept == null){
 				HostDevice.accept = Bluetooth.entity.new AcceptThread();
@@ -82,11 +95,15 @@ public class HostDevice extends Device {
 			}
 		}
 		HostDevice.accept.start(); 
+		Bluetooth.changeDeviceName(deviceName);
 		HostDevice.connectionStatus = HostDevice.CONNECTION_LISTENING;
 	}
 	
 	public void listenStop(){
-		HostDevice.accept.listen = false;
+		if (HostDevice.accept != null){
+			HostDevice.accept.listen = false;
+			HostDevice.accept.cancel();
+		}
 		HostDevice.accept = null;
 		HostDevice.connectionStatus = HostDevice.CONNECTION_IDLE;
 	}
@@ -111,10 +128,16 @@ public class HostDevice extends Device {
 		//account for the extra p++ that will always occur in the above loop after stop is set to true
 		p--;
 		
+		String playerName = "Player " + p;
+		
 		//Connect the device, and start the active thread
 		Device.player[p] = new PlayerDevice(true);
 		Device.player[p].device = device;
-		Device.player[p].active = Bluetooth.entity.new ActiveThread(socket, Device.player[p]);
+		Device.player[p].active = Bluetooth.entity.new ActiveThread(socket);
+		Device.player[p].active.start();
+		Device.player[p].name = playerName;
+		
+		Log.d("activate", "Declared new player number as " + p);
 		
 		//Mark as connected
 		PlayerDevice.player[p].playerConnectionStatus = PlayerDevice.CONNECTION_ACTIVE;
@@ -122,14 +145,10 @@ public class HostDevice extends Device {
 		//Send message to the newly connected player giving him his player slot number
 		//to be created
 		
+		
+		
 		PlayerDevice.player[p].sendMessage(Device.MESSAGE_TYPE_SYSTEM, device.getAddress());
-	}
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		Device.sendMessageToAllPlayers(Device.MESSAGE_TYPE_SYSTEM, "newPlayer" + p);
 	}
 
 }

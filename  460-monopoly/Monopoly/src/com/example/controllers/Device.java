@@ -2,6 +2,8 @@ package com.example.controllers;
 
 import java.util.HashMap;
 
+import android.util.Log;
+
 public abstract class Device {
 	
 	public static boolean self = false; //indiciates if the current device is the host
@@ -34,8 +36,13 @@ public abstract class Device {
 			return -1;
 		} else { //loop through players looking for "self" and return the corresponding index
 			for (int i=0; i<Device.player.length; i++){
-				if (Device.player[i].self){ 
-					return i;
+				if (Device.player[i] != null){
+					Log.e("getCurrentDevice " + i, Device.player[i].self ? "self is true" : "self is false!");
+					if (Device.player[i].self){ 
+						return i;
+					}
+				} else {
+					//Log.e("Device.getCurrentDevice", "player[" + i + "] does not exist!");
 				}
 			}
 		}
@@ -61,7 +68,9 @@ public abstract class Device {
 			//don't send messages if current player slot is empty
 			if (Device.currentPlayer != i && Device.player[i] != null){ //Don't send message to self if player
 			//Only send to play if the player is connected
+			Log.d("sendMessageToAllPlayers", "Testing connection of player " + i + ": " + Device.player[i].playerConnectionStatus + "=" + PlayerDevice.CONNECTION_ACTIVE);
 			if (Device.player[i].playerConnectionStatus == PlayerDevice.CONNECTION_ACTIVE){
+				Log.d("sendMessageToAllPlayers", "Sending message to player " + i + ": " + message);
 				Device.player[i].sendMessage(type, message);
 			}
 			}

@@ -20,17 +20,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 public class FindHostActivity extends Activity {
 	
 	public static FindHostActivity activity = null;
 	public static String tmpGameName = "";
 	
-	private Button btnBack = null;
+	//private Button btnBack = null;
 	private Button btnRefresh = null;
 	private ListView lstHosts = null;
 	private TextView txtTitle = null;
@@ -52,6 +51,8 @@ public class FindHostActivity extends Activity {
 		this.lstHosts   = (ListView) this.findViewById(R.id.lstHosts);
 		this.txtTitle   = (TextView) this.findViewById(R.id.txtTitle);
 		
+		this.txtTitle.setText("Scanning for games ...");
+		
 		//Setup list adapter
 		adapter=new ArrayAdapter<String>(this.lstHosts.getContext(),
 	            android.R.layout.simple_list_item_1,
@@ -62,6 +63,10 @@ public class FindHostActivity extends Activity {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int index,long arg3) {
+				//Ask player to type in a username (if we stay with the old design)
+				
+				
+				//Attempt to connect the player
 				BluetoothDevice host = FindHostActivity.activity.devices.get(index);
 				PlayerDevice.connect(host);
 			}
@@ -143,10 +148,12 @@ public class FindHostActivity extends Activity {
                     //game detection code on standby !!!!!!
                     String name = device.getName();
                     int gameNameLength = Bluetooth.mGameName.length()+2;
-                    if (name.length() > gameNameLength){
-	                    if (name.substring(0, gameNameLength).equals("["+Bluetooth.mGameName+"]")){
-	                    	addItem(device, name.substring(gameNameLength) + "\n" + device.getAddress());
-	                    	FindHostActivity.tmpGameName = name.substring(gameNameLength);
+                    if (name != null){
+	                    if (name.length() > gameNameLength){
+		                    if (name.substring(0, gameNameLength).equals("["+Bluetooth.mGameName+"]")){
+		                    	addItem(device, name.substring(gameNameLength) + "\n" + device.getAddress());
+		                    	FindHostActivity.tmpGameName = name.substring(gameNameLength);
+		                    }
 	                    }
                     }
                // }
