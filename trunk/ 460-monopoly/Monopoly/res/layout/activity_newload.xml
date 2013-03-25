@@ -26,9 +26,9 @@
         android:id="@+id/btnLoadGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtTitle"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="86dp"
+        android:layout_marginBottom="90dp"
         android:text="Load Game"
         android:textColor="#0000ff"
         android:textSize="30sp" />
@@ -37,8 +37,9 @@
         android:id="@+id/btnNewGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btnLoadGame"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="55dp"
+        android:layout_marginBottom="32dp"
         android:text="New Game"
         android:textColor="#0000ff"
         android:textSize="30sp" />
