@@ -90,19 +90,22 @@ public class PlayerDevice extends Device {
 	
 	public int getPlayerNumber(){
 		for (int i=0; i<Device.player.length; i++){
-			if (this.self){
-				return i;
+			if (Device.player[i] != null){
+				if (Device.player[i].equals(this)){
+					return i;
+				}
 			}
 		}
+		Log.e("PlayerDevice.getPlayerNumber()", "Unable to identify player");
 		return -1;
 	}
 	
-	public void sendMessage(int type, String message){
+	public void sendMessage(int type, String message, int sender){
 		//Convert message to JSON, and add the destination address as well as the type
 		JSONObject map = new JSONObject();
 		try {
 			map.put(Device.MESSAGE_COMPONENT_RECIEVER, ""+this.getPlayerNumber()); //store address
-			map.put(Device.MESSAGE_COMPONENT_SENDER, ""+Device.getCurrentDevice()); //store address
+			map.put(Device.MESSAGE_COMPONENT_SENDER, ""+sender); //store address
 			map.put(Device.MESSAGE_COMPONENT_TYPE, ""+type); //store message type
 			map.put(Device.MESSAGE_COMPONENT_MESSAGE, message); //store message itself
 		} catch (JSONException e) {
@@ -138,6 +141,10 @@ public class PlayerDevice extends Device {
 			Log.e("sendMessage", "[from "+Device.getCurrentDevice()+" to "+this.getPlayerNumber()+" type: "+type+"] " + message);
 			tmpActive.write(bytes);
 		}
+	}
+	
+	public void sendMessage(int type, String message){
+		this.sendMessage(type, message, Device.getCurrentDevice());
 	}
 	
 	/**
@@ -194,13 +201,5 @@ public class PlayerDevice extends Device {
 		PlayerDevice.currentPlayerConnectionStatus = PlayerDevice.CONNECTION_ACTIVE;
 		HostDevice.connectionStatus = HostDevice.CONNECTION_ACTIVE;
 	}	
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 
 }

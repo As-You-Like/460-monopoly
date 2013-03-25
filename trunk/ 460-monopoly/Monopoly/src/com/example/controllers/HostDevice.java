@@ -40,11 +40,11 @@ public class HostDevice extends Device {
 		HostDevice.self = self;
 	}
 	
-	public void sendMessage(int type, String message){
+	public void sendMessage(int type, String message, int reciever){
 		//Convert message to JSON, and add the destination address as well as the type
 		JSONObject map = new JSONObject();
 		try {
-			map.put(Device.MESSAGE_COMPONENT_RECIEVER, ""+(-1)); //store address
+			map.put(Device.MESSAGE_COMPONENT_RECIEVER, ""+reciever); //store address
 			map.put(Device.MESSAGE_COMPONENT_SENDER, ""+Device.getCurrentDevice()); //store address
 			map.put(Device.MESSAGE_COMPONENT_TYPE, ""+type); //store message type
 			map.put(Device.MESSAGE_COMPONENT_MESSAGE, message); //store message itself
@@ -83,6 +83,10 @@ public class HostDevice extends Device {
 		} else { //else do nothing (host can't self messages to himself)
 			Log.e("sendMessage", "Host attempted to send a message to himself: " + message);
 		}
+	}
+	
+	public void sendMessage(int type, String message){
+		this.sendMessage(type, message, -1);
 	}
 	
 	public synchronized void listenStart(boolean refresh, String deviceName){
@@ -147,8 +151,9 @@ public class HostDevice extends Device {
 		
 		
 		
-		PlayerDevice.player[p].sendMessage(Device.MESSAGE_TYPE_SYSTEM, device.getAddress());
-		Device.sendMessageToAllPlayers(Device.MESSAGE_TYPE_SYSTEM, "newPlayer" + p);
+		//PlayerDevice.player[p].sendMessage(Device.MESSAGE_TYPE_SYSTEM, device.getAddress());
+		//Device.sendMessageToAllPlayers(Device.MESSAGE_TYPE_SYSTEM, "newPlayer" + p);
+		Device.sendMessageToAllPlayers(Device.MESSAGE_TYPE_SYSTEM, "newPlayer"+p+device.getAddress());
 	}
 
 }

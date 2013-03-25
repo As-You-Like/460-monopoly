@@ -18,11 +18,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class LobbyActivity extends Activity {
 	
@@ -58,6 +60,17 @@ public class LobbyActivity extends Activity {
 		
 		this.txtGameName.setText("Game Name: " + extras.getString("gn"));
 		
+		this.lstPlayers.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int index, long arg3) {
+				
+				//if target player exists, ping him
+				if (Device.player[index] != null){
+					Device.player[index].sendMessage(Device.MESSAGE_TYPE_CHAT, "This is just a ping");
+				}
+			}
+		});
 		
 		
 		this.btnStart.setOnClickListener(new OnClickListener(){
@@ -88,6 +101,13 @@ public class LobbyActivity extends Activity {
 			//name requests are done in Bluetooth.mHandler.handleMessage(msg) in the part that handles the receiving of the player number from the host
 			
 		}
+	}
+	
+	public void onBackPressed(){
+		super.onBackPressed();
+		
+		HostDevice.accept.listen = false; 
+		HostDevice.accept.cancel();
 	}
 	
 	public void updatePlayerList(){
@@ -139,7 +159,7 @@ public class LobbyActivity extends Activity {
         if (Bluetooth.mAdapter.getScanMode() !=
             BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 1800);
             this.startActivity(discoverableIntent);
         }
     }
