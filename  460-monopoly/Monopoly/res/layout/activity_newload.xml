@@ -6,25 +6,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#FDD017"
+    android:textColor="#0000ff"
     tools:context=".WelcomeActivity" >
-
-    <TextView
-        android:id="@+id/txtTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="BentleyDev"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Button
-        android:id="@+id/btnLoadGame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/txtHostName"
-        android:layout_below="@+id/txtHostName"
-        android:layout_marginTop="27dp"
-        android:text="Load Game" />
 
     <Button
         android:id="@+id/btnNewGame"
@@ -34,5 +18,25 @@
         android:layout_below="@+id/btnLoadGame"
         android:layout_marginTop="14dp"
         android:text="New Game" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="BentleyDev"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#0000ff" />
+
+    <Button
+        android:id="@+id/btnLoadGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/txtTitle"
+        android:layout_below="@+id/txtTitle"
+        android:layout_marginTop="75dp"
+        android:text="Load Game" />
 
 </RelativeLayout>

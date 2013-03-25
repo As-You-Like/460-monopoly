@@ -6,24 +6,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#FDD017"
+    android:textColor="#0000ff"
     tools:context=".WelcomeActivity" >
-
-    <TextView
-        android:id="@+id/txtTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="BentleyDev"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Button
-        android:id="@+id/btnHost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtHostName"
-        android:layout_marginTop="34dp"
-        android:text="Host" />
 
     <Button
         android:id="@+id/btnPlayer"
@@ -32,5 +17,25 @@
         android:layout_alignLeft="@+id/btnHost"
         android:layout_below="@+id/btnHost"
         android:text="Player" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="BentleyDev"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#0000ff" />
+
+    <Button
+        android:id="@+id/btnHost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:text="Host" />
 
 </RelativeLayout>
