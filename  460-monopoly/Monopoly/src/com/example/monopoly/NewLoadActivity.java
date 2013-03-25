@@ -40,8 +40,9 @@ public class NewLoadActivity extends Activity {
 		Button buttonLoadGame = (Button) this.findViewById(R.id.btnLoadGame);
 		buttonLoadGame.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(NewLoadActivity.activity, SaveGameActivity.class);
-				startActivity(intent);
+				Toast.makeText(NewLoadActivity.activity, "Save/Load Feature is not available", Toast.LENGTH_SHORT).show();
+				//Intent intent = new Intent(NewLoadActivity.activity, SaveGameActivity.class);
+				//startActivity(intent);
 
 			}
 		});

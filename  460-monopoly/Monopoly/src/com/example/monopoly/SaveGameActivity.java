@@ -25,7 +25,7 @@ public class SaveGameActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_savegame);
-		final ListView listView = (ListView) findViewById(R.id.lstHosts);
+		//final ListView listView = (ListView) findViewById(R.id.lstHosts);
 		ArrayList<String> listItems = new ArrayList<String>();
 		for (int i = 0; i < 5; i++) {
 			listItems.add("");
@@ -35,15 +35,15 @@ public class SaveGameActivity extends Activity {
 				android.R.layout.simple_list_item_1, listItems);
 
 		// Assign adapter to ListView
-		listView.setAdapter(myadapter);
+		//listView.setAdapter(myadapter);
 
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		/*listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				makeText(getApplicationContext(), "This feature is not available.", Toast.LENGTH_LONG)
 						.show();
 			}
-		});
+		});*/
 	}
 
 	@Override
