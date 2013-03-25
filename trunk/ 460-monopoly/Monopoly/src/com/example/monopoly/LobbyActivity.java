@@ -138,7 +138,7 @@ public class LobbyActivity extends Activity {
 	 */
 	private String activity_fillInName(){
 		
-		String newPlayer = "";
+		/*String newPlayer = "";
 		
 		AlertDialog.Builder builder= new AlertDialog.Builder(this);
 		LayoutInflater inflater= getLayoutInflater();
@@ -151,7 +151,9 @@ public class LobbyActivity extends Activity {
 		newPlayer = pName.getText().toString();
 		
 		
-		return newPlayer; //stub code
+		return newPlayer;*/ //stub code
+		
+		return "Player " + Device.currentPlayer;
 	}
 	
 	private void ensureDiscoverable() {
