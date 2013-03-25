@@ -53,6 +53,10 @@
             android:name="com.example.monopoly.SaveGameActivity"
             android:label="@string/title_activity_loading" >
         </activity>
+        <activity
+            android:name="com.example.monopoly.PopupActivity"
+            android:label="@string/title_activity_popup" >
+        </activity>
     </application>
 
 </manifest>

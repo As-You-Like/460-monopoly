@@ -9,15 +9,18 @@ import com.example.controllers.Device;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,6 +35,7 @@ public class LobbyActivity extends Activity {
 	private Button btnStart = null;
 	private ListView lstPlayers = null;
 	private TextView txtGameName = null;
+	private EditText pName = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class LobbyActivity extends Activity {
 		this.btnStart = (Button) this.findViewById(R.id.btnStart);
 		this.lstPlayers   = (ListView) this.findViewById(R.id.lstPlayers);
 		this.txtGameName   = (TextView) this.findViewById(R.id.txtGameName);
+		this.pName = (EditText) this.findViewById(R.id.playerName);
 		
 		adapter = new ArrayAdapter<String>(this.lstPlayers.getContext(), android.R.layout.simple_list_item_1, playerList);
 		this.lstPlayers.setAdapter(adapter);
@@ -112,7 +117,21 @@ public class LobbyActivity extends Activity {
 	 * @return
 	 */
 	private String activity_fillInName(){
-		return "New Player"; //stub code
+		
+		String newPlayer = "";
+		
+		AlertDialog.Builder builder= new AlertDialog.Builder(this);
+		LayoutInflater inflater= getLayoutInflater();
+		final View myView= inflater.inflate(R.layout.dialoglayout, null);
+		builder.setTitle("Name");
+		builder.setMessage("Enter your name.");
+		builder.setView(myView);
+		AlertDialog alert=builder.create();
+		
+		newPlayer = pName.getText().toString();
+		
+		
+		return newPlayer; //stub code
 	}
 	
 	private void ensureDiscoverable() {
@@ -124,7 +143,8 @@ public class LobbyActivity extends Activity {
             this.startActivity(discoverableIntent);
         }
     }
-
+		
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
