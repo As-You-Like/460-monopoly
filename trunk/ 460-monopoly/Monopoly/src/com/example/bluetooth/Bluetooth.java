@@ -561,7 +561,8 @@ public class Bluetooth {
 						Toast.makeText(context, "You have disconnected from the game", Toast.LENGTH_SHORT).show();
 						
 						//go back
-						LobbyActivity.activity.finish();
+						if (LobbyActivity.activity != null)
+							LobbyActivity.activity.finish();
 						
 						//flush out existing knowledge of lobby
 						for (int i=0; i<Device.player.length; i++){
