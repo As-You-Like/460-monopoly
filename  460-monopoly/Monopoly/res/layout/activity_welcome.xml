@@ -26,10 +26,9 @@
         android:id="@+id/btnHost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnPlayer"
-        android:layout_alignLeft="@+id/btnPlayer"
-        android:layout_alignRight="@+id/btnPlayer"
-        android:layout_marginBottom="54dp"
+        android:layout_marginBottom="115dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:text="Host"
         android:textColor="#0000ff"
         android:textSize="30sp" />
@@ -40,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="115dp"
+        android:layout_marginBottom="54dp"
         android:text="Player"
         android:textColor="#0000ff"
         android:textSize="30sp" />

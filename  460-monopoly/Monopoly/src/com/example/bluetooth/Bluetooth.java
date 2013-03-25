@@ -350,6 +350,23 @@ public class Bluetooth {
 				} catch (IOException e){
 					//Toast.makeText(context, "ConnectedThread player " + this.playerNum + " has disconnected", Toast.LENGTH_SHORT).show();
 					Log.e("ActiveThread", "A player has disconnected, exception: " + e.getMessage());
+					
+					Message msg = Bluetooth.mHandler.obtainMessage(Bluetooth.MESSAGE_ERROR, "playerDisconnect");
+					if (HostDevice.self == true){
+        				msg.arg1 = 0; //identify which playerdevice has the current activethread
+        				for (int i=0; i<Device.player.length; i++){
+        					if (Device.player[i] != null){
+        						if (Device.player[i].active.getId() == this.getId()){
+        							Log.d("getId()", "i = " + i);
+        							msg.arg1 = i;
+        						}
+        					}
+        				}
+        			} else {
+        				msg.arg1 = -1; //All messages are recieved from the host only
+        			}
+					
+					msg.sendToTarget();
 					connectionLost();
 					break;
 				}
@@ -379,9 +396,9 @@ public class Bluetooth {
 	
 	private static class Handle extends Handler {
 		public void handleMessage(Message msg){
-			JSONObject obj = (JSONObject)msg.obj;
 			switch (msg.what){
 			case Bluetooth.MESSAGE_RECIEVE:
+				JSONObject obj = (JSONObject)msg.obj;
 				try {
 					Log.d("Handler", "Message Recieved!");
 					int sender = obj.getInt(Device.MESSAGE_COMPONENT_SENDER);
@@ -534,7 +551,28 @@ public class Bluetooth {
 				}
 				break;
 			case Bluetooth.MESSAGE_ERROR:
-				Toast.makeText(context, msg.getData().getString("toast"), Toast.LENGTH_SHORT).show();
+				String message = (String)msg.obj;
+				if (message.equals("playerDisconnect")){
+					if (HostDevice.self){
+						Device.player[msg.arg1] = null;
+						Toast.makeText(context, "Player " + msg.arg1 + " has disconnected", Toast.LENGTH_SHORT).show();
+						LobbyActivity.activity.updatePlayerList();
+					} else {
+						Toast.makeText(context, "You have disconnected from the game", Toast.LENGTH_SHORT).show();
+						
+						//go back
+						LobbyActivity.activity.finish();
+						
+						//flush out existing knowledge of lobby
+						for (int i=0; i<Device.player.length; i++){
+							if (Device.player[i] != null){
+								Device.player[i] = null;
+							}
+						}
+					}
+					
+				}
+				//Toast.makeText(context, msg.getData().getString("toast"), Toast.LENGTH_SHORT).show();
 				break;
 			}
 		}

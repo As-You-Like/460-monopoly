@@ -33,8 +33,8 @@ public class LobbyActivity extends Activity {
 	ArrayAdapter<String> adapter;
 	String[] playerList = new String[4];
 	
-	private Button btnBack = null;
 	private Button btnStart = null;
+	private Button btnResetDiscovery = null;
 	private ListView lstPlayers = null;
 	private TextView txtGameName = null;
 	private EditText pName = null;
@@ -48,6 +48,7 @@ public class LobbyActivity extends Activity {
 		
 		//this.btnBack    = (Button) this.findViewById(R.id.btnBack);
 		this.btnStart = (Button) this.findViewById(R.id.btnStart);
+		this.btnResetDiscovery = (Button) this.findViewById(R.id.btnResetDiscovery);
 		this.lstPlayers   = (ListView) this.findViewById(R.id.lstPlayers);
 		this.txtGameName   = (TextView) this.findViewById(R.id.txtGameName);
 		this.pName = (EditText) this.findViewById(R.id.playerName);
@@ -91,12 +92,27 @@ public class LobbyActivity extends Activity {
 			
 		});
 		
+		this.btnResetDiscovery.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				LobbyActivity.activity.ensureDiscoverable(false);
+			}
+			
+		});
+		
 		
 		if (HostDevice.self == true){
 			//if the device is a host,
-			this.ensureDiscoverable();
+			this.btnStart.setVisibility(View.VISIBLE);
+			this.btnResetDiscovery.setVisibility(View.VISIBLE);
+			this.ensureDiscoverable(true);
 		} else {
 			//if the device is a client
+			this.btnStart.setVisibility(View.INVISIBLE);
+			this.btnResetDiscovery.setVisibility(View.INVISIBLE);
 			requestName();
 			//name requests are done in Bluetooth.mHandler.handleMessage(msg) in the part that handles the receiving of the player number from the host
 			
@@ -105,9 +121,22 @@ public class LobbyActivity extends Activity {
 	
 	public void onBackPressed(){
 		super.onBackPressed();
+		if (HostDevice.self == true){
+			
+			//stop listening for incoming connections
+			HostDevice.host.listenStop();
+			
+			//flush out all existing players
+			for (int i=0; i<Device.player.length; i++){
+				if (Device.player[i] != null){
+					Device.player[i].active.cancel();
+					Device.player[i] = null;
+				}
+			}
+		} else {
+			HostDevice.active.cancel(); //simply kill the connection to the host if you are the player leaving
+		}
 		
-		HostDevice.accept.listen = false; 
-		HostDevice.accept.cancel();
 	}
 	
 	public void updatePlayerList(){
@@ -156,10 +185,10 @@ public class LobbyActivity extends Activity {
 		return "Player " + Device.currentPlayer;
 	}
 	
-	private void ensureDiscoverable() {
+	private void ensureDiscoverable(boolean checkStatus) {
        // if(D) Log.d(TAG, "ensure discoverable");
         if (Bluetooth.mAdapter.getScanMode() !=
-            BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE || checkStatus == false) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 1800);
             this.startActivity(discoverableIntent);
