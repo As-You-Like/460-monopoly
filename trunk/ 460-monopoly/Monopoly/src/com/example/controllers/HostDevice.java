@@ -154,6 +154,14 @@ public class HostDevice extends Device {
 		//PlayerDevice.player[p].sendMessage(Device.MESSAGE_TYPE_SYSTEM, device.getAddress());
 		//Device.sendMessageToAllPlayers(Device.MESSAGE_TYPE_SYSTEM, "newPlayer" + p);
 		Device.sendMessageToAllPlayers(Device.MESSAGE_TYPE_SYSTEM, "newPlayer"+p+device.getAddress());
+		
+		
+		//update new device on the status of the lobby
+		for (int i=0; i<Device.player.length; i++){
+			if (Device.player[i] != null && i != p){
+				PlayerDevice.player[p].sendMessage(Device.MESSAGE_TYPE_SYSTEM, "lobbyPlayer" + i + PlayerDevice.player[i].name);
+			}
+		}
 	}
 
 }

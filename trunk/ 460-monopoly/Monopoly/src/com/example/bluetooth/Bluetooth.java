@@ -395,23 +395,29 @@ public class Bluetooth {
 					
 					
 					Log.d("message", debugMsg);
-					Toast.makeText(context, 
+					/*Toast.makeText(context, 
 							
 							debugMsg
 							
 							, Toast.LENGTH_LONG).show();
-					
+					*/
 					//SYSTEM - Handle system messages
 					switch (type){
 					//Handle system messages
 					case Device.MESSAGE_TYPE_CHAT:
 						if (HostDevice.self == true){
-							//device is a host, must relay the message to the appropriate player
-							Device.player[reciever].sendMessage(Device.MESSAGE_TYPE_CHAT, message, sender);
+							if (reciever != -1){
+								//device is a host, must relay the message to the appropriate player
+								Device.player[reciever].sendMessage(Device.MESSAGE_TYPE_CHAT, message, sender);
+							} else {
+								//message was directed to host
+								String player = Device.player[sender].name + " (player " + sender + ")";
+								Toast.makeText(LobbyActivity.activity, "Message from " + player + ": " + message, Toast.LENGTH_LONG).show();
+							}
 						} else {
 							//device is a player, the player has received a message addressed to the current player
-							String player = sender == -1 ? "host" : Device.player[reciever].name + " (player " + reciever + ")";
-							if (sender != -1 && reciever == Device.currentPlayer){
+							String player = sender == -1 ? "host" : Device.player[sender].name + " (player " + sender + ")";
+							if (sender != -1 && sender == Device.currentPlayer){
 								player = "yourself";
 							}
 							Toast.makeText(LobbyActivity.activity, "Message from " + player + ": " + message, Toast.LENGTH_LONG).show();
@@ -442,9 +448,19 @@ public class Bluetooth {
 									LobbyActivity.activity.updatePlayerList();
 								}
 							}
+						}
+						
+						//handle lobbyPlayer update (the message that updates new players on the current state of the lobby)
+						if (sender == -1 && message.substring(0, 11).equals("lobbyPlayer")){
+							int playerNum = Integer.parseInt(message.substring(11,12));
+							String name = message.substring(12);
 							
+							PlayerDevice p = new PlayerDevice(false, playerNum);
+							p.name = name;
 							
-							
+							if (LobbyActivity.activity != null){
+								LobbyActivity.activity.updatePlayerList();
+							}
 						}
 						
 						//handle name request (-1 reciever is the host)
@@ -467,7 +483,8 @@ public class Bluetooth {
 								
 								//send message to player indicating name is accepted
 								Log.d("System Message", "Name Accepted: " + playerName + " for Player " + playerNum);
-								PlayerDevice.player[playerNum].sendMessage(Device.MESSAGE_TYPE_SYSTEM, "nameRequestAccepted" + playerName);
+								//PlayerDevice.player[playerNum].sendMessage(Device.MESSAGE_TYPE_SYSTEM, "nameRequestAccepted" + playerName);
+								Device.sendMessageToAllPlayers(Device.MESSAGE_TYPE_SYSTEM, "nameRequestAccepted" + playerNum + playerName);
 							} else {
 								//send message to player indicating name is rejected
 								Log.e("System Message", "Name Rejected: " + playerName + " for Player " + playerNum);
@@ -480,16 +497,22 @@ public class Bluetooth {
 							if (sender == -1 &&  message.substring(0, 11).equals("nameRequest")){
 								boolean accepted = (message.substring(11, 19).equals("Accepted") ? true : false);
 								if (accepted){
-									String name = message.substring(19);
+									int playerNum = Integer.parseInt(message.substring(19, 20));
+									String name = message.substring(20);
 									//Display accepted message
 									Log.d("Name Request", "Name Accepted: " + name);
 									
-									//change name
-									if (reciever == Device.currentPlayer){
-										PlayerDevice.player[reciever].name = name;
+									if (PlayerDevice.player[playerNum] != null){
+										PlayerDevice.player[playerNum].name = name;
 									} else {
-										Log.e("PlayerRequest", reciever + " != " + Device.currentPlayer);
+										Log.e("nameRequestAccepted", "Player " + playerNum + " does not exist");
 									}
+									//change name
+									//if (reciever == Device.currentPlayer){
+									//	PlayerDevice.player[reciever].name = name;
+									//} else {
+									//	Log.e("PlayerRequest", reciever + " != " + Device.currentPlayer);
+									//}
 									
 									//update lobby UI
 									LobbyActivity.activity.updatePlayerList();
