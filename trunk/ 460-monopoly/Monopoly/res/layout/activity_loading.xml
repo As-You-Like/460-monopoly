@@ -19,11 +19,13 @@
         android:orientation="vertical" >
         
     	<TextView
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_centerHorizontal="true"
-        	android:layout_centerVertical="true"
-        	android:text="Loading..." />
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:layout_centerHorizontal="true"
+    	    android:layout_centerVertical="true"
+    	    android:text="Loading..."
+    	    android:textColor="#0000ff"
+    	    android:textSize="30sp" />
 
     </LinearLayout>
     
