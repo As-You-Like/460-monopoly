@@ -3,6 +3,9 @@ package com.example.monopoly;
 import java.util.ArrayList;
 
 import com.example.bluetooth.Bluetooth;
+import com.example.bluetooth.BluetoothEvent;
+import com.example.bluetooth.Message;
+import com.example.controllers.Device;
 import com.example.controllers.PlayerDevice;
 
 import android.os.Bundle;
@@ -92,6 +95,40 @@ public class FindHostActivity extends Activity {
 		//register for broadcasts when a discovery has finished
 		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 		this.registerReceiver(this.mReceiver, filter);
+		
+		//register LOBBY_SLOT event
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+			public boolean typeValid(int type) {
+				return type == Message.LOBBY_SLOT;
+			}
+			
+			public void processMessage(int sender, int reciever, String message) {
+				//extract player data
+				int playerNum = Integer.parseInt(message.substring(9, 10));
+				String deviceMac = message.substring(10);
+				
+				if (deviceMac.equals(Bluetooth.mAdapter.getAddress())){
+					//the new player is the current device
+					
+					PlayerDevice.currentPlayerConnectionStatus = PlayerDevice.CONNECTION_ACTIVE;
+					Device.player[playerNum] = Device.tmpCurrentPlayer;
+					Device.currentPlayer = playerNum;
+					FindHostActivity.goToLobby();
+				} else {
+					//the new player is not the current device
+					
+					//create player object
+					PlayerDevice p = new PlayerDevice(false, playerNum);
+					p.name = "Player " + playerNum + " is connecting ...";
+					
+					//update lobby UI
+					if (LobbyActivity.activity != null){
+						LobbyActivity.activity.updatePlayerList();
+					}
+				}
+			}
+			
+		});
 	}
 	
 	protected void onStart(){
