@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
 import com.example.bluetooth.Bluetooth;
+import com.example.bluetooth.Message;
 
 public class HostDevice extends Device {
 	
@@ -153,13 +154,13 @@ public class HostDevice extends Device {
 		
 		//PlayerDevice.player[p].sendMessage(Device.MESSAGE_TYPE_SYSTEM, device.getAddress());
 		//Device.sendMessageToAllPlayers(Device.MESSAGE_TYPE_SYSTEM, "newPlayer" + p);
-		Device.sendMessageToAllPlayers(Device.MESSAGE_TYPE_SYSTEM, "newPlayer"+p+device.getAddress());
+		Device.sendMessageToAllPlayers(Message.LOBBY_SLOT, "newPlayer"+p+device.getAddress());
 		
 		
 		//update new device on the status of the lobby
 		for (int i=0; i<Device.player.length; i++){
 			if (Device.player[i] != null && i != p){
-				PlayerDevice.player[p].sendMessage(Device.MESSAGE_TYPE_SYSTEM, "lobbyPlayer" + i + PlayerDevice.player[i].name);
+				PlayerDevice.player[p].sendMessage(Message.LOBBY_NEW_PLAYER, "lobbyPlayer" + i + PlayerDevice.player[i].name);
 			}
 		}
 	}
