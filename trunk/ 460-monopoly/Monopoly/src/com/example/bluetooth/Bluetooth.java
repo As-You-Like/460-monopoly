@@ -450,7 +450,7 @@ public class Bluetooth {
 					e.printStackTrace();
 				}
 				break;
-			case Bluetooth.MESSAGE_ERROR:
+			case Bluetooth.MESSAGE_ERROR: 
 				String message = (String)msg.obj;
 				if (message.equals("playerDisconnect")){
 					if (HostDevice.self){
