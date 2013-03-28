@@ -1,9 +1,12 @@
 package com.example.controllers;
 
-import java.util.HashMap;
-
 import android.util.Log;
 
+/**
+ * Device object for keeping track of the players and the host
+ * @author VEBER_DMIT
+ *
+ */
 public abstract class Device {
 	
 	public static boolean self = false; //indiciates if the current device is the host

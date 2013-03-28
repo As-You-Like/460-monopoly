@@ -110,15 +110,12 @@ public class LobbyActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				//dummy test code
-				if (HostDevice.self == true){
-					//if the device is a host,
-					Device.sendMessageToAllPlayers(Message.CHAT, "Host Chatting");
-				} else {
-					//if the device is a client, ask for name
-					HostDevice.host.sendMessage(Message.CHAT, "User " + PlayerDevice.currentPlayer + " Chatting");
-				}
+				Intent intent = new Intent(LobbyActivity.activity, LoadingActivity.class);
+				startActivity(intent);		
 				
+				Device.sendMessageToAllPlayers(Message.LOBBY_START, "");
 				
+				Device.host.listenStop();
 			}
 			
 		});
@@ -182,7 +179,20 @@ public class LobbyActivity extends Activity {
 			this.btnStart.setVisibility(View.INVISIBLE);
 			this.btnResetDiscovery.setVisibility(View.INVISIBLE);
 			
-			
+			//register LOBBY_START event
+			Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+				
+				public boolean typeValid(int type) {
+					return type == Message.LOBBY_START;
+				}
+
+				@Override
+				public void processMessage(int sender, int reciever, String message) {
+					Intent intent = new Intent(LobbyActivity.activity, LoadingActivity.class);
+					startActivity(intent);
+				}
+				
+			});
 			
 			//register NAME_REQUEST_ACCEPTED event
 			Bluetooth.registerBluetoothEvent(new BluetoothEvent(){

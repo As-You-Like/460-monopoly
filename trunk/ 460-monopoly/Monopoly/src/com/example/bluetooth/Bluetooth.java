@@ -9,11 +9,8 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.controllers.Device;
-import com.example.controllers.HostDevice;
-import com.example.controllers.PlayerDevice;
-import com.example.monopoly.FindHostActivity;
-import com.example.monopoly.LobbyActivity;
+import com.example.controllers.*;
+import com.example.monopoly.*;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -25,6 +22,12 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+/**
+ * Bluetooth abstraction layer that manages connections between the host and multiple player devices
+ * This class works in conjunction with Device HostDevice and PlayerDevice classes
+ * @author VEBER_DMIT
+ *
+ */
 public class Bluetooth {
 	// Variables
 	public static String mGameName = "Monopoly";
