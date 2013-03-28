@@ -1,17 +1,19 @@
 package com.example.controllers;
 
-import java.util.HashMap;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.example.bluetooth.Bluetooth;
 
+/**
+ * Class that manages everything to do with the player
+ * @author VEBER_DMIT
+ *
+ */
 public class PlayerDevice extends Device {
 	
 	public boolean self = false; //Indicates if the current device is this player slot

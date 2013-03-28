@@ -10,6 +10,11 @@ import android.util.Log;
 import com.example.bluetooth.Bluetooth;
 import com.example.bluetooth.Message;
 
+/**
+ * Class that manages everything to do with the host
+ * @author VEBER_DMIT
+ *
+ */
 public class HostDevice extends Device {
 	
 	public static boolean self = false; //indiciates if the current device is the host
