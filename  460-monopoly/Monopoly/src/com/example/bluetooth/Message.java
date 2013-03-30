@@ -1,5 +1,9 @@
 package com.example.bluetooth;
 
+import com.example.controllers.Device;
+import com.example.controllers.HostDevice;
+import com.example.controllers.PlayerDevice;
+
 /**
  * Static message class for holding all the message constants that bluetooth uses
  * @author VEBER_DMIT

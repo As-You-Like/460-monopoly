@@ -431,20 +431,27 @@ public class Bluetooth {
 					//SYSTEM - Handle system messages
 					
 					//Identify events that are listening for the current BluetoothMessage type and run them
-					boolean found = false;
-					for (int i=0; i<Bluetooth.bluetoothEvent.size(); i++){
-						BluetoothEvent event = Bluetooth.bluetoothEvent.get(i);
-						if (event.typeValid(type) == true){
-							if (sender < -1){ //if sender is unknown, set it
-								sender = msg.arg1;
+					
+					//if the host has received a message not intended to the host
+					if (HostDevice.self && reciever != -1){
+						//redirect the message to the appropriate player pretending to be the original sender
+						Device.player[reciever].sendMessage(type, message, sender);
+					} else {
+						boolean found = false;
+						for (int i=0; i<Bluetooth.bluetoothEvent.size(); i++){
+							BluetoothEvent event = Bluetooth.bluetoothEvent.get(i);
+							if (event.typeValid(type) == true){
+								if (sender < -1){ //if sender is unknown, set it
+									sender = msg.arg1;
+								}
+								Log.d("BluetoothEvent", "Event succesfully identified");
+								found = true;
+								event.processMessage(sender, reciever, message);
 							}
-							Log.d("BluetoothEvent", "Event succesfully identified");
-							found = true;
-							event.processMessage(sender, reciever, message);
 						}
-					}
-					if (!found){ //if no event was identified, display an error
-						Log.e("BluetoothEvent", "Unable to find event for id: " + type);
+						if (!found){ //if no event was identified, display an error
+							Log.e("BluetoothEvent", "Unable to find event for id: " + type);
+						}
 					}
 					
 					
