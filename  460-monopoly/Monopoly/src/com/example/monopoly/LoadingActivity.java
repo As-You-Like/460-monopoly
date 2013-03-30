@@ -5,6 +5,7 @@ import com.example.bluetooth.BluetoothEvent;
 import com.example.bluetooth.Message;
 import com.example.controllers.Device;
 import com.example.controllers.HostDevice;
+import com.example.controllers.LoadThread;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -45,6 +46,7 @@ public class LoadingActivity extends Activity {
 							done = false;
 						}
 					}
+					//Toast.makeText(LoadingActivity.activity, "PLAYER_READY recieved, everybody is " + (done ? "done" : "not done"), Toast.LENGTH_SHORT).show();
 					
 					LoadingActivity.startGameModule();
 				}
@@ -55,7 +57,6 @@ public class LoadingActivity extends Activity {
 		
 		else {
 			int p = Device.currentPlayer;
-			HostDevice.host.sendMessage(Message.PLAYER_READY, "");
 			
 			Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
 			     public boolean typeValid(int type) {
@@ -73,34 +74,9 @@ public class LoadingActivity extends Activity {
 
 		}
 		
-		/*Load everything needed for game module
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*
-		*/
-		
-		//Loading has finished. Informing Host of completion.
-		if(HostDevice.self){
-			LoadingActivity.startGameModule();
-		}
-		
-		
+		//Load everything for the game module
+		LoadThread lt = new LoadThread();
+		lt.start();
 		
 	}
 
