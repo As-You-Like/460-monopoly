@@ -25,4 +25,10 @@ public class Message {
 	
 	//Host telling all players to enter loading screen for the game
 	public static final int LOBBY_START = 6;
+	
+	//
+	public static final int PLAYER_READY = 7;
+	
+	//
+	public static final int ALL_READY = 8;
 }
