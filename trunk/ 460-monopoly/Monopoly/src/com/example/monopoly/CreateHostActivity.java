@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.controllers.Device;
 import com.example.controllers.HostDevice;
 
 public class CreateHostActivity extends Activity {
@@ -59,7 +60,7 @@ public class CreateHostActivity extends Activity {
 
 		});
 		
-
+		int currentPlayerNumber = Device.currentPlayer;
 		spinner = (Spinner) findViewById(R.id.spinner);
 		// Spinner Drop down elements
 		gamelist = new ArrayList<String>();
