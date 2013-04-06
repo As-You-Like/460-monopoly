@@ -35,4 +35,19 @@ public class Message {
 	
 	//
 	public static final int ALL_READY = 8;
+	
+	//
+	public static final int START_PLAYER_TURN = 9;
+	
+	//
+	public static final int MOVEMENT_DICE_ROLL = 10;
+	
+	//
+	public static final int ROLLED_DOUBLES = 11;
+	
+	//
+	public static final int CHOOSE_FORK_PATH = 12;
+	
+	//
+	public static final int RECEIVE_FORK_PATH = 13;
 }
