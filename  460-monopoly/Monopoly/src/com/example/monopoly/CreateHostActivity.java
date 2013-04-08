@@ -31,7 +31,7 @@ public class CreateHostActivity extends Activity {
 	public EditText edtGameName = null;
 
 	private ArrayList<String> gamelist;
-	private ArrayAdapter<String> spinnerAdapter;
+	private ArrayAdapter<String> spinnerAdapter; 
 	private Spinner spinner;
 
 	@Override
