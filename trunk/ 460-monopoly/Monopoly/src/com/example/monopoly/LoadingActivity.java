@@ -4,6 +4,8 @@ import com.example.bluetooth.Bluetooth;
 import com.example.bluetooth.BluetoothEvent;
 import com.example.bluetooth.Message;
 import com.example.controllers.Device;
+import com.example.controllers.Game;
+import com.example.controllers.GameThread;
 import com.example.controllers.HostDevice;
 import com.example.controllers.LoadThread;
 
@@ -95,6 +97,11 @@ public class LoadingActivity extends Activity {
 			//startActivity(intent);
 			Toast.makeText(activity, "Intent -> to MapActivity", Toast.LENGTH_LONG)
 			.show();
+			
+			//starts the main game thread
+			//GameThread.gt.start();
+			
+			
 		}
 	}
 
