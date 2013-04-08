@@ -15,6 +15,10 @@ public class LoadThread extends Thread {
 		//Loading code for individual device types
 		if (HostDevice.self){
 			//loading code for host goes here
+			
+			//initialize the main game thread (it gets started later)
+			new GameThread();
+			new Game("");
 		} else {
 			//loading code for player goes here
 		}

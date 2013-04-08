@@ -5,6 +5,15 @@ import com.example.bluetooth.BluetoothEvent;
 import com.example.bluetooth.Message;
 import com.example.monopoly.LoadingActivity;
 
+/**
+ * Main game thread of the game module. the run method of the thread contains all the logic of a single turn
+ * being looped over and over again until the game concludes
+ * 
+ * This thread is initialized in LoadThread.run()
+ * This thread is started in LoadingActivity.startGameModule()
+ * @author Ryan Hebert April 5 2013
+ *
+ */
 public class GameThread extends Thread{
 
 	///Global Variables///
@@ -61,7 +70,9 @@ public class GameThread extends Thread{
 		this.determinePlayerTurnOrder();
 		
 		while(gameWon == false){
-			
+			/**
+			 * Note: reset all global variables you use between turns (to avoid raw data of one turn interfering with another turn)
+			 */
 			// Movement Phase
 			
 				// Dice Roll Subphase
@@ -228,7 +239,7 @@ public class GameThread extends Thread{
 				while(spacesMoved != spaceMovementDistance){
 					spacesMoved++;
 /*					newTileLocation = Tile.getTile(tileLocation).nextTile()
- 					boolean fork = Tile.getTile().getForkStatus();
+ 					boolean fork = Tile.getTile().hasFork();
 					if(fork == true){
 						int forkTile = tileLocation + spacesMoved;
 						Device.player[currentTurnPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forkTile + "");

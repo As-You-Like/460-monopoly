@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.controllers.Device;
+import com.example.controllers.Game;
 import com.example.controllers.HostDevice;
 
 public class CreateHostActivity extends Activity {
@@ -52,6 +53,9 @@ public class CreateHostActivity extends Activity {
 
 				HostDevice host = new HostDevice(true); // create host device bject and indicate the current device is the host.
 				host.listenStart(false, gameName);
+				
+				//creates the game class and global timer loop
+				new Game(gameName);
 
 				Intent intent = new Intent(CreateHostActivity.activity, LobbyActivity.class);
 				intent.putExtra("gn", gameName);
