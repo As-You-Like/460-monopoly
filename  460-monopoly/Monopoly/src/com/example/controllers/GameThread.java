@@ -18,7 +18,7 @@ public class GameThread extends Thread{
 
 	///Global Variables///
 	
-	public static GameThread gt;
+	public static GameThread gt; 
 	
 	// Determines if victory has been achieved by a player
 	public boolean gameWon = false;
