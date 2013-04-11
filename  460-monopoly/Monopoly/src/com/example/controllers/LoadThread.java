@@ -2,8 +2,6 @@ package com.example.controllers;
 
 import java.util.ArrayList;
 
-import com.example.content.BoardSetup;
-import com.example.content.Image;
 import com.example.model.Die;
 import com.example.monopoly.LoadingActivity;
 import com.example.monopoly.R;
