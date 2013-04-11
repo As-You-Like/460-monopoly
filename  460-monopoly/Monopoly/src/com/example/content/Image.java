@@ -1,4 +1,4 @@
-package com.example.controllers;
+package com.example.content;
 
 import android.graphics.Bitmap;
 
