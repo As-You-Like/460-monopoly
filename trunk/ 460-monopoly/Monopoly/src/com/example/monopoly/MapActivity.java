@@ -31,6 +31,8 @@ public class MapActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		
+		activity = this;
+		
 		  FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams (FrameLayout.LayoutParams.MATCH_PARENT, 
                   FrameLayout.LayoutParams.MATCH_PARENT, 
                   Gravity.TOP | Gravity.LEFT);

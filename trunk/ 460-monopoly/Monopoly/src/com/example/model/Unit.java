@@ -2,7 +2,12 @@ package com.example.model;
 
 import java.util.ArrayList;
 
+import com.example.controllers.Player;
+
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.LightingColorFilter;
+import android.graphics.Paint;
 
 public abstract class Unit {
 	
@@ -12,6 +17,7 @@ public abstract class Unit {
 	public static final int DEFAULT_OWNER = 5;
 	public static final double DEFAULT_FACING = 0;
 	
+	
 	//unit list
 	public static ArrayList<Unit> entity = new ArrayList<Unit>();
 	
@@ -20,9 +26,9 @@ public abstract class Unit {
 	private double facing;
 	protected Point drawAnchor;
 	private int owner;
+	private LightingColorFilter colorFilter;
 	protected double radius;
-	
-	
+	private Bitmap sprite;
 	
 	//Constructors
 	public Unit(){
@@ -89,7 +95,10 @@ public abstract class Unit {
 	
 	public void setOwner(int o){
 		this.owner = 0;
+		this.colorFilter = new LightingColorFilter(Player.entities[owner].getColor(), 1);
 	}
+	
+	
 	
 	//Accessors
 	public Point getPosition(){
@@ -113,9 +122,21 @@ public abstract class Unit {
 	}
 	
 	//draw method
-	public abstract void draw(Canvas c);
+	public abstract void draw(Canvas c, Paint p);
 	
 	//timer update method
 	public abstract void onTimer();
+
+	public Bitmap getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(Bitmap sprite) {
+		this.sprite = sprite;
+	}
+
+	public LightingColorFilter getOwnerColorFilter() {
+		return colorFilter;
+	}
 	
 }

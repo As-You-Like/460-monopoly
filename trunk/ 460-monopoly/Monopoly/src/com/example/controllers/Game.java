@@ -11,6 +11,7 @@ public class Game extends TimerTask{
 	public static String name;
 	public static Timer timer;
 	public static long ms = 0;
+	public static int turn = 0;
 	
 	//constructor to be run during the game creation process in setup module
 	public Game(String name){
@@ -35,10 +36,14 @@ public class Game extends TimerTask{
 		for (Unit u: tmp){
 			u.draw();
 		}*/
-		
-		
-		
-		
+	}
+	
+	/**
+	 * Method that returns a list of events that have a turn expiration counter (for database purposes)
+	 * @return
+	 */
+	public static Event[] getTurnSensitiveEvents(){
+		return null;
 	}
 	
 	

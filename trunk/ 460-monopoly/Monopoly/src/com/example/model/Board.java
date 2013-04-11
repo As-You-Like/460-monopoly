@@ -1,6 +1,7 @@
 package com.example.model;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
 public class Board extends StaticUnit {
 
@@ -8,7 +9,7 @@ public class Board extends StaticUnit {
 		super(new Point(), 0, 0);
 	}
 	
-	public void draw(Canvas c){
+	public void draw(Canvas c, Paint p){
 		
 	}
 
