@@ -21,7 +21,7 @@ public class Tile extends StaticUnit {
 		Color.RED,
 		Color.BLUE,
 		Color.CYAN,
-		Color.MAGENTA
+		Color.MAGENTA 
 	};
 	
 	public static final int DIRECTION_NORTHEAST = 0;
