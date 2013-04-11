@@ -1,5 +1,7 @@
 package com.example.monopoly;
 
+import com.example.content.Image;
+import com.example.model.Unit;
 import com.example.monopoly.PanZoomView;
 
 
@@ -52,21 +54,24 @@ public CircleView (Context context, AttributeSet attrs, int defStyle) {
  */
 
 public void drawOnCanvas (Canvas canvas) {
+	//Ensure it doesn't attempt to render before MapActivity is ready
+	if (MapActivity.activity == null){
+		return;
+	}
 	
+	//Initialize paint
     Paint paint = new Paint();
     paint.setColor(Color.BLUE);
-    //Point p1 = new Point (200, 200);
-    //canvas.drawCircle (p1.x, p1.y, 100, paint);
-    //canvas.drawCircle (400, 400, 100, paint);
-
     
-    // Draw a circle at the focus point
-    /*if (mScaleDetector.isInProgress()) paint.setColor (Color.WHITE);
-    else paint.setColor (Color.YELLOW);
-    canvas.drawCircle (mFocusX, mFocusY, 2, paint);*/
-    canvas.drawBitmap(b2, 0, 0, paint);
-    canvas.drawBitmap(b, 0, 0, paint);
-    
+    //canvas.drawBitmap(b, 0, 0, paint);
+    Unit[] tmp;
+    synchronized (Unit.entity){
+    	tmp = Unit.entity.toArray(new Unit[]{});
+    }
+    //canvas.drawText("Unit Count: " + tmp.length, 0, 0, paint);
+    for (Unit u : tmp){
+    	u.draw(canvas, paint);
+    }
 
 }
 
