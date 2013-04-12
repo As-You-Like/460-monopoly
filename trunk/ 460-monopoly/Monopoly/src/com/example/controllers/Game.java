@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.util.Log;
+
 import com.example.model.*;
+import com.example.monopoly.MapActivity;
 
 public class Game extends TimerTask{
 	public static Game instance;
@@ -37,11 +40,15 @@ public class Game extends TimerTask{
 	public static void start(){
 		Game.timer = new Timer();
 		Game.timer.scheduleAtFixedRate(Game.instance, 20, 20);
+		
 	}
 
 	@Override
 	public void run() {
 		ms += 20;
+		Log.e(null, "test");
+		
+		
 		//render all units on the map
 		/*Unit[] tmp;
 		synchronized (Unit.entity) {
