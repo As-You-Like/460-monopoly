@@ -20,21 +20,28 @@ import android.util.AttributeSet;
  * support zooming and panning.
  */
 
-public class CircleView extends PanZoomView {
+public class CircleView extends PanZoomView { 
+
+    Bitmap b;
+    Bitmap b2;
 /**
  */
 public CircleView (Context context) {
     super (context);
+    b=BitmapFactory.decodeResource(getResources(), R.drawable.bruintest);
+    b2=BitmapFactory.decodeResource(getResources(), R.drawable.testgrass);
 }
 
 public CircleView (Context context, AttributeSet attrs) {
     super (context, attrs);
-    
+    b=BitmapFactory.decodeResource(getResources(), R.drawable.bruintest);
+    b2=BitmapFactory.decodeResource(getResources(), R.drawable.testgrass);
 }
 
 public CircleView (Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
- 
+    b=BitmapFactory.decodeResource(getResources(), R.drawable.bruintest);
+    b2=BitmapFactory.decodeResource(getResources(), R.drawable.testgrass);
 }
 
 /**
@@ -64,7 +71,6 @@ public void drawOnCanvas (Canvas canvas) {
     //canvas.drawText("Unit Count: " + tmp.length, 0, 0, paint);
     for (Unit u : tmp){
     	u.draw(canvas, paint);
-    	
     }
 
 }
