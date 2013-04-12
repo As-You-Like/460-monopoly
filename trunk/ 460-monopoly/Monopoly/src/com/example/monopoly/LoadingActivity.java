@@ -67,10 +67,10 @@ public class LoadingActivity extends Activity {
 
 			       @Override
 			       public void processMessage(int sender, int reciever, String message) {
-			    	   Intent intent = new Intent(LoadingActivity.activity, CommandCardActivity.class);
-			    	   LoadingActivity.activity.startActivity(intent);
-			    	  // Toast.makeText(activity, "Intent -> to CommandCardActivity", Toast.LENGTH_LONG)
-						//.show();
+			    	   //Intent intent = new Intent(LoadingActivity.activity, CommandCardActivity.class);
+			           //startActivity(intent);
+			    	   Toast.makeText(activity, "Intent -> to CommandCardActivity", Toast.LENGTH_LONG)
+						.show();
 			       }
 			});
 
@@ -91,18 +91,15 @@ public class LoadingActivity extends Activity {
 	
 	//
 	public static void startGameModule(){
-		boolean playersPresent = false;
-		for (int i = 0; i<Device.player.length; i++){
-			if (Device.player[i] != null) playersPresent = true;
-		}
-		if((playersPresent == false || done == true) && hostReady == true){
+		if(done == true && hostReady == true){
 			Device.sendMessageToAllPlayers(Message.ALL_READY, "");
-			Intent intent = new Intent(LoadingActivity.activity, MapActivity.class);
-			LoadingActivity.activity.startActivity(intent);
-			//Toast.makeText(activity, "Intent -> to MapActivity", Toast.LENGTH_LONG)
-			//.show();
+			//Intent intent = new Intent(LoadingActivity.activity, MapActivity.class);
+			//startActivity(intent);
+			Toast.makeText(activity, "Intent -> to MapActivity", Toast.LENGTH_LONG)
+			.show();
 			
-			
+			//starts the main game thread
+			//GameThread.gt.start();
 			
 			
 		}
