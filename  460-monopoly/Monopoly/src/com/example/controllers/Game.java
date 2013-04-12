@@ -39,8 +39,14 @@ public class Game extends TimerTask{
 	// How many players are playing?
 	public static int numberOfPlayers;
 	
+	// How many players are remaining?
+	public static int numberOfPlayersRemaining;
+	
 	// In what order do players take their turns?
 	public static int[] playerTurnOrder;
+	
+	// Determines current index of PlayerTurnOrder
+	public static int playerTurnOrderCounter;
 	
 	//constructor to be run during the game creation process in setup module
 	public Game(String name){
@@ -85,6 +91,7 @@ public class Game extends TimerTask{
 		for(int i = 0; i < Device.player.length; i++){
 			if(Device.player[i] != null){
 				numberOfPlayers++;
+				numberOfPlayersRemaining++;
 			}
 		}
 		
@@ -98,11 +105,7 @@ public class Game extends TimerTask{
 	}
 	
 	public void determineCurrentTurnPlayer(){
-		for(int i = 0; i < numberOfPlayers; i++){
-			if(playerTurnOrder[i] == Game.subturn){
-				currentPlayer = playerTurnOrder[i];
-			}
-		}
+		currentPlayer = playerTurnOrder[playerTurnOrderCounter];
 	}
 	
 	
