@@ -3,6 +3,9 @@ package com.example.controllers;
 import com.example.bluetooth.Bluetooth;
 import com.example.bluetooth.BluetoothEvent;
 import com.example.bluetooth.Message;
+import com.example.model.Die;
+import com.example.model.PlayerPiece;
+import com.example.model.Tile;
 import com.example.monopoly.LoadingActivity;
 
 /**
@@ -21,7 +24,7 @@ public class GameThread extends Thread{
 	public static GameThread gt; 
 	
 	// Determines if victory has been achieved by a player
-	public boolean gameWon = false;
+	//public boolean gameWon = false;
 	
 	// Determines how many full turns have past (increments every time subTurnNumber == numberOfPlayers)
 	//public int turnNumber = 0;
@@ -30,24 +33,13 @@ public class GameThread extends Thread{
 	//public int subTurnNumber = 0;
 	
 	// How many players are playing?
-	public int numberOfPlayers;
+	//public int numberOfPlayers;
 	
 	// In what order do players take their turns?
-	public int[] playerTurnOrder;
+	//public int[] playerTurnOrder;
 	
 	// What player is taking his/her turn?
-	public int currentTurnPlayer;
-	
-	// Values of movement dice
-	public int valueDie1;
-	public int valueDie2;
-	
-	//Turn Booleans
-	
-	public boolean doublesOnce = false;
-	public boolean doublesTwice = false;
-	public boolean doublesThrice = false;
-	
+	//public int currentTurnPlayer;
 	
 	
 	///Methods///
@@ -67,9 +59,9 @@ public class GameThread extends Thread{
 		 * 
 		 * <<<<<Temporary - determined by index order>>>>>
 		 */
-		this.determinePlayerTurnOrder();
+		Game.instance.determinePlayerTurnOrder();
 		
-		while(gameWon == false){
+		while(Game.gameWon == false){
 			/**
 			 * Note: reset all global variables you use between turns (to avoid raw data of one turn interfering with another turn)
 			 */
@@ -80,7 +72,7 @@ public class GameThread extends Thread{
 					/**
 					 * Figure out whose turn it is
 					 */
-					this.determineCurrentTurnPlayer();
+					Game.instance.determineCurrentTurnPlayer();
 			
 					/**
 					 * Home tab overrided
@@ -117,6 +109,7 @@ public class GameThread extends Thread{
 					/**
 					 * Movement stops on tile
 					 */
+					this.startMovementPhase();
 			
 			// Decision Phase
 			
@@ -135,6 +128,7 @@ public class GameThread extends Thread{
 				/**
 				 * Sleep
 				 */
+					this.startDecisionPhase();
 			
 			// Conclusion Phase
 			
@@ -157,7 +151,7 @@ public class GameThread extends Thread{
 		
 	}
 	
-	public void determinePlayerTurnOrder(){
+	/*public void determinePlayerTurnOrder(){
 		
 		// Counts actual number of players
 		for(int i = 0; i < Device.player.length; i++){
@@ -173,18 +167,18 @@ public class GameThread extends Thread{
 			playerTurnOrder[i] = i;
 		}
 		
-	}
+	}*/
 	
-	public void determineCurrentTurnPlayer(){
+	/*public void determineCurrentTurnPlayer(){
 		for(int i = 0; i < numberOfPlayers; i++){
 			if(playerTurnOrder[i] == Game.subturn){
 				currentTurnPlayer = playerTurnOrder[i];
 			}
 		}
-	}
+	}*/
 	
 	public void startSubTurn(){
-		Device.player[currentTurnPlayer].sendMessage(Message.START_PLAYER_TURN, "");
+		Device.player[Game.instance.currentPlayer].sendMessage(Message.START_PLAYER_TURN, "");
 	}
 	
 	public void sleepGameThread(){
@@ -196,7 +190,7 @@ public class GameThread extends Thread{
 		};
 	}
 	
-	public void processDiceRoll(){
+	public void startMovementPhase(){
 		do{
 			Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
 
@@ -207,7 +201,7 @@ public class GameThread extends Thread{
 
 				@Override
 				public void processMessage(int sender, int reciever, String message) {
-					GameThread.gt.resume();
+					/*GameThread.gt.resume();
 					valueDie1 = Integer.parseInt(message.substring(0, 1));
 					valueDie2 = Integer.parseInt(message.substring(1, 2));
 					
@@ -222,28 +216,33 @@ public class GameThread extends Thread{
 						doublesTwice = true;
 					} else if(doublesThrice == false && valueDie1 == valueDie2){
 						doublesThrice = true;
-						/**
-						 * Send message to Event class to make player go to jail
-						 */
+					
+					
 					}
+					*/
+					
+					Die.roll();
 				}
 				
 			});
 			
-			if(doublesThrice == false){
-				int spaceMovementDistance = valueDie1 + valueDie2;
+			if(Die.doubleCount < 3){
+				PlayerPiece currentPlayerPiece = Player.entities[Game.currentPlayer].getPiece();
+				int spaceMovementDistance = Die.getTotalValue();
 				int spacesMoved = 0;
+				Tile tileLocation = currentPlayerPiece.getCurrentTile();
+				Tile newTileLocation;
 //				int tileLocation = PlayerEntity.getPlayer(currentTurnPlayer).getCurrentLocation();
 //				int newTileLocation;
 				
 				while(spacesMoved != spaceMovementDistance){
 					spacesMoved++;
-/*					newTileLocation = Tile.getTile(tileLocation).nextTile()
- 					boolean fork = Tile.getTile().hasFork();
-					if(fork == true){
-						int forkTile = tileLocation + spacesMoved;
-						Device.player[currentTurnPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forkTile + "");
+					tileLocation = currentPlayerPiece.getCurrentTile();
+					if(tileLocation.hasFork()){
+						Tile[] forks = tileLocation.getForkTiles();
+						Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
 						this.sleepGameThread();
+						// DecisionActivity awakens GameThread
 						
 						Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
 
@@ -254,20 +253,146 @@ public class GameThread extends Thread{
 
 							@Override
 							public void processMessage(int sender, int reciever, String message) {
-								GameThread.gt.resume();
 								int forkChoice = Integer.parseInt(message.substring(0,1));
-								
+								Tile[] forks = Player.entities[Game.currentPlayer].getPiece().getCurrentTile().getForkTiles();
+								Player.entities[Game.currentPlayer].getPiece().move(forks[forkChoice]);
+								GameThread.gt.resume();
 							}
 				
 						});
 					}
-*/
+					else {
+						newTileLocation = tileLocation.getNextStop();
+						currentPlayerPiece.move(newTileLocation);
+					}
+
 				}
 			}
 			
 		}
-			while(valueDie1 == valueDie2 && doublesThrice == false);
+			while(Die.isDouble() && (Die.doubleCount < 3));
 		
+	}
+	
+	public void startDecisionPhase(){
+		int tileOwner = Player.entities[Game.currentPlayer].getPiece().getCurrentTile().getOwner();
+		Device.player[Game.currentPlayer].sendMessage(Message.START_TILE_ACTIVITY, "" + tileOwner);
+		this.sleepGameThread();
+		//TileActivity awakens GameThread
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				return type == Message.TILE_ACTIVITY_END_TURN;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				GameThread.gt.resume();
+			}
+
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				return type == Message.TILE_ACTIVITY_PURCHASE_PROPERTY;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				
+				// Assumes that currentPlayer has enough money (handled by TileActivity)
+				Player.entities[Game.currentPlayer].subBalance(Player.entities[Game.currentPlayer].getPiece().getCurrentTile().getPrice());
+				Player.entities[Game.currentPlayer].getPiece().getCurrentTile().setOwner(Game.currentPlayer);
+			}
+
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				return type == Message.TILE_ACTIVITY_PAY_RENT;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				Player theCurrentPlayer = Player.entities[Game.currentPlayer];
+				Player ownerPlayer = Player.entities[theCurrentPlayer.getPiece().getCurrentTile().getOwner()];
+				theCurrentPlayer.subBalance(theCurrentPlayer.getPiece().getCurrentTile().getRent());
+				ownerPlayer.addBalance(theCurrentPlayer.getPiece().getCurrentTile().getRent());
+			}
+
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				return type == Message.TILE_ACTIVITY_UPGRADE_PROPERTY;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				//To do
+			}
+
+		});
+		
+	}
+	
+	public void startConclusionPhase(){
+		/**
+		 * End turn
+		 * If necessary, update turn and subturn counts
+		 * Wipe turn booleans
+		 * Update Entity classes
+		 * Check victory conditions
+		 * 		if elimination game, check if one player remains. if yes, gameWon = true
+		 * 		if turn limit game, check if turnsExecuted = turnLimit.
+		 * 			if yes, gameWon = true and flag player with highest Net Assets as winner
+		 */
+		
+
+		
+		/**
+		 * Update Entity classes
+		 */
+		
+		//Check defeat condition
+		if(Player.entities[Game.currentPlayer].getBalance() <= 0){
+			Player.entities[Game.currentPlayer].setLost(true);
+			Device.player[Game.instance.currentPlayer].sendMessage(Message.ALERT, "You Lose");
+			// Ticker inject to include news headline that player lost (dark humor possibilities...)
+			Game.playerTurnOrder[Game.playerTurnOrderCounter] = 666;
+			Game.numberOfPlayersRemaining--;
+			
+			//Check victory condition
+			if(Game.numberOfPlayersRemaining == 1){
+				Game.gameWon = true;
+			}
+		}
+		
+		if(Game.gameWon != true){
+			
+			//Decide who is next
+			do{
+				Game.playerTurnOrderCounter++;
+				if(Game.playerTurnOrderCounter == Game.numberOfPlayers){
+					Game.playerTurnOrderCounter = 0;
+				}
+				Game.subturn++;
+			}
+			while(Game.playerTurnOrder[Game.playerTurnOrderCounter] == 666);
+			
+			if((Game.subturn % Game.numberOfPlayers) == 0){
+				Game.turn++;
+			}
+			
+		}
 		
 	}
 	
