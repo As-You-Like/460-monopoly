@@ -13,6 +13,7 @@ public class Player {
 	private boolean jailed = false;
 	private boolean sick = false;
 	private int playerIndex;
+	private boolean lost = false;
 	
 	public Player(PlayerDevice device, int playerIndex, int color){
 		this.device = device;
@@ -100,5 +101,13 @@ public class Player {
 
 	public int getPlayerIndex() {
 		return playerIndex;
+	}
+
+	public boolean isLost() {
+		return lost;
+	}
+
+	public void setLost(boolean lost) {
+		this.lost = lost;
 	}
 }
