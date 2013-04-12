@@ -9,7 +9,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.example.model.*;
-import com.example.monopoly.MapActivity;
+import com.example.monopoly.MapActivity; 
 
 public class Game extends TimerTask{
 	public static Game instance;
