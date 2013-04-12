@@ -56,4 +56,21 @@ public class Message {
 	
 	//Host sending a message to the player that is to be displayed in a popup
 	public static final int ALERT = 15;
+	
+	//
+	public static final int START_TILE_ACTIVITY = 16;
+
+	//
+	public static final int TILE_ACTIVITY_END_TURN = 17;
+	
+	//
+	public static final int TILE_ACTIVITY_PURCHASE_PROPERTY = 18;
+
+	//
+	public static final int TILE_ACTIVITY_PAY_RENT = 19;
+
+	//
+	public static final int TILE_ACTIVITY_UPGRADE_PROPERTY = 20;
+	
+	
 }
