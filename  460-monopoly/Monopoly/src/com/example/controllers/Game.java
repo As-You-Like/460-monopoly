@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.example.model.*;
@@ -11,6 +13,7 @@ import com.example.monopoly.MapActivity;
 
 public class Game extends TimerTask{
 	public static Game instance;
+	public static Game.Handle mHandler = new Game.Handle();
 	public static String name;
 	public static Timer timer;
 	public static long ms = 0;
@@ -40,23 +43,19 @@ public class Game extends TimerTask{
 	public static void start(){
 		Game.timer = new Timer();
 		Game.timer.scheduleAtFixedRate(Game.instance, 20, 20);
-		
 	}
 
 	@Override
 	public void run() {
 		ms += 20;
 		Log.e(null, "test");
-		
-		
-		//render all units on the map
-		/*Unit[] tmp;
-		synchronized (Unit.entity) {
-			tmp = Unit.entity.toArray(new Unit[Unit.entity.size()]);
+		Game.mHandler.obtainMessage().sendToTarget();
+	}
+	
+	public static class Handle extends Handler {
+		public void handleMessage(Message msg){
+			
 		}
-		for (Unit u: tmp){
-			u.draw();
-		}*/
 	}
 	
 	public static int getWeekDay(){
