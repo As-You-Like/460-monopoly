@@ -28,7 +28,7 @@ import android.widget.Toast;
  * @author VEBER_DMIT
  *
  */
-public class Bluetooth {
+public class Bluetooth {  
 	// Variables
 	public static String mGameName = "Monopoly";
 	public static String originalDeviceName = "";
@@ -86,6 +86,7 @@ public class Bluetooth {
      * Start AcceptThread to begin a session in listening (server) mode.
 	 */
 	public synchronized void start(){
+		
 		
 	} //End start()
 	
