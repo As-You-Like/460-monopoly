@@ -2,27 +2,13 @@ package com.example.model;
 
 import java.util.ArrayList;
 
-import com.example.content.Image;
-
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.LightingColorFilter;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.util.Log;
 
 public class Tile extends StaticUnit {
 	
 	public static final double DEFAULT_POLAROFFSET = 5;
 	public static final double TILE_RADIUS = 20;
 	public static Tile[][] entity = new Tile[400][400];
-	
-	public static int[] REGION_COLORS = {
-		Color.RED,
-		Color.BLUE,
-		Color.CYAN,
-		Color.MAGENTA 
-	};
 	
 	public static final int DIRECTION_NORTHEAST = 0;
 	public static final int DIRECTION_EAST      = 1;
@@ -39,9 +25,7 @@ public class Tile extends StaticUnit {
 	private int hexX;
 	private int hexY;
 	
-	private LightingColorFilter regionColorFilter;
-	private int region;
-	
+	public int region;
 	public boolean[] upgradeActive;
 	private ArrayList<MobileUnit> visitors = new ArrayList<MobileUnit>();
 	private ArrayList<Tile> nextStops = new ArrayList<Tile>();
@@ -54,10 +38,6 @@ public class Tile extends StaticUnit {
 		
 		this.hexX = hexX;
 		this.hexY = hexY;
-		
-		this.setSprite(Image.HEXAGON_TEXTURE);
-		
-		Log.e("newTile", "(" + hexX + ", " + hexY + ")");
 	}
 	
 	protected void updateDrawAnchor(){
@@ -79,55 +59,50 @@ public class Tile extends StaticUnit {
 	 * Attaches another tile as a valid destination from the current tile in the progression
 	 * @param direction
 	 */
-	public Tile addNextStop(int direction){
+	public void addNextStop(int direction){
 		int hexXOffset = 0;
 		int hexYOffset = 0;
 		
 		switch (direction){
 		case Tile.DIRECTION_NORTHEAST:
-			hexYOffset = -1;
-			hexXOffset = 1;
+			hexYOffset = 1;
 			break;
 		
 		case Tile.DIRECTION_EAST:
-			hexYOffset = 0;
 			hexXOffset = 1;
 			break;
 		
 		case Tile.DIRECTION_SOUTHEAST:
-			hexYOffset = 1;
-			hexXOffset = 0;
+			hexXOffset = 1;
+			hexYOffset = -1;
 			break;
 			
 		case Tile.DIRECTION_SOUTHWEST:
-			hexYOffset = 1;
-			hexXOffset = -1;
+			hexYOffset = -1;
 			break;
 			
 		case Tile.DIRECTION_WEST:
-			hexYOffset = 0;
 			hexXOffset = -1;
 			break;
 			
 		case Tile.DIRECTION_NORTHWEST:
-			hexYOffset = -1;
-			hexXOffset = 0;
+			hexXOffset = -1;
+			hexYOffset = 1;
 			break;
 		}
 		
 		int hexX = this.hexX + hexXOffset;
 		int hexY = this.hexY + hexYOffset;
-		Tile t = null;
+		
 		if (Tile.entity.length > hexX){
 			if (Tile.entity[hexX].length > hexY){
-				t = Tile.entity[hexX][hexY];
+				Tile t = Tile.entity[hexX][hexY];
 				if (t == null) {
-					t = Tile.entity[hexX][hexY] = new Tile(hexX, hexY, Unit.DEFAULT_OWNER);
+					t = Tile.entity[hexX][hexY] = new Tile(hexY, hexY, Unit.DEFAULT_OWNER);
 				}
 				this.addNextStop(t);
 			}
 		} 
-		return t;
 	}
 	
 	/**
@@ -213,38 +188,12 @@ public class Tile extends StaticUnit {
 		this.updateVisitorPositions();
 	}
 	
-	public void draw(Canvas c, Paint p){
+	public void draw(Canvas c){
 		//draw the actual tile
-		//super.draw(c, p);
-		p.setColor(Color.WHITE);
-		
-		//get draw position
-		Point anchor = this.getDrawAnchor();
-		
-		//draw texture
-		c.drawBitmap(this.getSprite(), null, new Rect((int)anchor.x, (int)anchor.y, (int)(anchor.x + this.width), (int)(anchor.y + this.height)), p);
+		super.draw(c);
 		
 		//draw the region color
-		p.setColorFilter(this.getRegionColorFilter()); //colors the paint object to the color of the region of this tile
-		c.drawCircle((int)this.getPosition().x, (int)this.getPosition().y, (int)(this.radius/3), p);
 		
 		//draw the player color
-		p.setColorFilter(this.getOwnerColorFilter()); //colors the paint object to the color of the owner of this tile
-		
-		
-		p.setColorFilter(null); //clears the color filter
-	}
-
-	public int getRegion() {
-		return region;
-	}
-
-	public void setRegion(int region) {
-		this.region = region;
-		this.regionColorFilter = new LightingColorFilter(Tile.REGION_COLORS[this.getRegion()], 1);
-	}
-
-	public LightingColorFilter getRegionColorFilter() {
-		return regionColorFilter == null ? new LightingColorFilter(Color.WHITE, 1) : regionColorFilter;
 	}
 }

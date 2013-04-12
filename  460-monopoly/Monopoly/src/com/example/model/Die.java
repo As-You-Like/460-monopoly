@@ -3,15 +3,9 @@ package com.example.model;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.example.controllers.EventGenerator;
-import com.example.controllers.Game;
-import com.example.controllers.TriggeredEvent;
-
 public class Die extends ScreenUnit {
 	public static int diceCount = 2;
 	private static Die[] dice;
-	private static int currentPlayer = -1;
-	public static int doubleCount = 0;
 	
 	private static boolean timerReset;
 	
@@ -27,9 +21,6 @@ public class Die extends ScreenUnit {
 			@Override
 			public void run() {
 				//cycle through random values
-				for (int i=0; i<diceCount; i++){
-					dice[i].value = (int)(Math.random() * 6);
-				}
 				
 				Die.executionCountTimesDice--;
 				Die.stopDiceTimer();
@@ -45,12 +36,6 @@ public class Die extends ScreenUnit {
 			dice[i].timer.cancel();
 		}
 		
-		//if there is a double, say so, and trigger an event
-		if (dice[0].value == dice[1].value){
-			doubleCount++;
-			EventGenerator.executeTriggeredEvents("diceRoll");
-		}
-		
 		//GAME THREAD CODE GOES HERE FOR RESUMING GAME AFTER DICE ROLL
 	}
 	
@@ -59,14 +44,6 @@ public class Die extends ScreenUnit {
 	 * Notice: The dice roll occurs asynchronously! Wait for stopDiceTimer to execute!
 	 */
 	public static void roll(){
-		
-		//reset double count if the player has changed
-		if (currentPlayer != Game.currentPlayer) {
-			currentPlayer = Game.currentPlayer;
-			doubleCount = 0;
-		}
-		
-		//roll the dice
 		dice = new Die[diceCount];
 		timerReset = false;
 		executionCountTimesDice = executionCount * diceCount;

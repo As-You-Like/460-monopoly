@@ -1,7 +1,6 @@
 package com.example.model;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 
 public class ScreenUnit extends MobileUnit{
 
@@ -14,7 +13,7 @@ public class ScreenUnit extends MobileUnit{
 	}
 	
 	@Override
-	public void draw(Canvas c, Paint p) {
+	public void draw(Canvas c) {
 		// TODO Auto-generated method stub
 		
 	}

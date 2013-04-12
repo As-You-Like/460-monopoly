@@ -1,7 +1,6 @@
 package com.example.model;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 
 public class StaticUnit extends Unit {
 	
@@ -10,7 +9,7 @@ public class StaticUnit extends Unit {
 	}
 	
 	@Override
-	public void draw(Canvas c, Paint p) {
+	public void draw(Canvas c) {
 		// TODO Auto-generated method stub
 		
 	}
