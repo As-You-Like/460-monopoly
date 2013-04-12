@@ -19,7 +19,7 @@ public class Game extends TimerTask{
 	public static long ms = 0;
 	
 	// Determines if victory has been achieved by a player
-	public boolean gameWon = false;
+	public static boolean gameWon = false;
 	
 	/**
 	 * has the count of the current turn
@@ -37,10 +37,10 @@ public class Game extends TimerTask{
 	public static int subturn = 0;
 	
 	// How many players are playing?
-	public int numberOfPlayers;
+	public static int numberOfPlayers;
 	
 	// In what order do players take their turns?
-	public int[] playerTurnOrder;
+	public static int[] playerTurnOrder;
 	
 	//constructor to be run during the game creation process in setup module
 	public Game(String name){
