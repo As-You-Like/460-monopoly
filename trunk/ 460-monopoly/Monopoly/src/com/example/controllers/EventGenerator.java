@@ -72,7 +72,7 @@ public class EventGenerator {
 	 * @param e
 	 * @param duration in milliseconds
 	 */
-	public static void registerEventTimed(String category, Event e, long duration){
+	/*public static void registerEventTimed(String category, Event e, long duration){
 		registerEvent(category, e);
 		Timer timer = new Timer();
 		
@@ -86,7 +86,7 @@ public class EventGenerator {
 		task.event = e;
 		
 		timer.schedule(task, duration);
-	}
+	}*/
 	
 	/**
 	 * 
@@ -94,10 +94,10 @@ public class EventGenerator {
 	 * @param e
 	 * @param turns. number of turns this event is valid before it expires
 	 */
-	public static void registerEventTimed(String category, Event e, int turns){
+	/*public static void registerEventTimed(String category, Event e, int turns){
 		e.expireTurn = Game.turn + turns;
 		registerEvent(category, e);
-	}
+	}*/
 	
 	
 	/**
@@ -216,11 +216,87 @@ public class EventGenerator {
 		//handle triggered events
 		for (ArrayList<TriggeredEvent> events : tEvents.values()){
 			for (int i =0; i<events.size(); i++){
-				if (Game.turn == events.get(i).expireTurn){
+				TriggeredEvent event = events.get(i);
+				if (event.condition()){
+					event.action();
 					events.remove(i);
 					i--; //account for the shifting of the arraylist when item is removed
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Executes all events in the array
+	 * This method checks the conditions of TriggeredEvents
+	 * @param events
+	 */
+	public static void executeEvents(Event[] events){
+		for (Event event : events){
+			executeEvent(event);
+		}
+	}
+	
+	/**
+	 * Executes an event
+	 * This method checks the conditions of TriggeredEvents
+	 * @param event
+	 */
+	public static void executeEvent(Event event){
+		if (event instanceof TriggeredEvent){
+			TriggeredEvent tEvent = (TriggeredEvent)event;
+			if (!tEvent.condition()){
+				return; //exit the method immediately if the condition for this event is not met
+			}
+		}
+		event.action();
+	}
+	
+	/**
+	 * Randomises and executes a random event
+	 */
+	public static void chooseAndExecuteRandomEvent(String category){
+		chooseAndExecuteRandomEvent(new String[]{category});
+	}
+	
+	/**
+	 * Randomises and executes a random event
+	 */
+	public static void chooseAndExecuteRandomEvent(String[] categories){
+		chooseAndExecuteRandomEvent(categories, EventGenerator.CHANCE_EVENTHAPPENS);
+	}
+	
+	/**
+	 * Randomises and executes a random event
+	 */
+	public static void chooseAndExecuteRandomEvent(String category, double chanceToHaveEvent){
+		chooseAndExecuteRandomEvent(new String[]{category}, chanceToHaveEvent);
+	}
+	
+	/**
+	 * Randomises and executes a random event
+	 */
+	public static void chooseAndExecuteRandomEvent(String[] categories, double chanceToHaveEvent){
+		Event event = requestRandomEvent(categories, chanceToHaveEvent);
+		executeEvent(event);
+	}
+	
+	/**
+	 * Executes all triggered events associated with the category
+	 * All events have their conditions checked
+	 * @param category
+	 */
+	public static void executeTriggeredEvents(String category){
+		executeTriggeredEvents(new String[]{category});
+	}
+	
+	/**
+	 * Executes all triggered events associated with the categories
+	 * All events have their conditions checked
+	 * @param category
+	 */
+	public static void executeTriggeredEvents(String[] categories){
+		Event[] events = requestTriggeredEvents(categories);
+		executeEvents(events);
 	}
 }

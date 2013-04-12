@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import com.example.bluetooth.Message;
 import com.example.model.PlayerPiece;
 
 public class Player {
@@ -22,9 +23,36 @@ public class Player {
 	public double getBalance() {
 		return balance;
 	}
-
-	public void setBalance(double balance) {
-		this.balance = balance;
+	
+	/**
+	 * Adds amount to the current player's balance
+	 * @param amount
+	 */
+	public void addBalance(double amount){
+		this.setBalance(this.balance + amount);
+	}
+	
+	/**
+	 * Subtracts amount from the current player's balance
+	 * @param amount
+	 */
+	public void subBalance(double amount){
+		this.addBalance(amount * -1);
+	}
+	
+	/**
+	 * Sets the current player's balance to a specific value
+	 * @param balance
+	 */
+	public void setBalance(double amount) {
+		//change the balance
+		double priorBalance = this.balance;
+		this.balance = amount;
+		
+		//Inform the player that the balance was changed (updates the player screen if the player is watching his stats)
+		Device.player[this.playerIndex].sendMessage(
+				Message.PLAYER_STAT_UPDATE_BALANCE, 
+				""+this.balance + ":" + (priorBalance - this.balance));
 	}
 
 	public PlayerPiece getPiece() {

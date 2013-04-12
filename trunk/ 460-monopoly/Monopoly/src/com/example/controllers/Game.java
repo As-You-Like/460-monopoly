@@ -11,7 +11,21 @@ public class Game extends TimerTask{
 	public static String name;
 	public static Timer timer;
 	public static long ms = 0;
+	
+	/**
+	 * has the count of the current turn
+	 */
 	public static int turn = 0;
+	
+	/**
+	 * Keeps track of which player's turn it is
+	 */
+	public static int currentPlayer = 0;
+	
+	/**
+	 * Has the count of the current subturn
+	 */
+	public static int subturn = 0;
 	
 	//constructor to be run during the game creation process in setup module
 	public Game(String name){
@@ -36,6 +50,10 @@ public class Game extends TimerTask{
 		for (Unit u: tmp){
 			u.draw();
 		}*/
+	}
+	
+	public static int getWeekDay(){
+		return Game.turn % 7;
 	}
 	
 	/**
