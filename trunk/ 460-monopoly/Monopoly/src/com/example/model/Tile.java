@@ -52,6 +52,7 @@ public class Tile extends StaticUnit {
 		this.setRadius(Tile.TILE_RADIUS);
 		Tile.entity[hexX][hexY] = this;
 		this.updateDrawAnchor();
+		this.name = "(" + hexX + ", " + hexY + ")";
 		
 		this.hexX = hexX;
 		this.hexY = hexY;
