@@ -4,12 +4,10 @@
     android:layout_height="match_parent"
     tools:context=".PropertiesActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="PROPERTIES"        android:textColor="#ac40c2"
-        android:textSize="30dp" />
+    <ExpandableListView
+        android:id="@+id/property_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:groupIndicator="@null" />
 
 </RelativeLayout>
