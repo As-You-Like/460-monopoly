@@ -87,7 +87,6 @@ public class Bluetooth {
 	 */
 	public synchronized void start(){
 		
-		
 	} //End start()
 	
 	/**
