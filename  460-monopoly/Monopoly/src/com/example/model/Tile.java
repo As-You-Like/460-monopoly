@@ -71,6 +71,10 @@ public class Tile extends StaticUnit {
 		this.drawAnchor = p;
 	}
 	
+	public Tile[] getForkTiles(){
+		return this.nextStops.toArray(new Tile[]{});
+	}
+	
 	public void addNextStop(Tile t){
 		this.nextStops.add(t);
 	}
