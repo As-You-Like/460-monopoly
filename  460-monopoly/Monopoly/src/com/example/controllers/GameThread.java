@@ -24,10 +24,10 @@ public class GameThread extends Thread{
 	public boolean gameWon = false;
 	
 	// Determines how many full turns have past (increments every time subTurnNumber == numberOfPlayers)
-	public int turnNumber = 0;
+	//public int turnNumber = 0;
 	
 	// Determines which player is having his/her turn
-	public int subTurnNumber = 0;
+	//public int subTurnNumber = 0;
 	
 	// How many players are playing?
 	public int numberOfPlayers;
@@ -177,7 +177,7 @@ public class GameThread extends Thread{
 	
 	public void determineCurrentTurnPlayer(){
 		for(int i = 0; i < numberOfPlayers; i++){
-			if(playerTurnOrder[i] == subTurnNumber){
+			if(playerTurnOrder[i] == Game.subturn){
 				currentTurnPlayer = playerTurnOrder[i];
 			}
 		}
