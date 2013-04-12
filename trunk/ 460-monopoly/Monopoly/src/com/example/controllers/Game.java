@@ -18,6 +18,9 @@ public class Game extends TimerTask{
 	public static Timer timer;
 	public static long ms = 0;
 	
+	// Determines if victory has been achieved by a player
+	public boolean gameWon = false;
+	
 	/**
 	 * has the count of the current turn
 	 */
@@ -32,6 +35,12 @@ public class Game extends TimerTask{
 	 * Has the count of the current subturn
 	 */
 	public static int subturn = 0;
+	
+	// How many players are playing?
+	public int numberOfPlayers;
+	
+	// In what order do players take their turns?
+	public int[] playerTurnOrder;
 	
 	//constructor to be run during the game creation process in setup module
 	public Game(String name){
@@ -68,6 +77,32 @@ public class Game extends TimerTask{
 	 */
 	public static Event[] getTurnSensitiveEvents(){
 		return null;
+	}
+	
+	public void determinePlayerTurnOrder(){
+		
+		// Counts actual number of players
+		for(int i = 0; i < Device.player.length; i++){
+			if(Device.player[i] != null){
+				numberOfPlayers++;
+			}
+		}
+		
+		// Create array the size of the number of players to hold the players' index numbers from Device.player
+		// Until dice roll mechanism is considered, index order = turn order
+		playerTurnOrder = new int[numberOfPlayers];
+		for(int i = 0; i < numberOfPlayers; i++){
+			playerTurnOrder[i] = i;
+		}
+		
+	}
+	
+	public void determineCurrentTurnPlayer(){
+		for(int i = 0; i < numberOfPlayers; i++){
+			if(playerTurnOrder[i] == Game.subturn){
+				currentPlayer = playerTurnOrder[i];
+			}
+		}
 	}
 	
 	
