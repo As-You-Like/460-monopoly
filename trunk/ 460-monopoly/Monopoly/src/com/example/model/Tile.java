@@ -39,6 +39,7 @@ public class Tile extends StaticUnit {
 	private int hexX;
 	private int hexY;
 	
+	private String name;
 	private LightingColorFilter regionColorFilter;
 	private int region;
 	
@@ -250,5 +251,13 @@ public class Tile extends StaticUnit {
 
 	public LightingColorFilter getRegionColorFilter() {
 		return regionColorFilter == null ? new LightingColorFilter(Color.WHITE, 1) : regionColorFilter;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
