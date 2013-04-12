@@ -1,13 +1,13 @@
 package com.example.monopoly;
 
-import com.example.bluetooth.Bluetooth;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Toast;
+
+import com.example.bluetooth.Bluetooth;
 
 public class SplashActivity extends Activity {
 	
@@ -25,7 +25,7 @@ public class SplashActivity extends Activity {
 		new Bluetooth(this.getApplicationContext());
 		
 		
-		Intent intent = new Intent(SplashActivity.activity, WelcomeActivity.class);
+		Intent intent = new Intent(SplashActivity.activity, CommandCardActivity.class);
 		startActivity(intent);
 	}
 	
@@ -36,7 +36,7 @@ public class SplashActivity extends Activity {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
         // Otherwise, setup the chat session
-        } 
+        }
 	}
 
 	@Override
