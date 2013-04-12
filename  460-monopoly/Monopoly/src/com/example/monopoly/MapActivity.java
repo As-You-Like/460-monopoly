@@ -16,13 +16,11 @@ import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.example.controllers.Game;
 import com.example.monopoly.PanAndZoomListener;
 import com.example.monopoly.PanAndZoomListener.Anchor;
 
 
-public class MapActivity extends Activity {
+public class MapActivity extends Activity { 
 	
 	public static MapActivity activity;
 	CircleView c;
@@ -54,7 +52,6 @@ public class MapActivity extends Activity {
 		//Toast.makeText(this, "This is Map!!", Toast.LENGTH_SHORT).show();
 		view.setOnTouchListener(new PanAndZoomListener(view, c, Anchor.TOPLEFT));
 		
-		Game.start();
 		
 		
 
