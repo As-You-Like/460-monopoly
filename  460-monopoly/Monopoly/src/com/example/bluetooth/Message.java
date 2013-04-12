@@ -50,4 +50,10 @@ public class Message {
 	
 	//
 	public static final int RECEIVE_FORK_PATH = 13;
+	
+	//Host telling the player that one of his balance has changed
+	public static final int PLAYER_STAT_UPDATE_BALANCE = 14;
+	
+	//Host sending a message to the player that is to be displayed in a popup
+	public static final int ALERT = 15;
 }

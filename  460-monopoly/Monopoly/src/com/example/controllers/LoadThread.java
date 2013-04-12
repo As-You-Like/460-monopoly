@@ -3,6 +3,7 @@ package com.example.controllers;
 import java.util.ArrayList;
 
 import com.example.content.BoardSetup;
+import com.example.content.EventSetup;
 import com.example.content.Image;
 import com.example.model.Die;
 import com.example.monopoly.LoadingActivity;
@@ -39,7 +40,7 @@ public class LoadThread extends Thread {
 			this.setupImages();
 			this.setupPlayers();
 			BoardSetup.setupBoard();
-			this.registerEvents();
+			EventSetup.setupEvents();
 			//initialize the main game thread (it gets started later)
 			new GameThread();
 			new Game("");
@@ -71,31 +72,6 @@ public class LoadThread extends Thread {
 				Player.entities[i] = p;
 			}
 		}
-	}
-
-	private void registerEvents(){
-		
-		//Random Event - Being yelled at by the dean
-		EventGenerator.registerEvent("residential", new RandomEvent(){
-			public void action() {
-				Log.e("RandomEvent", "YOU SUCK!");
-			}
-		});
-		
-		//Triggered Event - Being put to jail for rolling a double once
-		EventGenerator.registerEvent("gameRules", new TriggeredEvent(){
-			@Override
-			public boolean condition() {
-				return Die.isDouble();
-			}
-			
-			public void action() {
-				Log.e("TriggeredEvent", "You have been sent to jail");
-			}
-
-			
-		});
-		
 	}
 	
 	private static class Handle extends Handler {
