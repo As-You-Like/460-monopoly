@@ -43,6 +43,7 @@ public class Tile extends StaticUnit {
 	private LightingColorFilter regionColorFilter;
 	private int region;
 	private double price;
+	private double baseRent;
 	
 	public boolean[] upgradeActive;
 	private ArrayList<MobileUnit> visitors = new ArrayList<MobileUnit>();
@@ -175,6 +176,11 @@ public class Tile extends StaticUnit {
 		return p;
 	}
 	
+	public double getRent(){
+		return this.baseRent;
+		
+	}
+	
 	public static Tile getTileFromCartesianPoint(int x, int y){
 		double noRoundX = (x-y*Math.tan(Math.PI/6D))/(2D*Tile.TILE_RADIUS);
 		double noRoundY = y/(2D*Tile.TILE_RADIUS*Math.cos(Math.PI/6D));
@@ -274,5 +280,13 @@ public class Tile extends StaticUnit {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public double getBaseRent() {
+		return baseRent;
+	}
+
+	public void setBaseRent(double baseRent) {
+		this.baseRent = baseRent;
 	}
 }
