@@ -42,6 +42,7 @@ public class Tile extends StaticUnit {
 	private String name;
 	private LightingColorFilter regionColorFilter;
 	private int region;
+	private double price;
 	
 	public boolean[] upgradeActive;
 	private ArrayList<MobileUnit> visitors = new ArrayList<MobileUnit>();
@@ -257,8 +258,21 @@ public class Tile extends StaticUnit {
 	public String getName() {
 		return name;
 	}
+	
+	public String toString(){
+		return (this.hexX + ", " + this.hexY) + this.name;
+		
+	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 }
