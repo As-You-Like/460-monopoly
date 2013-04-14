@@ -179,6 +179,7 @@ public class GameThread extends Thread{
 		 * 
 		 * <<<<<Temporary - determined by index order>>>>>
 		 */
+		this.setUpBoard();
 		Game.instance.determinePlayerTurnOrder();
 		
 		while(Game.gameWon == false){
@@ -269,6 +270,12 @@ public class GameThread extends Thread{
 		 * Victory
 		 */
 		
+	}
+	
+	public void setUpBoard(){
+		for(int i = 0; i > Player.entities.length; i++){
+			Player.entities[i].setPiece(new PlayerPiece(Tile.entity[3][3]));
+		}
 	}
 	
 	/*public void determinePlayerTurnOrder(){
