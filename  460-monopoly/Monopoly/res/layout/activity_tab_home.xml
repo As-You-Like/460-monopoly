@@ -4,27 +4,5 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity" >
 
-    <Button
-        android:id="@+id/btn1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="clickEventAdd"
-        android:text="Tile Property Add" />
-
-    <Button
-        android:id="@+id/btn2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn1"
-        android:onClick="clickEventRemove"
-        android:text="Tile Property Remove" />
-
-    <Button
-        android:id="@+id/btn3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn2"
-        android:onClick="clickEventClear"
-        android:text="Tile Property List clear" />
 
 </RelativeLayout>
