@@ -40,12 +40,12 @@ public class CommandCardActivity extends TabActivity {
 			@Override
 			public boolean typeValid(int type) {
 				//I don't know how it would fit to do so..
-				if(type == Message.START_PLAYER_TURN) // if my turn, set Turn tab
+				if(type == Message.START_PLAYER_TURN){ // if my turn, set Turn tab
 					tabBar.setCurrentTab(TAB_TURN);
-				else if(type == Message.YOUR_TURN_IS_OVER) // my turn is over, set Home Tab 
+				} else if(type == Message.YOUR_TURN_IS_OVER) // my turn is over, set Home Tab 
 					tabBar.setCurrentTab(TAB_HOME);
 				
-				return type == Message.START_PLAYER_TURN;
+				return type == Message.START_PLAYER_TURN; 
 			}
 			
 			@Override
@@ -55,13 +55,28 @@ public class CommandCardActivity extends TabActivity {
 			}
 		});
 		
+		/*Bluetooth.registerBluetoothEvent(new BluetoothEvent() {
+			
+			@Override
+			public boolean typeValid(int type) {
+				//I don't know how it would fit to do so..
+				return type == Message.MOVEMENT_DICE_ROLL; 
+			}
+			
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				
+			}
+		});*/
+		
 	}
 	
 	private void setTab(){
 		tabBar = getTabHost();
 		TabHost.TabSpec spec;
 		Intent intent;
-
+		
 		// Turn Tab (Not Clickable) : 0
 		intent = new Intent().setClass(this, TabTurnActivity.class);
 		spec = tabBar.newTabSpec("Turn").setIndicator("Turn").setContent(intent);
@@ -81,6 +96,7 @@ public class CommandCardActivity extends TabActivity {
 		intent = new Intent().setClass(this, TabInteractActivity.class);
 		spec = tabBar.newTabSpec("Interact").setIndicator("Interact").setContent(intent);
 		tabBar.addTab(spec);
+		
 		
 				
 		tabBar.setCurrentTab(TAB_HOME);

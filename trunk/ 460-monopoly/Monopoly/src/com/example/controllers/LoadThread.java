@@ -57,6 +57,13 @@ public class LoadThread extends Thread {
 		Image.HEXAGON_TEXTURE = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_blue);
 		Image.HEXAGON_REGION = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_darkblue);
 		Image.HEXAGON_PLAYER = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_orange);
+		
+		Image.DIE[0] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_1);
+		Image.DIE[1] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_2);
+		Image.DIE[2] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_3);
+		Image.DIE[3] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_4);
+		Image.DIE[4] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_5);
+		Image.DIE[5] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_6);
 	}
 
 	private void setupPlayers() {

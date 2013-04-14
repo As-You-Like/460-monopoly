@@ -2,7 +2,142 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity" >
+    android:background="#000000"
+    tools:context=".StatActivity" >
 
+    <ImageView 
+        android:id="@+id/img_avater"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/ic_launcher"
+        android:layout_alignParentRight="true"
+        android:layout_margin="5dp"
+        android:background="#e878e7"/>
+    <RelativeLayout
+        android:id="@+id/layout_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp" >
+
+        <TextView
+            android:id="@+id/txt_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Player : Mike"
+            android:textColor="#9ee02b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_piece_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_player"
+            android:layout_marginLeft="5dp"
+            android:text="Piece Coler : red"
+            android:textColor="#9ee02b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_cash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_piece_color"
+            android:layout_marginLeft="5dp"
+            android:text="Cash on Hand : $1,000,000"
+            android:textColor="#9ee02b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_assets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_cash"
+            android:layout_marginLeft="5dp"
+            android:text="Cash in Assets : $3,000"
+            android:textColor="#9ee02b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_owend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_assets"
+            android:layout_marginLeft="5dp"
+            android:text="Properties Owned : 5"
+            android:textColor="#9ee02b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_completed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_owend"
+            android:layout_marginLeft="5dp"
+            android:text="Regions Completed : 1"
+            android:textColor="#9ee02b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_completed"
+            android:layout_marginLeft="5dp"
+            android:text="Time played : 01:03:25"
+            android:textColor="#9ee02b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_trade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_time"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="8dp"
+            android:text="# of Trades : 2"
+            android:textColor="#9ee02b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_shuffle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_trade"
+            android:layout_marginLeft="5dp"
+            android:text="# of Shuffle Stops owned : 2"
+            android:textColor="#9ee02b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_shuffle"
+            android:layout_marginLeft="5dp"
+            android:text="# of times traveled around board : 2"
+            android:textColor="#9ee02b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_board"
+            android:layout_marginLeft="5dp"
+            android:text="Most Frequent stop :"
+            android:textColor="#9ee02b"
+            android:textSize="16dp" />
+    </RelativeLayout>
+    
+    <ImageView 
+        android:id="@+id/img_land"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/sample_hotel"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        />
 
 </RelativeLayout>
