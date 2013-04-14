@@ -72,5 +72,9 @@ public class Message {
 	//
 	public static final int TILE_ACTIVITY_UPGRADE_PROPERTY = 20;
 	
+	//
+	public static final int YOUR_TURN_IS_OVER = 21;
+	
+	
 	
 }
