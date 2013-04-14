@@ -1,5 +1,8 @@
 package com.example.model;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 public class PlayerPiece extends MobileUnit {
 	Tile currentTile = null;
 	
@@ -36,5 +39,9 @@ public class PlayerPiece extends MobileUnit {
 		
 		//set the new tile as the current one
 		currentTile = tile;
+	}
+	
+	public void paint(Canvas c, Paint p){
+		c.drawCircle((float)this.getPosition().x, (float)this.getPosition().y, (float)this.radius, p); 
 	}
 }
