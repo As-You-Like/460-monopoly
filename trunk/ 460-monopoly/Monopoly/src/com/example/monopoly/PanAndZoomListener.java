@@ -46,33 +46,33 @@ public class PanAndZoomListener implements OnTouchListener {
 
   public PanAndZoomListener(FrameLayout container, View view, int anchor) {
     panZoomCalculator = new PanZoomCalculator(container, view, anchor);
-    Log.e(null, "PanAndZoomListener constructor");
+    //Log.e(null, "PanAndZoomListener constructor");
     
   }
 
   public boolean onTouch(View view, MotionEvent event) {
 
-	  Log.e(null, "PanAndZoomListener onTouch()");
+	  //Log.e(null, "PanAndZoomListener onTouch()");
     // Handle touch events here...
     switch (event.getAction() & MotionEvent.ACTION_MASK) {
       case MotionEvent.ACTION_DOWN:
         start.set(event.getX(), event.getY());
-        Log.d(TAG, "mode=DRAG");
+        //Log.d(TAG, "mode=DRAG");
         mode = DRAG;
         break;
       case MotionEvent.ACTION_POINTER_DOWN:
         oldDist = spacing(event);
-        Log.d(TAG, "oldDist=" + oldDist);
+        //Log.d(TAG, "oldDist=" + oldDist);
         if (oldDist > 10f) {
           midPoint(mid, event);
           mode = ZOOM;
-          Log.d(TAG, "mode=ZOOM");
+          //Log.d(TAG, "mode=ZOOM");
         }
         break;
       case MotionEvent.ACTION_UP:
       case MotionEvent.ACTION_POINTER_UP:
         mode = NONE;
-        Log.d(TAG, "mode=NONE");
+        //Log.d(TAG, "mode=NONE");
         break;
       case MotionEvent.ACTION_MOVE:
         if (mode == DRAG) {
@@ -80,7 +80,7 @@ public class PanAndZoomListener implements OnTouchListener {
           start.set(event.getX(), event.getY());
         } else if (mode == ZOOM) {
           float newDist = spacing(event);
-          Log.d(TAG, "newDist=" + newDist);
+          //Log.d(TAG, "newDist=" + newDist);
           if (newDist > 10f) {
             float scale = newDist / oldDist;
             oldDist = newDist;

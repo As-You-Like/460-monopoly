@@ -84,7 +84,7 @@ public class MapActivity extends Activity {
 	
 	public void onStart()
 	{
-		Log.e(null, "MapActivity");
+		//Log.e(null, "MapActivity");
 		super.onStart();
 		view.setOnTouchListener(new PanAndZoomListener(view, c, Anchor.TOPLEFT));
 		//view.postInvalidate();
