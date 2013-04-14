@@ -6,6 +6,7 @@ import java.util.TimerTask;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.example.content.Image;
 import com.example.controllers.EventGenerator;
@@ -30,28 +31,23 @@ public class Die extends ScreenUnit {
 	private Die(int count){
 		timer = new Timer();
 		this.setPosition(new Point((this.radius + 5) + 2*this.radius * count, this.radius + 5));
-		timer.scheduleAtFixedRate(new TimerTask(){
-			@Override
-			public void run() {
-				//cycle through random values
-				for (int i=0; i<diceCount; i++){
-					dice[i].value = (int)(Math.random() * 6);
-				}
-				
-				Die.executionCountTimesDice--;
-				Die.stopDiceTimer();
-			}
-		}, 0, 100);
+		
 	}
 	
 	@SuppressWarnings("deprecation")
 	private static void stopDiceTimer(){
-		if (timerReset == false) return;
-		
+		Log.e(null, "Dietest1");
+		if (timerReset == true) return;
+		Log.e(null, "Dietest2");
 		timerReset = true;
+		Log.e(null, "Dietest3");
 		for (int i=0; i<diceCount; i++){
-			dice[i].timer.cancel();
+			Log.e(null, "Dietest4");
+			if(dice[i]!=null)
+				dice[i].timer.cancel();
+			Log.e(null, "Dietest5");
 		}
+		Log.e(null, "Dietest6");
 		
 		//if there is a double, say so, and trigger an event
 		if (dice[0].value == dice[1].value){
@@ -60,7 +56,13 @@ public class Die extends ScreenUnit {
 		}
 		
 		//GAME THREAD CODE GOES HERE FOR RESUMING GAME AFTER DICE ROLL
-		GameThread.gt.resume();
+		Log.e(null, "Dietest7");
+		//GameThread.gt.resume();
+		synchronized(GameThread.gt){
+			GameThread.gt.notifyAll();
+		}
+		
+		Log.e(null, "Dietest8");
 	}
 	
 	/**
@@ -84,6 +86,21 @@ public class Die extends ScreenUnit {
 				dice[i].destroy();
 			}
 			dice[i] = new Die(i);
+		}
+		for (int i=0; i<diceCount; i++){
+			dice[i].timer.scheduleAtFixedRate(new TimerTask(){
+				@Override
+				public void run() {
+					//cycle through random values
+					for (int i=0; i<diceCount; i++){
+						if (dice[i]!=null)
+							dice[i].value = (int)(Math.random() * 6);
+					}
+					
+					Die.executionCountTimesDice--;
+					Die.stopDiceTimer();
+				}
+			}, 0, 100);
 		}
 	}
 	
@@ -111,7 +128,7 @@ public class Die extends ScreenUnit {
 	public void draw(Canvas c, Paint p){
 		Point atp = this.getDrawAnchor();
 		Point abr = new Point((atp.x + this.radius * 2), (atp.y + this.radius * 2));
-		c.drawBitmap(Image.DIE[this.value-1], null, new Rect((int)atp.x, (int)atp.y, (int)abr.x, (int)abr.y), p);
+		c.drawBitmap(Image.DIE[this.value], null, new Rect((int)atp.x, (int)atp.y, (int)abr.x, (int)abr.y), p);
 	}
 	
 }

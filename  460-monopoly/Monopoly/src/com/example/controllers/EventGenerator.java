@@ -232,9 +232,10 @@ public class EventGenerator {
 	 * @param events
 	 */
 	public static void executeEvents(Event[] events){
-		for (Event event : events){
+		/* Fix this line, throws null pointer
+		 * for (Event event : events){
 			executeEvent(event);
-		}
+		}*/
 	}
 	
 	/**

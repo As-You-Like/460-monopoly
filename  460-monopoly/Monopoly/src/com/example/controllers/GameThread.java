@@ -1,5 +1,7 @@
 package com.example.controllers;
 
+import android.util.Log;
+
 import com.example.bluetooth.Bluetooth;
 import com.example.bluetooth.BluetoothEvent;
 import com.example.bluetooth.Message;
@@ -48,14 +50,15 @@ public class GameThread extends Thread{
 		gt = this;
 		
 		//Bluetooth Messages
-		
+		Log.w(null, "Test1");
 		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
-
+			
 			@Override
 			public boolean typeValid(int type) {
+				Log.w(null, "Test2");
 				return type == Message.MOVEMENT_DICE_ROLL;
 			}
-
+			
 			@Override
 			public void processMessage(int sender, int reciever, String message) {
 				/*GameThread.gt.resume();
@@ -77,8 +80,9 @@ public class GameThread extends Thread{
 				
 				}
 				*/
-				
+				Log.w(null, "Test3");
 				Die.roll();
+				Log.w(null, "Test4");
 			}
 			
 		});
@@ -297,9 +301,10 @@ public class GameThread extends Thread{
 		Device.player[Game.instance.currentPlayer].sendMessage(Message.START_PLAYER_TURN, "");
 	}
 	
-	public void sleepGameThread(){
+	public synchronized void sleepGameThread(){
 		try {
-			Thread.sleep(999999999);
+			//Thread.sleep(999999999);
+			this.wait(99999999);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -67,7 +67,7 @@ public void drawOnCanvas (Canvas canvas) {
     	u.draw(canvas, paint);
     }
     
-    Log.e(null, "CircleView drawOnCanvas");
+   // Log.e(null, "CircleView drawOnCanvas");
     
     
 
