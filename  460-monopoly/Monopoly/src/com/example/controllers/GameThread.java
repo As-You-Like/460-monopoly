@@ -273,7 +273,7 @@ public class GameThread extends Thread{
 	}
 	
 	public void setUpBoard(){
-		for(int i = 0; i > Player.entities.length; i++){
+		for(int i = 0; i < Player.entities.length; i++){
 			Player.entities[i].setPiece(new PlayerPiece(Tile.entity[3][3]));
 		}
 	}
