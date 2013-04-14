@@ -46,6 +46,122 @@ public class GameThread extends Thread{
 	
 	public GameThread(){
 		gt = this;
+		
+		//Bluetooth Messages
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				return type == Message.MOVEMENT_DICE_ROLL;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				/*GameThread.gt.resume();
+				valueDie1 = Integer.parseInt(message.substring(0, 1));
+				valueDie2 = Integer.parseInt(message.substring(1, 2));
+				
+				if(valueDie1 == valueDie2){
+					Device.player[currentTurnPlayer].sendMessage(Message.ROLLED_DOUBLES, "");
+				}
+				
+				if(doublesOnce == false && valueDie1 == valueDie2){
+					doublesOnce = true;
+				}
+				else if(doublesTwice == false && valueDie1 == valueDie2){
+					doublesTwice = true;
+				} else if(doublesThrice == false && valueDie1 == valueDie2){
+					doublesThrice = true;
+				
+				
+				}
+				*/
+				
+				Die.roll();
+			}
+			
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				return type == Message.RECEIVE_FORK_PATH;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				int forkChoice = Integer.parseInt(message.substring(0,1));
+				Tile[] forks = Player.entities[Game.currentPlayer].getPiece().getCurrentTile().getForkTiles();
+				Player.entities[Game.currentPlayer].getPiece().move(forks[forkChoice]);
+				GameThread.gt.resume();
+			}
+
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				return type == Message.TILE_ACTIVITY_END_TURN;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				GameThread.gt.resume();
+			}
+
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				return type == Message.TILE_ACTIVITY_PURCHASE_PROPERTY;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				
+				// Assumes that currentPlayer has enough money (handled by TileActivity)
+				Player.entities[Game.currentPlayer].subBalance(Player.entities[Game.currentPlayer].getPiece().getCurrentTile().getPrice());
+				Player.entities[Game.currentPlayer].getPiece().getCurrentTile().setOwner(Game.currentPlayer);
+			}
+
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				return type == Message.TILE_ACTIVITY_PAY_RENT;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				Player theCurrentPlayer = Player.entities[Game.currentPlayer];
+				Player ownerPlayer = Player.entities[theCurrentPlayer.getPiece().getCurrentTile().getOwner()];
+				theCurrentPlayer.subBalance(theCurrentPlayer.getPiece().getCurrentTile().getRent());
+				ownerPlayer.addBalance(theCurrentPlayer.getPiece().getCurrentTile().getRent());
+			}
+
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				return type == Message.TILE_ACTIVITY_UPGRADE_PROPERTY;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				//To do
+			}
+
+		});
+		
 	}
 	
 	public void run(){
@@ -192,40 +308,6 @@ public class GameThread extends Thread{
 	
 	public void startMovementPhase(){
 		do{
-			Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
-
-				@Override
-				public boolean typeValid(int type) {
-					return type == Message.MOVEMENT_DICE_ROLL;
-				}
-
-				@Override
-				public void processMessage(int sender, int reciever, String message) {
-					/*GameThread.gt.resume();
-					valueDie1 = Integer.parseInt(message.substring(0, 1));
-					valueDie2 = Integer.parseInt(message.substring(1, 2));
-					
-					if(valueDie1 == valueDie2){
-						Device.player[currentTurnPlayer].sendMessage(Message.ROLLED_DOUBLES, "");
-					}
-					
-					if(doublesOnce == false && valueDie1 == valueDie2){
-						doublesOnce = true;
-					}
-					else if(doublesTwice == false && valueDie1 == valueDie2){
-						doublesTwice = true;
-					} else if(doublesThrice == false && valueDie1 == valueDie2){
-						doublesThrice = true;
-					
-					
-					}
-					*/
-					
-					Die.roll();
-				}
-				
-			});
-			
 			if(Die.doubleCount < 3){
 				PlayerPiece currentPlayerPiece = Player.entities[Game.currentPlayer].getPiece();
 				int spaceMovementDistance = Die.getTotalValue();
@@ -243,23 +325,7 @@ public class GameThread extends Thread{
 						Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
 						this.sleepGameThread();
 						// DecisionActivity awakens GameThread
-						
-						Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
-
-							@Override
-							public boolean typeValid(int type) {
-								return type == Message.RECEIVE_FORK_PATH;
-							}
-
-							@Override
-							public void processMessage(int sender, int reciever, String message) {
-								int forkChoice = Integer.parseInt(message.substring(0,1));
-								Tile[] forks = Player.entities[Game.currentPlayer].getPiece().getCurrentTile().getForkTiles();
-								Player.entities[Game.currentPlayer].getPiece().move(forks[forkChoice]);
-								GameThread.gt.resume();
-							}
-				
-						});
+	
 					}
 					else {
 						newTileLocation = tileLocation.getNextStop();
@@ -279,68 +345,6 @@ public class GameThread extends Thread{
 		Device.player[Game.currentPlayer].sendMessage(Message.START_TILE_ACTIVITY, "" + tileOwner);
 		this.sleepGameThread();
 		//TileActivity awakens GameThread
-		
-		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
-
-			@Override
-			public boolean typeValid(int type) {
-				return type == Message.TILE_ACTIVITY_END_TURN;
-			}
-
-			@Override
-			public void processMessage(int sender, int reciever, String message) {
-				GameThread.gt.resume();
-			}
-
-		});
-		
-		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
-
-			@Override
-			public boolean typeValid(int type) {
-				return type == Message.TILE_ACTIVITY_PURCHASE_PROPERTY;
-			}
-
-			@Override
-			public void processMessage(int sender, int reciever, String message) {
-				
-				// Assumes that currentPlayer has enough money (handled by TileActivity)
-				Player.entities[Game.currentPlayer].subBalance(Player.entities[Game.currentPlayer].getPiece().getCurrentTile().getPrice());
-				Player.entities[Game.currentPlayer].getPiece().getCurrentTile().setOwner(Game.currentPlayer);
-			}
-
-		});
-		
-		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
-
-			@Override
-			public boolean typeValid(int type) {
-				return type == Message.TILE_ACTIVITY_PAY_RENT;
-			}
-
-			@Override
-			public void processMessage(int sender, int reciever, String message) {
-				Player theCurrentPlayer = Player.entities[Game.currentPlayer];
-				Player ownerPlayer = Player.entities[theCurrentPlayer.getPiece().getCurrentTile().getOwner()];
-				theCurrentPlayer.subBalance(theCurrentPlayer.getPiece().getCurrentTile().getRent());
-				ownerPlayer.addBalance(theCurrentPlayer.getPiece().getCurrentTile().getRent());
-			}
-
-		});
-		
-		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
-
-			@Override
-			public boolean typeValid(int type) {
-				return type == Message.TILE_ACTIVITY_UPGRADE_PROPERTY;
-			}
-
-			@Override
-			public void processMessage(int sender, int reciever, String message) {
-				//To do
-			}
-
-		});
 		
 	}
 	
