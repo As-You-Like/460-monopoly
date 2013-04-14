@@ -2,6 +2,7 @@ package com.example.model;
 
 import java.util.ArrayList;
 
+import com.example.controllers.Device;
 import com.example.controllers.Player;
 
 import android.graphics.Bitmap;
@@ -14,7 +15,9 @@ public abstract class Unit {
 	//constants
 	public static final double DEFAULT_MOVESPEED = 5;
 	public static final double DEFAULT_RADIUS = 10;
-	public static final int DEFAULT_OWNER = 5;
+	public static final int DEFAULT_OWNER = -1;
+	public static final int OWNER_NEUTRAL = -1;
+	public static final int OWNER_UNOWNABLE = Device.player.length;
 	public static final double DEFAULT_FACING = 0;
 	
 	

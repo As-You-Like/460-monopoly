@@ -3,8 +3,14 @@ package com.example.model;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+
+import com.example.content.Image;
 import com.example.controllers.EventGenerator;
 import com.example.controllers.Game;
+import com.example.controllers.GameThread;
 import com.example.controllers.TriggeredEvent;
 
 public class Die extends ScreenUnit { 
@@ -21,8 +27,9 @@ public class Die extends ScreenUnit {
 	private Timer timer;
 	public int value;
 	
-	private Die(){
+	private Die(int count){
 		timer = new Timer();
+		this.setPosition(new Point((this.radius + 5) + 2*this.radius * count, this.radius + 5));
 		timer.scheduleAtFixedRate(new TimerTask(){
 			@Override
 			public void run() {
@@ -37,6 +44,7 @@ public class Die extends ScreenUnit {
 		}, 0, 100);
 	}
 	
+	@SuppressWarnings("deprecation")
 	private static void stopDiceTimer(){
 		if (timerReset == false) return;
 		
@@ -52,6 +60,7 @@ public class Die extends ScreenUnit {
 		}
 		
 		//GAME THREAD CODE GOES HERE FOR RESUMING GAME AFTER DICE ROLL
+		GameThread.gt.resume();
 	}
 	
 	/**
@@ -71,7 +80,10 @@ public class Die extends ScreenUnit {
 		timerReset = false;
 		executionCountTimesDice = executionCount * diceCount;
 		for (int i=0; i<diceCount; i++){
-			dice[i] = new Die();
+			if (dice[i] != null){
+				dice[i].destroy();
+			}
+			dice[i] = new Die(i);
 		}
 	}
 	
@@ -94,6 +106,12 @@ public class Die extends ScreenUnit {
 	public static boolean isDouble(){
 		if (diceCount != 2) return false;
 		return dice[0].value == dice[1].value;
+	}
+	
+	public void draw(Canvas c, Paint p){
+		Point atp = this.getDrawAnchor();
+		Point abr = new Point((atp.x + this.radius * 2), (atp.y + this.radius * 2));
+		c.drawBitmap(Image.DIE[this.value-1], null, new Rect((int)atp.x, (int)atp.y, (int)abr.x, (int)abr.y), p);
 	}
 	
 }
