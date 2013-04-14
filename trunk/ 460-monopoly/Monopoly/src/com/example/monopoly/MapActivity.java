@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -16,6 +17,8 @@ import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.controllers.GameThread;
 import com.example.monopoly.PanAndZoomListener;
 import com.example.monopoly.PanAndZoomListener.Anchor;
 
@@ -25,6 +28,7 @@ public class MapActivity extends Activity {
 	public static MapActivity activity;
 	CircleView c;
 	public static Resources resources;
+	public FrameLayout view;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +41,11 @@ public class MapActivity extends Activity {
                   FrameLayout.LayoutParams.MATCH_PARENT, 
                   Gravity.TOP | Gravity.LEFT);
 		
-		FrameLayout view = new FrameLayout (this);
+		view = new FrameLayout (this);
 		setContentView (view);
 		
 		//Canvas canvas; // Creates the canvas used to draw the map 
-		ImageView imageView = new ImageView(this);
+		//ImageView imageView = new ImageView(this);
 		//view.addView(imageView, fp);
 		Context context = this.getApplicationContext();
 		c = new CircleView(context);
@@ -50,17 +54,40 @@ public class MapActivity extends Activity {
 		resources = c.getResources();
 		
 		//Toast.makeText(this, "This is Map!!", Toast.LENGTH_SHORT).show();
-		view.setOnTouchListener(new PanAndZoomListener(view, c, Anchor.TOPLEFT));
 		
 		
+		long downTime = 1000;
+		long eventTime = 1100;
+		float x = 0.0f;
+		float y = 0.0f;
+		int metaState = 0;
+		MotionEvent motionEvent = MotionEvent.obtain(
+		    downTime, 
+		    eventTime, 
+		    MotionEvent.ACTION_UP, 
+		    x, 
+		    y, 
+		    metaState
+		);
+		
+		PanAndZoomListener testing = new PanAndZoomListener(view, c, Anchor.TOPLEFT);
+		
+		testing.onTouch(view, motionEvent);
+		
+		
+		
+		
+		GameThread.gt.start();
 		
 
 	}
 	
 	public void onStart()
 	{
+		Log.e(null, "MapActivity");
 		super.onStart();
-		c.invalidate();
+		view.setOnTouchListener(new PanAndZoomListener(view, c, Anchor.TOPLEFT));
+		//view.postInvalidate();
 	}
 	
 	/*public void drawOnCanvas (Canvas canvas) {
