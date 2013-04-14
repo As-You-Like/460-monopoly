@@ -124,6 +124,7 @@ public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
 
 public void drawOnCanvas (Canvas canvas) {
     mSampleImage.draw(canvas);
+    Log.e(null, "PanAndZoomView drawOnCanvas");
 }
 
 
@@ -133,6 +134,7 @@ public void drawOnCanvas (Canvas canvas) {
 @Override public void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     
+    Log.e(null, "PanAndZoomView onDraw()");
     canvas.save();
 
     float x = 0, y = 0;

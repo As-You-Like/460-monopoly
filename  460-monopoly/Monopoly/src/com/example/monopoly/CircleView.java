@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 
 /**
  * This view displays a few rectangles that can be panned and zoomed.
@@ -21,27 +22,20 @@ import android.util.AttributeSet;
  */
 
 public class CircleView extends PanZoomView { 
-
-    Bitmap b;
-    Bitmap b2;
 /**
  */
 public CircleView (Context context) {
     super (context);
-    b=BitmapFactory.decodeResource(getResources(), R.drawable.bruintest);
-    b2=BitmapFactory.decodeResource(getResources(), R.drawable.testgrass);
 }
 
 public CircleView (Context context, AttributeSet attrs) {
     super (context, attrs);
-    b=BitmapFactory.decodeResource(getResources(), R.drawable.bruintest);
-    b2=BitmapFactory.decodeResource(getResources(), R.drawable.testgrass);
+   
 }
 
 public CircleView (Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
-    b=BitmapFactory.decodeResource(getResources(), R.drawable.bruintest);
-    b2=BitmapFactory.decodeResource(getResources(), R.drawable.testgrass);
+
 }
 
 /**
@@ -61,7 +55,7 @@ public void drawOnCanvas (Canvas canvas) {
 	
 	//Initialize paint
     Paint paint = new Paint();
-    paint.setColor(Color.BLUE);
+    //paint.setColor(Color.BLUE);
     
     //canvas.drawBitmap(b, 0, 0, paint);
     Unit[] tmp;
@@ -72,6 +66,10 @@ public void drawOnCanvas (Canvas canvas) {
     for (Unit u : tmp){
     	u.draw(canvas, paint);
     }
+    
+    Log.e(null, "CircleView drawOnCanvas");
+    
+    
 
 }
 

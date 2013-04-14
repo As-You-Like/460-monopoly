@@ -46,10 +46,13 @@ public class PanAndZoomListener implements OnTouchListener {
 
   public PanAndZoomListener(FrameLayout container, View view, int anchor) {
     panZoomCalculator = new PanZoomCalculator(container, view, anchor);
+    Log.e(null, "PanAndZoomListener constructor");
+    
   }
 
   public boolean onTouch(View view, MotionEvent event) {
 
+	  Log.e(null, "PanAndZoomListener onTouch()");
     // Handle touch events here...
     switch (event.getAction() & MotionEvent.ACTION_MASK) {
       case MotionEvent.ACTION_DOWN:
@@ -86,6 +89,7 @@ public class PanAndZoomListener implements OnTouchListener {
         }
         break;
     }
+    //view.invalidate();
     return true; // indicate event was handled
   }
 
