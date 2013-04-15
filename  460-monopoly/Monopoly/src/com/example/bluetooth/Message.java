@@ -74,6 +74,14 @@ public class Message {
 	
 	//
 	public static final int YOUR_TURN_IS_OVER = 21;
+
+	//For rolling again
+	public static final int MOVEMENT_ROLL = 22;
+
+	//For indicating that a purchase has been successful
+	public static final int PURCHASE_SUCCESS = 23;
+
+	public static final int PAY_FINE_SUCCESS = 0;
 	
 	
 	

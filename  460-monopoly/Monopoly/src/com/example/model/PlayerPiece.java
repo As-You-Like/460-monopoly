@@ -1,17 +1,19 @@
 package com.example.model;
 
+import com.example.controllers.Player;
+
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 public class PlayerPiece extends MobileUnit {
 	Tile currentTile = null;
 	
-	public PlayerPiece (Tile startPosition){
+	public PlayerPiece (Tile startPosition, int owner){
 		//initialize variables
+		super(startPosition.getPosition(), owner, 10);
 		currentTile = startPosition;
-		
-		//spawn the payer piece at the center of the starting hexagon
-		this.setPosition(startPosition.getPosition());
 		
 		//tell the hexagon it has a new unit
 		currentTile.addVisitor(this);
@@ -36,12 +38,15 @@ public class PlayerPiece extends MobileUnit {
 		}
 		//tell the new tile that it has gained a unit
 		tile.addVisitor(this);
+		Log.e("moving", "Tile: (" + tile.getHexX() + ", " + tile.getHexY() + ")");
 		
 		//set the new tile as the current one
 		currentTile = tile;
 	}
 	
-	public void paint(Canvas c, Paint p){
+	public void draw(Canvas c, Paint p){
+		p.setColor(Player.entities[this.getOwner()].getColor());
 		c.drawCircle((float)this.getPosition().x, (float)this.getPosition().y, (float)this.radius, p); 
+		p.setColor(Color.BLACK);
 	}
 }

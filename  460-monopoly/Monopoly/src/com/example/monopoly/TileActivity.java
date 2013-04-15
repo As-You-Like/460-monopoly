@@ -1,5 +1,9 @@
 package com.example.monopoly;
 
+import com.example.bluetooth.Message;
+import com.example.controllers.HostDevice;
+import com.example.model.Tile;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,6 +20,7 @@ public class TileActivity extends Activity {
 	static final int PURCHASE = 0;
 	static final int UPDATE = 1;
 	static final int PAYFREE = 2;
+	static final int UNOWNABLE = 2;
 	
 	int type; // 0:Purchase, 1:Update, 2:Pay Free
 	int isOwned; // -1:noboy owns, 0:somebody owns
@@ -29,12 +34,16 @@ public class TileActivity extends Activity {
 	TextView txtNotice;
 	Button btnPurchase;
 	Button btnEndTurn;
+	
+	public static TileActivity activity;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tile);
+		
+		activity = this;
 
 		image = (ImageView) findViewById(R.id.image);
 		txtLandedOn = (TextView) findViewById(R.id.txt_landedon);
@@ -49,21 +58,7 @@ public class TileActivity extends Activity {
 		final int image_resId = R.drawable.sample_house; // R.drawable.sample_hotel;
 		setLandInfo(image_resId, "Slade Hall", "$500", "Ultraman Dorms", "Not Owned", "0/5");
 		
-		/** Set land' status */ 
-		isOwned = -1;
-		isMine = true;
 		
-		
-		if (isOwned == -1) {
-			type = PURCHASE;
-			btnPurchase.setText("Purchase");
-		} else if (isMine) {
-			type = UPDATE;
-			btnPurchase.setText("Update");
-		} else {
-			type = PAYFREE;
-			btnPurchase.setText("Pay Free");
-		}
 		
 		// Purchase Button Clicked
 		btnPurchase.setOnClickListener(new OnClickListener() {
@@ -74,7 +69,7 @@ public class TileActivity extends Activity {
 					purchase();
 					break;
 				case UPDATE:
-					update();
+					upgrade();
 					break;
 				case PAYFREE:
 					payfree();
@@ -88,27 +83,53 @@ public class TileActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				HostDevice.host.sendMessage(Message.TILE_ACTIVITY_END_TURN, "");
+				CommandCardActivity.activity.tabBar.setCurrentTab(CommandCardActivity.TAB_HOME);
+				CommandCardActivity.activity.tabBar.getTabWidget().getChildTabViewAt(CommandCardActivity.TAB_TURN).setVisibility(View.VISIBLE);
+				CommandCardActivity.activity.tabBar.getTabWidget().getChildTabViewAt(CommandCardActivity.TAB_TILE).setVisibility(View.GONE);
+				CommandCardActivity.activity.tabBar.getTabWidget().getChildTabViewAt(CommandCardActivity.TAB_TURN).setEnabled(false);
 			}
 		});
+	}
+	
+	public void setPurchaseButtonStatus(int isOwned, boolean isMine){
+		/** Set land' status */ 
+		this.isOwned = isOwned;
+		this.isMine = isMine;
+		
+		btnPurchase.setVisibility(View.VISIBLE);
+		if (this.isOwned == -1) {
+			type = PURCHASE;
+			btnPurchase.setText("Purchase");
+		} else if (this.isMine) {
+			type = UPDATE;
+			btnPurchase.setText("Update");
+		} else {
+			if (isOwned == Tile.OWNER_UNOWNABLE){
+				type = UNOWNABLE;
+				btnPurchase.setVisibility(View.INVISIBLE);
+			} else {
+				type = PAYFREE;
+				btnPurchase.setText("Pay Free");
+			}
+			
+		}
 	}
 	
 	
 	// TODO purchase
 	private void purchase(){
-		createToast("Successfully purchased");
-		createAlert("Successfully purchased");
+		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_PURCHASE_PROPERTY, "");
 	}
 	
 	// TODO update
-	private void update(){
-		createToast("Successfully updated");
-		createAlert("Successfully updated");
+	private void upgrade(){
+		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, "");
 	}
 	
 	// TODO payfree
 	private void payfree(){
-		createToast("Successfully payfree");
-		createAlert("Successfully payfree");
+		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_PAY_RENT, "");
 	}
 
 	

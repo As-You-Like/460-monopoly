@@ -75,6 +75,14 @@ public class Tile extends StaticUnit {
 		this.drawAnchor = p;
 	}
 	
+	public int getHexX(){
+		return hexX;
+	}
+	
+	public int getHexY(){
+		return hexY;
+	}
+	
 	public Tile[] getForkTiles(){
 		return this.nextStops.toArray(new Tile[]{});
 	}
@@ -210,7 +218,7 @@ public class Tile extends StaticUnit {
 		double angle = 360D / this.visitors.size();
 		for(int i=0; i<this.visitors.size(); i++){
 			MobileUnit unit = this.visitors.get(i);
-			unit.move(unit.getPosition().getPolarOffset(Tile.DEFAULT_POLAROFFSET, angle*i));
+			unit.move(this.getPosition().getPolarOffset(Tile.DEFAULT_POLAROFFSET, angle*i));
 		}
 	}
 	

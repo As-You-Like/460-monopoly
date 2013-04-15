@@ -19,6 +19,7 @@ public class Die extends ScreenUnit {
 	private static Die[] dice;
 	private static int currentPlayer = -1;
 	public static int doubleCount = 0;
+	private static int currentTurn = 0;
 	
 	private static boolean timerReset;
 	
@@ -58,9 +59,7 @@ public class Die extends ScreenUnit {
 		//GAME THREAD CODE GOES HERE FOR RESUMING GAME AFTER DICE ROLL
 		Log.e(null, "Dietest7");
 		//GameThread.gt.resume();
-		synchronized(GameThread.gt){
-			GameThread.gt.notifyAll();
-		}
+		GameThread.gt.awaken();
 		
 		Log.e(null, "Dietest8");
 	}
@@ -72,8 +71,8 @@ public class Die extends ScreenUnit {
 	public static void roll(){
 		
 		//reset double count if the player has changed
-		if (currentPlayer != Game.currentPlayer) {
-			currentPlayer = Game.currentPlayer;
+		if (currentTurn != Game.turn) {
+			currentTurn = Game.turn;
 			doubleCount = 0;
 		}
 		
@@ -111,7 +110,7 @@ public class Die extends ScreenUnit {
 	public static int getTotalValue(){
 		int value = 0;
 		for (int i = 0; i<diceCount; i++){
-			value += dice[i].value;
+			value += dice[i].value+1;
 		}
 		return value;
 	}

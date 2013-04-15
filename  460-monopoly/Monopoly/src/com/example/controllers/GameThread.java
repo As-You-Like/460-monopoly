@@ -99,7 +99,7 @@ public class GameThread extends Thread{
 				int forkChoice = Integer.parseInt(message.substring(0,1));
 				Tile[] forks = Player.entities[Game.currentPlayer].getPiece().getCurrentTile().getForkTiles();
 				Player.entities[Game.currentPlayer].getPiece().move(forks[forkChoice]);
-				GameThread.gt.resume();
+				GameThread.gt.awaken();
 			}
 
 		});
@@ -113,7 +113,7 @@ public class GameThread extends Thread{
 
 			@Override
 			public void processMessage(int sender, int reciever, String message) {
-				GameThread.gt.resume();
+				GameThread.gt.awaken();
 			}
 
 		});
@@ -131,6 +131,7 @@ public class GameThread extends Thread{
 				// Assumes that currentPlayer has enough money (handled by TileActivity)
 				Player.entities[Game.currentPlayer].subBalance(Player.entities[Game.currentPlayer].getPiece().getCurrentTile().getPrice());
 				Player.entities[Game.currentPlayer].getPiece().getCurrentTile().setOwner(Game.currentPlayer);
+				Device.player[Game.currentPlayer].sendMessage(Message.PURCHASE_SUCCESS, "");
 			}
 
 		});
@@ -182,6 +183,16 @@ public class GameThread extends Thread{
 		this.setUpBoard();
 		Game.instance.determinePlayerTurnOrder();
 		
+		//Wait 2 seconds to allow the phones to catch up
+		synchronized (this){
+			try {
+				this.wait(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		while(Game.gameWon == false){
 			/**
 			 * Note: reset all global variables you use between turns (to avoid raw data of one turn interfering with another turn)
@@ -190,69 +201,21 @@ public class GameThread extends Thread{
 			
 				// Dice Roll Subphase
 			
-					/**
-					 * Figure out whose turn it is
-					 */
+					//Figure out who's turn it is
 					Game.instance.determineCurrentTurnPlayer();
 			
-					/**
-					 * Home tab overrided
-					 */
+					//Override Home Tab
 					this.startSubTurn();
-			
-					/**
-					 * Make dice screen show up
-					 */
-					//Done in player device (probably TurnActivity)
-			
-					/**
-					 * Sleep
-					 */
-					this.sleepGameThread();
+					
 					
 				
 				// Player Movement Subphase
+				this.startMovementPhase();
 			
-					/**
-					 * Process dice roll
-					 */
-			
-					/**
-					 * Send out movement values
-					 */
-			
-					/**
-					 * If fork,
-					 * 		tell TurnActivity to initiate fork popup
-					 * 		sleep
-					 */
-			
-					/**
-					 * Movement stops on tile
-					 */
-					this.startMovementPhase();
-			
-			// Decision Phase
-			
-				/**
-				 * Adjust player variables
-				 */
-			
-				/**
-				 * Adjust tile variables
-				 */
-			
-				/*
-				 * Initiate TileActivity
-				 */
-			
-				/**
-				 * Sleep
-				 */
-					this.startDecisionPhase();
+				// Decision Phase
+				this.startDecisionPhase();
 			
 			// Conclusion Phase
-			
 				/**
 				 * End turn
 				 * If necessary, update turn and subturn counts
@@ -274,7 +237,9 @@ public class GameThread extends Thread{
 	
 	public void setUpBoard(){
 		for(int i = 0; i < Player.entities.length; i++){
-			Player.entities[i].setPiece(new PlayerPiece(Tile.entity[3][3]));
+			if (Player.entities[i] != null){
+				Player.entities[i].setPiece(new PlayerPiece(Tile.entity[3][3], i));
+			}
 		}
 	}
 	
@@ -305,7 +270,7 @@ public class GameThread extends Thread{
 	}*/
 	
 	public void startSubTurn(){
-		Device.player[Game.instance.currentPlayer].sendMessage(Message.START_PLAYER_TURN, "");
+		Device.player[Game.currentPlayer].sendMessage(Message.START_PLAYER_TURN, "");
 	}
 	
 	public synchronized void sleepGameThread(){
@@ -318,24 +283,46 @@ public class GameThread extends Thread{
 		};
 	}
 	
+	public synchronized void awaken(){
+		GameThread.gt.notifyAll();
+	}
+	
 	public void startMovementPhase(){
+		boolean isDouble = false;
 		do{
+			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
+			this.sleepGameThread();
+			Log.e("MovementPhase", "Execution");
 			if(Die.doubleCount < 3){
+				//get the player piece
 				PlayerPiece currentPlayerPiece = Player.entities[Game.currentPlayer].getPiece();
+				
+				//calculate how much to move
 				int spaceMovementDistance = Die.getTotalValue();
+				
+				//create tracker for how much player has moved
 				int spacesMoved = 0;
+				
+				//get the current location of the player
 				Tile tileLocation = currentPlayerPiece.getCurrentTile();
+				
+				//create tracker for the new location of the player
 				Tile newTileLocation;
 //				int tileLocation = PlayerEntity.getPlayer(currentTurnPlayer).getCurrentLocation();
 //				int newTileLocation;
 				
 				while(spacesMoved != spaceMovementDistance){
-					spacesMoved++;
+					
 					tileLocation = currentPlayerPiece.getCurrentTile();
 					if(tileLocation.hasFork()){
 						Tile[] forks = tileLocation.getForkTiles();
-						Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
-						this.sleepGameThread();
+						
+						//temporary random movement code until DecisionActivity is ready
+						newTileLocation = forks[(int) (Math.random()*forks.length)];
+						currentPlayerPiece.move(newTileLocation);
+						
+						//Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
+						//this.sleepGameThread();
 						// DecisionActivity awakens GameThread
 	
 					}
@@ -343,12 +330,11 @@ public class GameThread extends Thread{
 						newTileLocation = tileLocation.getNextStop();
 						currentPlayerPiece.move(newTileLocation);
 					}
-
+					spacesMoved++;
 				}
 			}
-			
-		}
-			while(Die.isDouble() && (Die.doubleCount < 3));
+			isDouble = Die.isDouble();
+		}while(isDouble && (Die.doubleCount < 3));
 		
 	}
 	
@@ -377,7 +363,7 @@ public class GameThread extends Thread{
 		/**
 		 * Update Entity classes
 		 */
-		
+		Log.e("ConclusionPhase", "Check Defeat");
 		//Check defeat condition
 		if(Player.entities[Game.currentPlayer].getBalance() <= 0){
 			Player.entities[Game.currentPlayer].setLost(true);
@@ -388,10 +374,12 @@ public class GameThread extends Thread{
 			
 			//Check victory condition
 			if(Game.numberOfPlayersRemaining == 1){
+				Log.e("ConclusionPhase", "GameWon = true");
 				Game.gameWon = true;
 			}
 		}
 		
+		Log.e("ConclusionPhase", "Check gameWon != true");
 		if(Game.gameWon != true){
 			
 			//Decide who is next
