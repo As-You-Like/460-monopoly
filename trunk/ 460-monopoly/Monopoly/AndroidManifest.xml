@@ -92,6 +92,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.example.monopoly.TileActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.example.monopoly.TurnActivity"
             android:label="@string/title_activity_turn" >
         </activity>

@@ -2,6 +2,7 @@ package com.example.model;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 
 public class MobileUnit extends Unit { 
 	
@@ -52,6 +53,39 @@ public class MobileUnit extends Unit {
 	
 	public double getMoveSpeed(){
 		return this.moveSpeed;
+	}
+	
+	public void update(){
+		//Movement
+		if (moving){
+			Log.e("update", "moving");
+			
+			//temporary instant teleport code
+			this.setPosition(this.targetPoint);
+			this.moving = false;
+			// ================== DISABLED MOVEMENT CODE DUE TO INNACURACIES
+			/*Point tmpCurrent;
+			Point tmpTarget;
+			
+			synchronized (this){
+				tmpCurrent = this.getPosition();
+				tmpTarget = this.targetPoint;
+			}
+			
+			double angle = tmpCurrent.getAngle(tmpTarget);
+			double distance = tmpCurrent.getDistance(tmpTarget);
+			
+			double displacement;
+			if (distance < this.moveSpeed){
+				displacement = distance;
+				this.moving = false;
+			} else {
+				displacement = this.moveSpeed;
+			}
+			
+			Point newPosition = tmpCurrent.getPolarOffset(displacement, angle);
+			this.setPosition(newPosition);*/
+		}
 	}
 	
 	@Override

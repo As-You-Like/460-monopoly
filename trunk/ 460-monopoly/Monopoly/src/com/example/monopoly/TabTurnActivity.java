@@ -12,22 +12,35 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class TabTurnActivity extends Activity { 
-
+	
+	public static TabTurnActivity activity;
+	Button btnTurn;
+	TextView txtYourTurn;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_tab_turn);
 		
-		Button btnButton = (Button)findViewById(R.id.btnRoll); 
-		btnButton.setOnClickListener(new OnClickListener(){
+		activity = this;
+		
+		txtYourTurn = (TextView)findViewById(R.id.txtYourTurn);
+		txtYourTurn.setText("It's your turn");
+		
+		btnTurn = (Button)findViewById(R.id.btnRoll); 
+		btnTurn.setVisibility(View.INVISIBLE);
+		btnTurn.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				HostDevice.host.sendMessage(Message.MOVEMENT_DICE_ROLL, "");
+				btnTurn.setVisibility(View.INVISIBLE);
+				txtYourTurn.setText("Please Wait");
 			}
 			
 		});

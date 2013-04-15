@@ -19,4 +19,24 @@ public class Point {
 		p.y = p.y + distance + Math.sin(Math.toRadians(angle));
 		return p;
 	}
+	
+	public double getDistance(Point target){
+		//get differences
+		double x = this.x - target.x;
+		double y = this.y - target.y;
+		
+		//square the differences
+		x *= x;
+		y *= y;
+		
+		//do the square root
+		return Math.sqrt(x + y);
+	}
+	
+	public double getAngle(Point target){
+		double deltaX = target.x - this.x;
+		double deltaY = target.y - this.y;
+		
+		return Math.atan2(deltaX, deltaY) * (180D/Math.PI);
+	}
 }

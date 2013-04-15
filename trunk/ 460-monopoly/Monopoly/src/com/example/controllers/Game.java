@@ -62,8 +62,19 @@ public class Game extends TimerTask{
 
 	@Override
 	public void run() {
+		if (MapActivity.activity == null) return;
+		
 		ms += 20;
-		Log.e(null, "test");
+		Unit[] tmp;
+		synchronized (Unit.entity){
+			tmp = Unit.entity.toArray(new Unit[]{});
+		}
+		for (Unit u : tmp){
+			if (u instanceof MobileUnit){
+				MobileUnit mu = (MobileUnit)u;
+				mu.update();
+			}
+		}
 		Game.mHandler.obtainMessage().sendToTarget();
 	}
 	
