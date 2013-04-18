@@ -1,0 +1,269 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical"
+    tools:context=".UpgradeActivity" >
+
+    <LinearLayout
+        android:id="@+id/layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_weight="0.1"
+        android:background="#484848"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/txt_cash"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#363636"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Cash : $4,500"
+            android:textColor="#9ee02b" />
+
+        <TextView
+            android:id="@+id/txt_rent"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#4d4d4d"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Rent : $500"
+            android:textColor="#9ee02b" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_top"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/txt_region"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#2f400b"
+            android:gravity="center_horizontal|center_vertical"
+            android:padding="5dp"
+            android:text="Region Name : Freshman Dorms"
+            android:textColor="#9ee02b"
+            android:textSize="17dp" />
+
+        <TextView
+            android:id="@+id/txt_slade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_region"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:text="Slade Upgrades :"
+            android:textColor="#9ee02b"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/layout_slade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_slade"
+            android:layout_marginLeft="15dp" >
+
+            <TextView
+                android:id="@+id/txt_electical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/btn_electical"
+                android:layout_marginLeft="10dp"
+                android:text="Electical"
+                android:textColor="#9ee02b" />
+
+            <TextView
+                android:id="@+id/txt_plumbing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/btn_plumbing"
+                android:layout_below="@+id/txt_electical"
+                android:layout_marginLeft="10dp"
+                android:text="Plumbing"
+                android:textColor="#9ee02b" />
+
+            <TextView
+                android:id="@+id/txt_vending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/btn_vending"
+                android:layout_below="@+id/txt_plumbing"
+                android:layout_marginLeft="10dp"
+                android:text="Vending Machines "
+                android:textColor="#9ee02b" />
+
+            <TextView
+                android:id="@+id/txt_hvac"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/btn_hvac"
+                android:layout_below="@+id/txt_vending"
+                android:layout_marginLeft="10dp"
+                android:text="HVAC"
+                android:textColor="#9ee02b" />
+
+            <Button
+                android:id="@+id/btn_electical"
+                android:layout_width="80dp"
+                android:layout_height="33dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:text="$3000"
+                android:onClick="clickEventElectical"
+                android:textColor="#9ee02b"
+                android:textSize="13dp" />
+
+            <Button
+                android:id="@+id/btn_plumbing"
+                android:layout_width="80dp"
+                android:layout_height="33dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/btn_electical"
+                android:layout_marginRight="20dp"
+                android:text="$500"
+                android:onClick="clickEventPlumbing"
+                android:textColor="#9ee02b"
+                android:textSize="13dp" />
+
+            <Button
+                android:id="@+id/btn_vending"
+                android:layout_width="80dp"
+                android:layout_height="33dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/btn_plumbing"
+                android:layout_marginRight="20dp"
+                android:text="$1100"
+                android:onClick="clickEventVending"
+                android:textColor="#9ee02b"
+                android:textSize="13dp" />
+
+            <Button
+                android:id="@+id/btn_hvac"
+                android:layout_width="80dp"
+                android:layout_height="33dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/btn_vending"
+                android:onClick="clickEventHvac"
+                android:layout_marginRight="20dp"
+                android:text="$700"
+                android:textColor="#9ee02b"
+                android:textSize="13dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_center"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/txt_newrent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_region"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:text="New Rent :"
+            android:textColor="#9ee02b"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/layout_rent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_newrent"
+            android:layout_marginLeft="15dp" >
+
+            <TextView
+                android:id="@+id/txt_rent_electical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Electical"
+                android:textColor="#9ee02b" />
+
+            <TextView
+                android:id="@+id/txt_rent_plumbing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_rent_electical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="Plumbing"
+                android:textColor="#9ee02b" />
+
+            <TextView
+                android:id="@+id/txt_rent_vending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_rent_plumbing"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="Vending Machines "
+                android:textColor="#9ee02b" />
+
+            <TextView
+                android:id="@+id/txt_rent_hvac"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_rent_vending"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="HVAC"
+                android:textColor="#9ee02b" />
+
+            <TextView
+                android:id="@+id/txt_value_electical"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:text="$500"
+                android:textColor="#9ee02b" />
+
+            <TextView
+                android:id="@+id/txt_value_plumbing"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/txt_rent_electical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="$1100"
+                android:textColor="#9ee02b" />
+
+            <TextView
+                android:id="@+id/txt_value_vending"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/txt_rent_plumbing"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="$200"
+                android:textColor="#9ee02b" />
+
+            <TextView
+                android:id="@+id/txt_value_hvac"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/txt_rent_vending"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="$3300"
+                android:textColor="#9ee02b" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>
