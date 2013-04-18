@@ -27,6 +27,8 @@
         android:id="@+id/layoutBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
         android:layout_below="@+id/imageDecision" >
 
         <Button
@@ -35,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="clickEventLeft"
-            android:text="Left"
+            android:text="Left : City"
             android:textColor="#e0e0e0" />
 
         <Button
@@ -44,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="clickEventRight"
-            android:text="Right"
+            android:text="Right : City"
             android:textColor="#e0e0e0" />
     </LinearLayout>
 
