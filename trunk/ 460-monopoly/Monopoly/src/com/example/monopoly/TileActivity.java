@@ -35,6 +35,11 @@ public class TileActivity extends Activity {
 	Button btnPurchase;
 	Button btnEndTurn;
 	
+	//remembers how many properties are owned in the region
+	//this is here for property count updating purposes when properties are purchased
+	public int count;
+	public int totalCount;
+	
 	public static TileActivity activity;
 
 
@@ -54,9 +59,9 @@ public class TileActivity extends Activity {
 		btnPurchase = (Button) findViewById(R.id.btn_left);
 		btnEndTurn = (Button) findViewById(R.id.btn_right);
 
-		/** Set view' contents */
+		/** Set view' contents */ 
 		final int image_resId = R.drawable.sample_house; // R.drawable.sample_hotel;
-		setLandInfo(image_resId, "Slade Hall", "$500", "Ultraman Dorms", "Not Owned", "0/5");
+		//setLandInfo(image_resId, "Slade Hall", "$500", "Ultraman Dorms", "Not Owned", "0/5");
 		
 		
 		
@@ -103,7 +108,7 @@ public class TileActivity extends Activity {
 			btnPurchase.setText("Purchase");
 		} else if (this.isMine) {
 			type = UPDATE;
-			btnPurchase.setText("Update");
+			btnPurchase.setText("Upgrade");
 		} else {
 			if (isOwned == Tile.OWNER_UNOWNABLE){
 				type = UNOWNABLE;
@@ -133,13 +138,15 @@ public class TileActivity extends Activity {
 	}
 
 	
-	public void setLandInfo(int res, String landed, String value, String region, String status, String count) {
+	public void setLandInfo(int res, String landed, String value, String region, String status, int count, int countTotal) {
 		image.setImageResource(res);
 		txtLandedOn.setText("Landed On : " + landed);
 		txtValue.setText("Value : " + value);
 		txtRegion.setText("Region : " + region);
 		txtStatus.setText("Status : " + status);
-		txtNotice.setText("You Own " + count + " Properties in This Region");
+		txtNotice.setText("You Own " + count + "/" + countTotal + " Properties in This Region");
+		this.count = count;
+		this.totalCount = countTotal;
 	}
 
 	

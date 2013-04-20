@@ -1,5 +1,8 @@
 package com.example.monopoly;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.Context;
@@ -62,6 +65,8 @@ public class CommandCardActivity extends TabActivity {
 			public void processMessage(int sender, int reciever, String message) {
 				CommandCardActivity.activity.createAlert("You have succesfully purchased the property");
 				TileActivity.activity.setPurchaseButtonStatus(PlayerDevice.currentPlayer, true);
+				TileActivity.activity.count++;
+				TileActivity.activity.txtNotice.setText("You Own " + TileActivity.activity.count + "/" + TileActivity.activity.totalCount + " Properties in This Region");
 				
 			}
 		});
@@ -147,17 +152,53 @@ public class CommandCardActivity extends TabActivity {
 			@Override
 			public void processMessage(int sender, int reciever, String message) {
 				// TODO Auto-generated method stub
-				tabBar.getTabWidget().getChildTabViewAt(TAB_TURN).setVisibility(View.GONE);
-				tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.VISIBLE);
-				tabBar.setCurrentTab(TAB_TILE);
+				String tileName = "";
+				int tileOwner = 0;
+				String tileOwnerName = "";
+				double tilePrice = 0D;
+				String regionName = "";
+				int regionTileCount = 0;
+				int regionOwnedTileCount = 0;
+				double currentBalance = 0;
+				JSONObject obj = null;
+        		try {
+					obj = new JSONObject(message);
+				} catch (JSONException e) {
+					Log.e("Message.START_TILE_ACTIVITY", "JSON IS NULL");
+					obj = null;
+				}
+        		if (obj != null){
+        			tabBar.getTabWidget().getChildTabViewAt(TAB_TURN).setVisibility(View.GONE);
+    				tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.VISIBLE);
+    				tabBar.setCurrentTab(TAB_TILE);
+    				
+    				try {
+    					tileName = obj.getString("tileName");
+						tileOwner = obj.getInt("tileOwner");
+						tileOwnerName = obj.getString("tileOwnerName");
+						tilePrice = obj.getDouble("tilePrice");
+						regionName = obj.getString("regionName");
+						regionTileCount = obj.getInt("regionTileCount");
+						regionOwnedTileCount = obj.getInt("regionOwnedTileCount");
+						currentBalance = obj.getDouble("currentBalance");
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        		}
 				
-				int tileOwner = Integer.parseInt(message);
+				
+        		TileActivity.activity.btnPurchase.setEnabled(true);
 				if (tileOwner == Tile.OWNER_NEUTRAL){
 					//if nobody owns it
 					TileActivity.activity.setPurchaseButtonStatus(tileOwner, false);
+					if (currentBalance < tilePrice){
+						TileActivity.activity.btnPurchase.setEnabled(false);
+					}
 				} else if (tileOwner == Tile.OWNER_UNOWNABLE){
 					//if the tile cannot be owned
 					TileActivity.activity.setPurchaseButtonStatus(tileOwner, false);
+					TileActivity.activity.btnPurchase.setEnabled(false);
 				} else {
 					//if somebody owns it
 					if (tileOwner == PlayerDevice.currentPlayer){
@@ -168,14 +209,16 @@ public class CommandCardActivity extends TabActivity {
 						TileActivity.activity.setPurchaseButtonStatus(tileOwner, false);
 					}
 				}
+				
+				TileActivity.activity.setLandInfo(R.drawable.sample_house, tileName, ""+tilePrice, regionName, "Owned by " + tileOwnerName, regionOwnedTileCount, regionTileCount);
 			}
 			
 		});
 		
-		if (isTablet(this)) { // isTablet : Move to MapActivty
+		/*if (isTablet(this)) { // isTablet : Move to MapActivty
 			Intent i = new Intent(this, MapActivity.class);
 			startActivity(i);
-		}
+		}*/
 		
 		setTab();
 		

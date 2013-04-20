@@ -1,5 +1,8 @@
 package com.example.controllers;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.util.Log;
 
 import com.example.bluetooth.Bluetooth;
@@ -216,6 +219,7 @@ public class GameThread extends Thread{
 				this.startDecisionPhase();
 			
 			// Conclusion Phase
+				this.startConclusionPhase();
 				/**
 				 * End turn
 				 * If necessary, update turn and subturn counts
@@ -339,8 +343,41 @@ public class GameThread extends Thread{
 	}
 	
 	public void startDecisionPhase(){
-		int tileOwner = Player.entities[Game.currentPlayer].getPiece().getCurrentTile().getOwner();
-		Device.player[Game.currentPlayer].sendMessage(Message.START_TILE_ACTIVITY, "" + tileOwner);
+		//Gather tile data
+		Tile currentTile = Player.entities[Game.currentPlayer].getPiece().getCurrentTile();
+		String tileName = currentTile.getName();
+		int tileOwner = currentTile.getOwner();
+		String tileOwnerName = "";
+		if (tileOwner != Tile.OWNER_NEUTRAL && tileOwner != Tile.OWNER_UNOWNABLE){
+			tileOwnerName = Player.entities[currentTile.getOwner()].getName();
+		} 
+		double tilePrice = currentTile.getPrice();
+		int region = currentTile.getRegion();
+		String regionName = Tile.REGION_NAMES[region];
+		int regionTileCount = Tile.getTileCountInRegion(region);
+		int regionOwnedTileCount = Tile.getTileCountOwnedByPlayerInRegion(region, Game.currentPlayer);
+		
+		//create a JSON string out of the data above
+		JSONObject map = new JSONObject();
+		try {
+			map.put("tileName", tileName);
+			map.put("tileOwner", tileOwner);
+			map.put("tileOwnerName", tileOwnerName);
+			map.put("tilePrice", tilePrice);
+			map.put("regionName", regionName);
+			map.put("regionTileCount", regionTileCount);
+			map.put("regionOwnedTileCount", regionOwnedTileCount);
+			map.put("currentBalance", Player.entities[Game.currentPlayer].getBalance());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} 
+		
+		String json = map.toString();
+		
+		//Send message
+		Device.player[Game.currentPlayer].sendMessage(Message.START_TILE_ACTIVITY, json);
+		
+		//Sleep the thread
 		this.sleepGameThread();
 		//TileActivity awakens GameThread
 		
@@ -375,7 +412,7 @@ public class GameThread extends Thread{
 			//Check victory condition
 			if(Game.numberOfPlayersRemaining == 1){
 				Log.e("ConclusionPhase", "GameWon = true");
-				Game.gameWon = true;
+				//Game.gameWon = true;
 			}
 		}
 		
