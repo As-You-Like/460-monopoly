@@ -26,9 +26,11 @@ import com.example.monopoly.PanAndZoomListener.Anchor;
 public class MapActivity extends Activity { 
 	
 	public static MapActivity activity;
-	CircleView c;
+	public CircleView c;
 	public static Resources resources;
+	public Canvas canvas= new Canvas();
 	public FrameLayout view;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,28 +58,19 @@ public class MapActivity extends Activity {
 		//Toast.makeText(this, "This is Map!!", Toast.LENGTH_SHORT).show();
 		
 		
-		long downTime = 1000;
-		long eventTime = 1100;
-		float x = 0.0f;
-		float y = 0.0f;
-		int metaState = 0;
-		MotionEvent motionEvent = MotionEvent.obtain(
-		    downTime, 
-		    eventTime, 
-		    MotionEvent.ACTION_UP, 
-		    x, 
-		    y, 
-		    metaState
-		);
 		
-		PanAndZoomListener testing = new PanAndZoomListener(view, c, Anchor.TOPLEFT);
+		//PanAndZoomListener testing = new PanAndZoomListener(view, c, Anchor.TOPLEFT);
 		
-		testing.onTouch(view, motionEvent);
+		//testing.onTouch(view, motionEvent);
 		
 		
 		
 		
-		GameThread.gt.start();
+		
+	
+		
+		
+		//GameThread.gt.start();
 		
 
 	}
@@ -87,7 +80,10 @@ public class MapActivity extends Activity {
 		//Log.e(null, "MapActivity");
 		super.onStart();
 		view.setOnTouchListener(new PanAndZoomListener(view, c, Anchor.TOPLEFT));
-		//view.postInvalidate();
+
+		//onTouch(c, motionEvent);
+		
+		
 	}
 	
 	/*public void drawOnCanvas (Canvas canvas) {

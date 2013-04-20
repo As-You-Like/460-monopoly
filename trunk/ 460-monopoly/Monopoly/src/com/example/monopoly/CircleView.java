@@ -26,15 +26,18 @@ public class CircleView extends PanZoomView {
  */
 public CircleView (Context context) {
     super (context);
+    Log.d(null, "CircleView Constructor1");
 }
 
 public CircleView (Context context, AttributeSet attrs) {
     super (context, attrs);
+    Log.d(null, "CV Constructor2");
    
 }
 
 public CircleView (Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
+    Log.d(null, "CV Constructor3");
 
 }
 
@@ -49,10 +52,13 @@ public CircleView (Context context, AttributeSet attrs, int defStyle) {
 
 public void drawOnCanvas (Canvas canvas) {
 	//Ensure it doesn't attempt to render before MapActivity is ready
+	
+	Log.d(null, "CV drawOnCanvas");
+	
 	if (MapActivity.activity == null){
 		return;
 	}
-	
+
 	//Initialize paint
     Paint paint = new Paint();
     //paint.setColor(Color.BLUE);
@@ -61,14 +67,17 @@ public void drawOnCanvas (Canvas canvas) {
     Unit[] tmp;
     synchronized (Unit.entity){
     	tmp = Unit.entity.toArray(new Unit[]{});
+    	
     }
     //canvas.drawText("Unit Count: " + tmp.length, 0, 0, paint);
     for (Unit u : tmp){
     	u.draw(canvas, paint);
+    	
     }
     
+    this.invalidate();
    // Log.e(null, "CircleView drawOnCanvas");
-    
+	//super.onDraw(canvas);
     
 
 }
@@ -82,7 +91,8 @@ public void drawOnCanvas (Canvas canvas) {
  */
 
 public int sampleDrawableId () {
-    return 0;
+	  Log.d(null, "CV.sampleDrawableID");
+	return 0;
 }
 
 /**
@@ -92,7 +102,8 @@ public int sampleDrawableId () {
  */
 
 public boolean supportsPan () {
-    return true;
+	  Log.d(null, "Cv.supportsPan");
+	return true;
 }
 
 /**
@@ -102,7 +113,8 @@ public boolean supportsPan () {
  */
 
 public boolean supportsScaleAtFocusPoint () {
-    return true;
+	  Log.d(null, "CV.supportsScaleAtFocusPoint");
+	return true;
 }
 
 /**
@@ -112,7 +124,10 @@ public boolean supportsScaleAtFocusPoint () {
  */
 
 public boolean supportsZoom () {
-    return true;
+	  Log.d(null, "CV.supportsZooms");
+	return true;
 }
+
+
 
 } // end class
