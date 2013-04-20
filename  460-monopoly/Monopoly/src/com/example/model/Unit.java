@@ -142,7 +142,7 @@ public abstract class Unit {
 
 	public LightingColorFilter getOwnerColorFilter() {
 		if (colorFilter == null){
-			Log.e("Undefined Value", "A unit was not assigned an owner");
+			//Log.e("Undefined Value", "A unit was not assigned an owner");
 			return new LightingColorFilter(Color.BLACK, 1);
 			
 		}

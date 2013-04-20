@@ -2,6 +2,9 @@ package com.example.monopoly;
 
 
 
+import com.example.monopoly.PanAndZoomListener.Anchor;
+import com.example.monopoly.PanAndZoomListener.PanZoomCalculator;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -58,17 +61,27 @@ protected boolean mSupportsScaleAtFocus = true;
  */
 public PanZoomView (Context context) {
     this(context, null, 0);
+    Log.d(null, "PZV Constructor1");
 }
 
 public PanZoomView (Context context, AttributeSet attrs) {
     this(context, attrs, 0);
+    Log.d(null, "PZV Constructor2");
 }
 
 public PanZoomView (Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
+    
+    Log.d(null, "PZV Constructor3");
     mContext = context;
     setupToDraw (context, attrs, defStyle);
     setupScaleDetector (context, attrs, defStyle);
+    
+    //PanZoomCalculator calc = new PanZoomCalculator(MapActivity.activity.view, this, Anchor.TOPLEFT);
+    
+	//calc.doPan(mPosX0, mPosY0);
+	
+    
 }
 
 /**
@@ -79,6 +92,7 @@ public PanZoomView (Context context, AttributeSet attrs, int defStyle) {
 public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
     // Raw height and width of image
+	  Log.d(null, "PZV.calculateInSampleSize");
     final int height = options.outHeight;
     final int width = options.outWidth;
     int inSampleSize = 1;
@@ -100,6 +114,7 @@ public static int calculateInSampleSize(
 public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
         int reqWidth, int reqHeight) {
 
+	  Log.d(null, "PZV.decodeSampledBitmapFromResource");
     // First decode with inJustDecodeBounds=true to check dimensions
     final BitmapFactory.Options options = new BitmapFactory.Options();
     options.inJustDecodeBounds = true;
@@ -123,6 +138,7 @@ public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
  */
 
 public void drawOnCanvas (Canvas canvas) {
+	Log.d(null, "PZV.drawOnCanvas");
     mSampleImage.draw(canvas);
     Log.e(null, "PanAndZoomView drawOnCanvas");
 }
@@ -133,6 +149,8 @@ public void drawOnCanvas (Canvas canvas) {
  */
 @Override public void onDraw(Canvas canvas) {
     super.onDraw(canvas);
+    
+    Log.d(null, "PZV.onDraw");
     
    // Log.e(null, "PanAndZoomView onDraw()");
     canvas.save();
@@ -184,6 +202,7 @@ public void drawOnCanvas (Canvas canvas) {
 
 @Override public boolean onTouchEvent(MotionEvent ev) {
 
+	Log.d(null, "PZV.onTouchEvent");
     // If we are not supporting either zoom or pan, return early.
     if (!mSupportsZoom && !mSupportsPan) return false;
 
@@ -263,7 +282,8 @@ public void drawOnCanvas (Canvas canvas) {
  */
 
 public int sampleDrawableId () {
-    return DefaultDrawableId;
+	Log.d(null, "PZV.sampleDrawableId");
+	return DefaultDrawableId;
 }
 
 /**
@@ -274,6 +294,7 @@ public int sampleDrawableId () {
 
 protected void setupScaleDetector (Context context, AttributeSet attrs, int defStyle) {
     // Create our ScaleGestureDetector
+	Log.d(null, "PZV.setupScaleDetector");
     mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 }
 
@@ -287,6 +308,7 @@ protected void setupScaleDetector (Context context, AttributeSet attrs, int defS
  */
 
 protected void setupToDraw (Context context, AttributeSet attrs, int defStyle) {
+	Log.d(null, "PZV.setupToDraw");
     mSupportsPan = supportsPan ();
     mSupportsZoom = supportsZoom ();
     mSupportsScaleAtFocus = supportsScaleAtFocusPoint ();
@@ -304,6 +326,7 @@ protected void setupToDraw (Context context, AttributeSet attrs, int defStyle) {
 
 protected void superOnDraw(Canvas canvas) {
     super.onDraw(canvas);
+    Log.d(null, "PZV.superOnDraw");
 }
     
 /**
@@ -313,6 +336,7 @@ protected void superOnDraw(Canvas canvas) {
  */
 
 public boolean supportsPan () {
+	Log.d(null, "PZV.supportsPan");
     return true;
 }
 
@@ -323,7 +347,8 @@ public boolean supportsPan () {
  */
 
 public boolean supportsScaleAtFocusPoint () {
-    return ScaleAtFocusPoint;
+	Log.d(null, "PZV.supportsScaleAtFocusPoint");
+	return ScaleAtFocusPoint;
 }
 
 /**
@@ -333,6 +358,7 @@ public boolean supportsScaleAtFocusPoint () {
  */
 
 public boolean supportsZoom () {
+	Log.d(null, "PZV.supportsZoom");
     return true;
 }
 
@@ -348,6 +374,7 @@ public boolean supportsZoom () {
 protected class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
+    	Log.d(null, "PZV.onScale");
         if (!mSupportsZoom) return true;
         mScaleFactor *= detector.getScaleFactor();
         
