@@ -21,7 +21,16 @@ public class Tile extends StaticUnit {
 		Color.RED,
 		Color.BLUE,
 		Color.CYAN,
-		Color.MAGENTA 
+		Color.MAGENTA,
+		Color.GREEN
+	};
+	
+	public static String[] REGION_NAMES = {
+		"Region One",
+		"Region Two",
+		"Region Three",
+		"Region Four",
+		"Region Five"
 	};
 	
 	public static final int DIRECTION_NORTHEAST = 0;
@@ -59,7 +68,7 @@ public class Tile extends StaticUnit {
 		this.hexX = hexX;
 		this.hexY = hexY;
 		
-		this.setSprite(Image.HEXAGON_TEXTURE);
+		this.setSprite(Image.HEXAGON_BOTTOM);
 		
 		Log.e("newTile", "(" + hexX + ", " + hexY + ")");
 	}
@@ -241,16 +250,22 @@ public class Tile extends StaticUnit {
 		
 		//get draw position
 		Point anchor = this.getDrawAnchor();
+		int left = (int)anchor.x;
+		int top = (int)anchor.y;
+		int right = (int)(anchor.x + this.width);
+		int bottom = (int)(anchor.y + this.height);
 		
 		//draw texture
-		c.drawBitmap(this.getSprite(), null, new Rect((int)anchor.x, (int)anchor.y, (int)(anchor.x + this.width), (int)(anchor.y + this.height)), p);
+		c.drawBitmap(this.getSprite(), null, new Rect(left, top, right, bottom), p);
 		
 		//draw the region color
 		p.setColorFilter(this.getRegionColorFilter()); //colors the paint object to the color of the region of this tile
-		c.drawCircle((int)this.getPosition().x, (int)this.getPosition().y, (int)(this.radius/3), p);
+		c.drawBitmap(Image.HEXAGON_REGION, null, new Rect(left, top, right, bottom), p);
+		//c.drawCircle((int)this.getPosition().x, (int)this.getPosition().y, (int)(this.radius/3), p);
 		
 		//draw the player color
 		p.setColorFilter(this.getOwnerColorFilter()); //colors the paint object to the color of the owner of this tile
+		c.drawBitmap(Image.HEXAGON_PLAYER, null, new Rect(left, top, right, bottom), p);
 		
 		
 		p.setColorFilter(null); //clears the color filter
@@ -296,5 +311,33 @@ public class Tile extends StaticUnit {
 
 	public void setBaseRent(double baseRent) {
 		this.baseRent = baseRent;
+	}
+	
+	public static int getTileCountInRegion(int region){
+		int count = 0;
+		for (int i=0; i<Unit.entity.size(); i++){
+			Unit u = Unit.entity.get(i);
+			if (u instanceof Tile){
+				Tile t = (Tile)u;
+				if (t.getRegion() == region){
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+	
+	public static int getTileCountOwnedByPlayerInRegion(int region, int player){
+		int count = 0;
+		for (int i=0; i<Unit.entity.size(); i++){
+			Unit u = Unit.entity.get(i);
+			if (u instanceof Tile){
+				Tile t = (Tile)u;
+				if (t.getRegion() == region && t.getOwner() == player){
+					count++;
+				}
+			}
+		}
+		return count;
 	}
 }

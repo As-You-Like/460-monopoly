@@ -7,8 +7,10 @@ import com.example.controllers.Player;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
+import android.util.Log;
 
 public abstract class Unit { 
 	
@@ -97,7 +99,7 @@ public abstract class Unit {
 	}
 	
 	public void setOwner(int o){
-		this.owner = 0;
+		this.owner = o;
 		this.colorFilter = new LightingColorFilter(Player.entities[owner].getColor(), 1);
 	}
 	
@@ -139,6 +141,11 @@ public abstract class Unit {
 	}
 
 	public LightingColorFilter getOwnerColorFilter() {
+		if (colorFilter == null){
+			Log.e("Undefined Value", "A unit was not assigned an owner");
+			return new LightingColorFilter(Color.BLACK, 1);
+			
+		}
 		return colorFilter;
 	}
 	
