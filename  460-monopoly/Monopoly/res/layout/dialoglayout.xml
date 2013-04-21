@@ -2,10 +2,26 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
-<EditText android:text="Stateful"
-android:id="@+id/playerName"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content">
-</EditText>
+  android:layout_height="fill_parent"
+  android:orientation="vertical" >
+  	
+    <TextView
+        android:id="@+id/txtMessage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="What is your name?"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#0000ff" />
+  
+    <EditText
+        android:id="@+id/playerName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Choose a name for yourself" >
+
+        <requestFocus />
+    </EditText>
+
 </LinearLayout>

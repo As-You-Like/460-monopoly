@@ -81,7 +81,9 @@ public class Message {
 	//For indicating that a purchase has been successful
 	public static final int PURCHASE_SUCCESS = 23;
 
-	public static final int PAY_FINE_SUCCESS = 0;
+	public static final int PAY_FINE_SUCCESS = 24;
+
+	public static final int PLAYER_DATA = 25;
 	
 	
 	
