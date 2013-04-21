@@ -6,6 +6,7 @@ import com.example.bluetooth.Bluetooth;
 import com.example.bluetooth.BluetoothEvent;
 import com.example.bluetooth.Message;
 import com.example.controllers.HostDevice;
+import com.example.controllers.Player;
 import com.example.controllers.PlayerDevice;
 import com.example.controllers.Device;
 
@@ -13,7 +14,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +38,7 @@ public class LobbyActivity extends Activity {
 	
 	ArrayAdapter<String> adapter;
 	String[] playerList = new String[4];
+	private static AlertDialog.Builder alertBuilder = null;
 	
 	private Button btnStart = null;
 	private Button btnResetDiscovery = null;
@@ -63,6 +67,24 @@ public class LobbyActivity extends Activity {
 		Bundle extras = this.getIntent().getExtras();
 		
 		this.txtGameName.setText("Game Name: " + extras.getString("gn"));
+		
+		// Register player data event
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.PLAYER_DATA;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				Device.player[sender].name = message;
+				
+				LobbyActivity.activity.updatePlayerList();
+			}
+			
+		});
 		
 		// Register CHAT event
 		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
@@ -264,6 +286,42 @@ public class LobbyActivity extends Activity {
 				
 			});
 			
+			// Setup dialog
+			LayoutInflater inflater = this.getLayoutInflater();
+			alertBuilder = new AlertDialog.Builder(this);
+			View dialogView = inflater.inflate(R.layout.dialoglayout, null);
+			alertBuilder.setView(dialogView);
+			final EditText userInput = (EditText)dialogView.findViewById(R.id.playerName);
+			alertBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+				
+				private String playerName;
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+					playerName = userInput.getText().toString();
+					
+					Log.d("requestName()", playerName);
+					if (HostDevice.host == null){
+						Log.e("requestName()", "Host is not defined, unable to send message");
+						return;
+					}
+					HostDevice.host.sendMessage(Message.NAME_REQUEST, "nameRequest" + playerName);
+					
+					//BluetoothDevice host = FindHostActivity.activity.devices.get(ListIndex);
+					//PlayerDevice.connect(host);
+				}
+			});
+			/*alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					dialog.cancel();
+				}
+			});*/
+			
 			requestName();
 			//name requests are done in Bluetooth.mHandler.handleMessage(msg) in the part that handles the receiving of the player number from the host
 			
@@ -303,13 +361,8 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public void requestName(){
-		String name = this.activity_fillInName();
-		Log.d("requestName()", name);
-		if (HostDevice.host == null){
-			Log.e("requestName()", "Host is not defined, unable to send message");
-			return;
-		}
-		HostDevice.host.sendMessage(Message.NAME_REQUEST, "nameRequest" + name);
+		LobbyActivity.alertBuilder.show();
+		
 	}
 	
 	/**
