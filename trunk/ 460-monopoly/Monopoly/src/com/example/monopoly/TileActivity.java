@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 public class TileActivity extends Activity {
 	static final int PURCHASE = 0;
-	static final int UPDATE = 1;
+	static final int UPGRADE = 1;
 	static final int PAYFREE = 2;
 	static final int UNOWNABLE = 2;
 	
@@ -73,7 +73,7 @@ public class TileActivity extends Activity {
 				case PURCHASE:
 					purchase();
 					break;
-				case UPDATE:
+				case UPGRADE:
 					upgrade();
 					break;
 				case PAYFREE:
@@ -107,7 +107,7 @@ public class TileActivity extends Activity {
 			type = PURCHASE;
 			btnPurchase.setText("Purchase");
 		} else if (this.isMine) {
-			type = UPDATE;
+			type = UPGRADE;
 			btnPurchase.setText("Upgrade");
 		} else {
 			if (isOwned == Tile.OWNER_UNOWNABLE){
@@ -129,7 +129,11 @@ public class TileActivity extends Activity {
 	
 	// TODO update
 	private void upgrade(){
-		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, "");
+		//display upgrade activity
+		CommandCardActivity.activity.tabBar.setCurrentTab(CommandCardActivity.TAB_UPGRADE);
+		CommandCardActivity.activity.tabBar.getTabWidget().getChildTabViewAt(CommandCardActivity.TAB_UPGRADE).setVisibility(View.VISIBLE); // Upgrade tab hidden away
+		CommandCardActivity.activity.tabBar.getTabWidget().getChildTabViewAt(CommandCardActivity.TAB_TILE).setVisibility(View.GONE); //
+		//HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, "");
 	}
 	
 	// TODO payfree
@@ -164,6 +168,11 @@ public class TileActivity extends Activity {
 		})
 		.show();		
 	}
+	
+	@Override
+	  public void onBackPressed() {
+	    this.getParent().onBackPressed();   
+	  }
 	
 	
 	@Override

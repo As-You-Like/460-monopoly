@@ -28,9 +28,10 @@ public class CommandCardActivity extends TabActivity {
 	final static int TAB_TURN = 0;
 	final static int TAB_TILE = 1;
 	final static int TAB_DECISION = 2;
-	final static int TAB_HOME = 3;
-	final static int TAB_PROPERTIES = 4;
-	final static int TAB_INTERACT = 5;
+	final static int TAB_UPGRADE = 3;
+	final static int TAB_HOME = 4;
+	final static int TAB_PROPERTIES = 5;
+	final static int TAB_INTERACT = 6;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -136,9 +137,7 @@ public class CommandCardActivity extends TabActivity {
 			@Override
 			public void processMessage(int sender, int reciever, String message) {
 				// TODO Auto-generated method stub
-				tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.GONE);
-				tabBar.getTabWidget().getChildTabViewAt(TAB_DECISION).setVisibility(View.VISIBLE);
-				tabBar.setCurrentTab(TAB_DECISION);
+				CommandCardActivity.activity.goToTab(TAB_DECISION);
 				
 				String choice1 = message.substring(0, message.indexOf(":"));
 				String choice2 = message.substring(message.indexOf(":"));
@@ -287,6 +286,11 @@ public class CommandCardActivity extends TabActivity {
 		intent = new Intent().setClass(this, DecisionActivity.class);
 		spec = tabBar.newTabSpec("Decision").setIndicator("Decision").setContent(intent);
 		tabBar.addTab(spec);
+		
+		// Decision Tab (Not Visible until decision phase) : 0
+		intent = new Intent().setClass(this, UpgradeActivity.class);
+		spec = tabBar.newTabSpec("Upgrade").setIndicator("Upgrade").setContent(intent);
+		tabBar.addTab(spec);
 
 		// Home Tab : 1
 		intent = new Intent().setClass(this, TabHomeActivity.class);
@@ -307,17 +311,36 @@ public class CommandCardActivity extends TabActivity {
 				
 		tabBar.setCurrentTab(TAB_HOME);
 		tabBar.getTabWidget().getChildTabViewAt(TAB_TURN).setEnabled(false); // Turn Tab not clickable..
+		
+		tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.GONE); // Tile tab hidden away
 		tabBar.getTabWidget().getChildTabViewAt(TAB_DECISION).setVisibility(View.GONE); // Decision tab hidden away
-		tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.GONE); //Tile tab hidden away
+		tabBar.getTabWidget().getChildTabViewAt(TAB_UPGRADE).setVisibility(View.GONE); // Upgrade tab hidden away
 		
 	}
 	
 	@Override
 	public void onBackPressed() {
-		if(tabBar.getCurrentTab() == TAB_HOME) // If Home Tab, Finish Activity
-			finish();
-		else 							// else Another Tab, move to Home Tab
+		if(tabBar.getCurrentTab() == TAB_HOME){ // If Home Tab, Finish Activity
+			//do nothing, back button is disabled on the home tab
+		} else if (tabBar.getCurrentTab() == TAB_DECISION){
+			//do nothing, decision tab is mandatory, can't leave it
+			createAlert("You must choose a path");
+		} else if (tabBar.getCurrentTab() == TAB_UPGRADE){
+			tabBar.setCurrentTab(TAB_TILE);
+			tabBar.getTabWidget().getChildTabViewAt(TAB_UPGRADE).setVisibility(View.GONE); // Upgrade tab hidden away
+			tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.VISIBLE); // Tile tab made visible
+		}else
+			// else Another Tab, move to Home Tab
 			tabBar.setCurrentTab(TAB_HOME); 
+	}
+	
+	public void goToTab(int tabCode){
+		tabBar.setCurrentTab(tabCode);
+		tabBar.getTabWidget().getChildTabViewAt(TAB_UPGRADE).setVisibility(View.GONE); // Upgrade tab hidden away
+		tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.GONE); // Tile tab made visible
+		tabBar.getTabWidget().getChildTabViewAt(TAB_TURN).setVisibility(View.GONE); // Tile tab made visible
+		tabBar.getTabWidget().getChildTabViewAt(TAB_DECISION).setVisibility(View.GONE); // Tile tab made visible
+		tabBar.getTabWidget().getChildTabViewAt(tabCode).setVisibility(View.VISIBLE); // Tile tab made visible
 	}
 
 	public void createAlert(String msg){
