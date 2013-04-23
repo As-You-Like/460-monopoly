@@ -27,9 +27,10 @@ public class CommandCardActivity extends TabActivity {
 
 	final static int TAB_TURN = 0;
 	final static int TAB_TILE = 1;
-	final static int TAB_HOME = 2;
-	final static int TAB_PROPERTIES = 3;
-	final static int TAB_INTERACT = 4;
+	final static int TAB_DECISION = 2;
+	final static int TAB_HOME = 3;
+	final static int TAB_PROPERTIES = 4;
+	final static int TAB_INTERACT = 5;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +121,32 @@ public class CommandCardActivity extends TabActivity {
 				// TODO Auto-generated method stub
 				TabTurnActivity.activity.btnTurn.setVisibility(View.VISIBLE);
 				TabTurnActivity.activity.txtYourTurn.setText(message);
+			}
+			
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.CHOOSE_FORK_PATH;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.GONE);
+				tabBar.getTabWidget().getChildTabViewAt(TAB_DECISION).setVisibility(View.VISIBLE);
+				tabBar.setCurrentTab(TAB_DECISION);
+				
+				String choice1 = message.substring(0, message.indexOf(":"));
+				String choice2 = message.substring(message.indexOf(":"));
+				
+				DecisionActivity.activity.setButtonName(
+						choice1.substring(choice1.indexOf(")")+1), 
+						choice2.substring(choice2.indexOf(")")+1)
+					);
 			}
 			
 		});
@@ -255,6 +282,11 @@ public class CommandCardActivity extends TabActivity {
 		intent = new Intent().setClass(this, TileActivity.class);
 		spec = tabBar.newTabSpec("Tile").setIndicator("Tile").setContent(intent);
 		tabBar.addTab(spec);
+		
+		// Decision Tab (Not Visible until decision phase) : 0
+		intent = new Intent().setClass(this, DecisionActivity.class);
+		spec = tabBar.newTabSpec("Decision").setIndicator("Decision").setContent(intent);
+		tabBar.addTab(spec);
 
 		// Home Tab : 1
 		intent = new Intent().setClass(this, TabHomeActivity.class);
@@ -275,7 +307,8 @@ public class CommandCardActivity extends TabActivity {
 				
 		tabBar.setCurrentTab(TAB_HOME);
 		tabBar.getTabWidget().getChildTabViewAt(TAB_TURN).setEnabled(false); // Turn Tab not clickable..
-		tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.GONE);
+		tabBar.getTabWidget().getChildTabViewAt(TAB_DECISION).setVisibility(View.GONE); // Decision tab hidden away
+		tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.GONE); //Tile tab hidden away
 		
 	}
 	

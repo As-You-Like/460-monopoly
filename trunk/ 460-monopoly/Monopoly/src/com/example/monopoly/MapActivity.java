@@ -62,15 +62,8 @@ public class MapActivity extends Activity {
 		//PanAndZoomListener testing = new PanAndZoomListener(view, c, Anchor.TOPLEFT);
 		
 		//testing.onTouch(view, motionEvent);
-		
-		
-		
-		
-		
-	
-		
-		
-		//GameThread.gt.start();
+
+		GameThread.gt.start();
 		
 
 	}

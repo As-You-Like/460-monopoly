@@ -289,7 +289,7 @@ public class Tile extends StaticUnit {
 	}
 	
 	public String toString(){
-		return (this.hexX + ", " + this.hexY) + this.name;
+		return ("(" + this.hexX + ", " + this.hexY + ")") + this.name;
 		
 	}
 
