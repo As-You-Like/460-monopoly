@@ -322,11 +322,11 @@ public class GameThread extends Thread{
 						Tile[] forks = tileLocation.getForkTiles();
 						
 						//temporary random movement code until DecisionActivity is ready
-						newTileLocation = forks[(int) (Math.random()*forks.length)];
-						currentPlayerPiece.move(newTileLocation);
+						//newTileLocation = forks[(int) (Math.random()*forks.length)];
+						//currentPlayerPiece.move(newTileLocation);
 						
-						//Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
-						//this.sleepGameThread();
+						Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
+						this.sleepGameThread();
 						// DecisionActivity awakens GameThread
 	
 					}

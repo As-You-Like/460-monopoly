@@ -11,7 +11,9 @@ import com.example.bluetooth.Message;
 import com.example.controllers.HostDevice;
 
 public class DecisionActivity extends Activity {
-	HostDevice hostDevice;
+	
+	public static DecisionActivity activity;
+	
 	Button btnLeft;
 	Button btnRight;
 
@@ -19,7 +21,8 @@ public class DecisionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_decision);
-		hostDevice = new HostDevice(false);
+		
+		activity = this;
 		
 		btnLeft = (Button) findViewById(R.id.btnLeft);
 		btnRight = (Button) findViewById(R.id.btnRight);
@@ -27,17 +30,17 @@ public class DecisionActivity extends Activity {
 		setButtonName("Boyston Appartments", "Police Station");
 	}
 
-	private void setButtonName(String left, String right) {
-		btnLeft.setText("Left : " + left);
-		btnRight.setText("Right : " + right);
+	public void setButtonName(String left, String right) {
+		btnLeft.setText(left);
+		btnRight.setText(right);
 	}
 
 	public void clickEventLeft(View v) {
-		hostDevice.sendMessage(Message.RECEIVE_FORK_PATH, 0 + "");
+		HostDevice.host.sendMessage(Message.RECEIVE_FORK_PATH, 0 + "");
 	}
 
 	public void clickEventRight(View v) {
-		hostDevice.sendMessage(Message.RECEIVE_FORK_PATH, 1 + "");
+		HostDevice.host.sendMessage(Message.RECEIVE_FORK_PATH, 1 + "");
 	}
 
 	@Override
