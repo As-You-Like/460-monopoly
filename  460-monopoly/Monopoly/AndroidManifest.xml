@@ -59,6 +59,10 @@
             android:label="@string/title_activity_popup" >
         </activity>
         <activity
+            android:name="com.example.monopoly.UpgradeActivity"
+            android:label="@string/title_activity_popup" >
+        </activity>
+        <activity
             android:name="com.example.monopoly.DecisionActivity"
             android:label="@string/app_name" >
         </activity>

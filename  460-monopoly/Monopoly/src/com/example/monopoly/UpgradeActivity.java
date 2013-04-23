@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class UpgradeActivity extends Activity {
+	
+	UpgradeActivity activity;
 
 	TextView txtTopCash;
 	TextView txtTopRent;
@@ -27,6 +29,8 @@ public class UpgradeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_upgrade);
+		
+		activity = this;
 
 		txtTopCash = (TextView) findViewById(R.id.txt_cash);
 		txtTopRent = (TextView) findViewById(R.id.txt_rent);
@@ -44,7 +48,7 @@ public class UpgradeActivity extends Activity {
 
 		// Setting Values
 		setRegionName("Freshman Dooooorms");
-		setRegionValue(14500, 200);
+		setCashValues(14500, 200);
 		setButtonValue(300, 250, 1100, 3200);
 		setRentValue(500, 240, 1500, 4400);
 	}
@@ -89,7 +93,7 @@ public class UpgradeActivity extends Activity {
 		txtRegion.setText("Region Name : " + name);
 	}
 
-	private void setRegionValue(int cash, int rent) {
+	private void setCashValues(int cash, int rent) {
 		txtTopCash.setText("Cash : $" + String.valueOf(cash));
 		txtTopRent.setText("Rent : $" + String.valueOf(rent));
 	}
@@ -107,6 +111,11 @@ public class UpgradeActivity extends Activity {
 		txtValueVending.setText("$" + String.valueOf(vending));
 		txtValueHVAC.setText("$" + String.valueOf(hvac));
 	}
+	
+	@Override
+	  public void onBackPressed() {
+	    this.getParent().onBackPressed();   
+	  }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

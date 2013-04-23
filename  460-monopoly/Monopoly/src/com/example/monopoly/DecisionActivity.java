@@ -36,12 +36,20 @@ public class DecisionActivity extends Activity {
 	}
 
 	public void clickEventLeft(View v) {
+		CommandCardActivity.activity.goToTab(CommandCardActivity.TAB_TURN);
 		HostDevice.host.sendMessage(Message.RECEIVE_FORK_PATH, 0 + "");
+		
 	}
 
 	public void clickEventRight(View v) {
+		CommandCardActivity.activity.goToTab(CommandCardActivity.TAB_TURN);
 		HostDevice.host.sendMessage(Message.RECEIVE_FORK_PATH, 1 + "");
 	}
+	
+	@Override
+	  public void onBackPressed() {
+	    this.getParent().onBackPressed();   
+	  }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
