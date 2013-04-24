@@ -9,5 +9,6 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_popup">PopupActivity</string>
     <string name="title_activity_turn">TurnActivity</string>
+    <string name="title_activity_trade">TradeActivity</string>
 
 </resources>
