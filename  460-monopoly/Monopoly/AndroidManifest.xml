@@ -13,9 +13,9 @@
 
     <application
         android:allowBackup="true"
+        android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:debuggable="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.example.monopoly.SplashActivity"
@@ -106,6 +106,10 @@
         <activity
             android:name="com.example.monopoly.TurnActivity"
             android:label="@string/title_activity_turn" >
+        </activity>
+        <activity
+            android:name="com.example.monopoly.TradeActivity"
+            android:label="@string/title_activity_trade" >
         </activity>
     </application>
 
