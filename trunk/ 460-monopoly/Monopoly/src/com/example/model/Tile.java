@@ -22,7 +22,9 @@ public class Tile extends StaticUnit {
 		Color.BLUE,
 		Color.CYAN,
 		Color.MAGENTA,
-		Color.GREEN
+		Color.GREEN,
+		Color.YELLOW,
+		Color.rgb(255, 63, 0)
 	};
 	
 	public static String[] REGION_NAMES = {
@@ -30,7 +32,9 @@ public class Tile extends StaticUnit {
 		"Region Two",
 		"Region Three",
 		"Region Four",
-		"Region Five"
+		"Region Five",
+		"Region Six",
+		"Region Seven"
 	};
 	
 	public static final int DIRECTION_NORTHEAST = 0;

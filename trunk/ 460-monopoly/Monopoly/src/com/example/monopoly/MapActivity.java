@@ -63,7 +63,7 @@ public class MapActivity extends Activity {
 		
 		//testing.onTouch(view, motionEvent);
 
-		GameThread.gt.start();
+		//GameThread.gt.start();
 		
 
 	}

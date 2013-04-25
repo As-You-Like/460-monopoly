@@ -78,6 +78,42 @@ public class BoardSetup {
 		
 		tile10.addNextStop(bridge2);
 		
+		Tile tile11 = tile10.addNextStop(Tile.DIRECTION_SOUTHWEST);
+		tile11.setName("Tile Fourteen");
+		tile11.setPrice(140);
+		tile11.setRegion(2);
+		
+		Tile tile12 = tile11.addNextStop(Tile.DIRECTION_SOUTHEAST);
+		tile12.setName("Tile Fifteen");
+		tile12.setPrice(150);
+		tile12.setRegion(2);
+		
+		Tile tile13 = tile12.addNextStop(Tile.DIRECTION_EAST);
+		tile13.setName("Tile Sixteen");
+		tile13.setPrice(160);
+		tile13.setRegion(5);
+		
+		Tile tile14 = tile13.addNextStop(Tile.DIRECTION_NORTHEAST);
+		tile14.setName("Tile Seventeen");
+		tile14.setPrice(170);
+		tile14.setRegion(5);
+		tile14.addNextStop(tile9);
+		
+		Tile tile15 = tile14.addNextStop(Tile.DIRECTION_EAST);
+		tile15.setName("Tile Eighteen");
+		tile15.setPrice(180);
+		tile15.setRegion(5);
+		
+		Tile tile16 = tile15.addNextStop(Tile.DIRECTION_NORTHEAST);
+		tile16.setName("Tile Nineteen");
+		tile16.setPrice(190);
+		tile16.setRegion(6);
+		
+		Tile tile17 = tile16.addNextStop(Tile.DIRECTION_NORTHWEST);
+		tile17.setName("Tile Twenty");
+		tile17.setPrice(200);
+		tile17.setRegion(6);
+		tile17.addNextStop(tile8);
 		
 	}
 }
