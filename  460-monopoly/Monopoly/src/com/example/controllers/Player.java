@@ -1,7 +1,11 @@
 package com.example.controllers;
 
+import java.util.ArrayList;
+
 import com.example.bluetooth.Message;
 import com.example.model.PlayerPiece;
+import com.example.model.Tile;
+import com.example.model.Unit;
 
 public class Player {
 	public static Player[] entities;
@@ -14,6 +18,9 @@ public class Player {
 	private boolean sick = false;
 	private int playerIndex;
 	private boolean lost = false;
+	private int tradeCount = 0;
+	
+	public static String[] COLOR_NAMES = new String[Device.player.length];
 	
 	public Player(PlayerDevice device, int playerIndex, int color){
 		this.device = device;
@@ -109,5 +116,37 @@ public class Player {
 
 	public void setLost(boolean lost) {
 		this.lost = lost;
+	}
+
+	public int getTradeCount() {
+		return tradeCount;
+	}
+
+	public void setTradeCount(int tradeCount) {
+		this.tradeCount = tradeCount;
+	}
+	
+	/**
+	 * Provides events owned by this player that have countdown timers
+	 * This method is intended for database storage purposes
+	 * @return
+	 */
+	public Event[] getPlayerEvents(){
+		return EventGenerator.getPlayerTriggeredEvents(this.playerIndex);
+	}
+	
+	public Tile[] getPlayerTiles(){
+		ArrayList<Tile> result = new ArrayList<Tile>();
+		for (int i=0; i<Unit.entity.size(); i++){
+			Unit u = Unit.entity.get(i);
+			if (u instanceof Tile){
+				Tile t = (Tile)u;
+				if (t.getOwner() == this.playerIndex){
+					result.add(t);
+				}
+			}
+			
+		}
+		return result.toArray(new Tile[]{});
 	}
 }
