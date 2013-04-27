@@ -175,6 +175,25 @@ public class EventGenerator {
 	}
 	
 	/**
+	 * Returns all triggered events owned by a specific player that have expiration timers
+	 * @param player
+	 * @return Event[]
+	 */
+	public static Event[] getPlayerTriggeredEvents(int player){
+		ArrayList<Event> result = new ArrayList<Event>();
+		for (ArrayList<TriggeredEvent> events : EventGenerator.tEvents.values()){
+			for (int i=0; i<events.size(); i++){
+				Event e = events.get(i);
+				if (e.expireTurn > -1 && e.player == player){
+					result.add(e);
+				}
+			}
+		}
+		
+		return result.toArray(new Event[]{});
+	}
+	
+	/**
 	 * Produces a list of triggered events whos conditions have been satisfied and are all ready to be executed
 	 * @param String[] categories. A list of categories that are to be used for this session of retrieving events
 	 * @return TriggeredEvent[]. A list of triggered events
