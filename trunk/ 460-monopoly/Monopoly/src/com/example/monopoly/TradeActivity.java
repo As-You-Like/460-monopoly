@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 public class TradeActivity extends Activity {
 
-	TradaAdapter tradaAdapter;
+	TradeAdapter TradeAdapter;
 	ArrayList<String> myPropertyList;
 	ArrayList<String> playerPropertyList;
 	
@@ -54,8 +54,8 @@ public class TradeActivity extends Activity {
 		
 
 		
-		tradaAdapter = new TradaAdapter(this, myPropertyList, true);
-		listViewMy.setAdapter(tradaAdapter);
+		TradeAdapter = new TradeAdapter(this, myPropertyList, true);
+		listViewMy.setAdapter(TradeAdapter);
 		listViewMy.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
@@ -64,15 +64,15 @@ public class TradeActivity extends Activity {
 					stackMyPropertyName = myPropertyList.get(position);
 					selectMyProperty(myPropertyList.get(position));
 					myPropertyList.remove(position);
-					tradaAdapter = new TradaAdapter(getBaseContext(), myPropertyList, true);
-					listViewMy.setAdapter(tradaAdapter);
+					TradeAdapter = new TradeAdapter(getBaseContext(), myPropertyList, true);
+					listViewMy.setAdapter(TradeAdapter);
 				} else {
 					stackMyPropertyName = txtMySelect.getText().toString();
 					selectMyProperty(myPropertyList.get(position));
 					myPropertyList.remove(position);
 					myPropertyList.add(myPropertyList.size(), stackMyPropertyName);
-					tradaAdapter = new TradaAdapter(getBaseContext(), myPropertyList, true);
-					listViewMy.setAdapter(tradaAdapter);
+					TradeAdapter = new TradeAdapter(getBaseContext(), myPropertyList, true);
+					listViewMy.setAdapter(TradeAdapter);
 				}
 				
 				// send my list index to Katarina
@@ -80,8 +80,8 @@ public class TradeActivity extends Activity {
 			}
 		});
 		
-		tradaAdapter = new TradaAdapter(this, playerPropertyList, false);
-		listViewPlayer.setAdapter(tradaAdapter);
+		TradeAdapter = new TradeAdapter(this, playerPropertyList, false);
+		listViewPlayer.setAdapter(TradeAdapter);
 	}
 	
 	/**
@@ -93,15 +93,15 @@ public class TradeActivity extends Activity {
 			stackPlayerPropertyName = playerPropertyList.get(idx);
 			selectPlayerProperty(playerPropertyList.get(idx));
 			playerPropertyList.remove(idx);
-			tradaAdapter = new TradaAdapter(getBaseContext(), playerPropertyList, false);
-			listViewPlayer.setAdapter(tradaAdapter);
+			TradeAdapter = new TradeAdapter(getBaseContext(), playerPropertyList, false);
+			listViewPlayer.setAdapter(TradeAdapter);
 		} else {
 			stackPlayerPropertyName = txtPlayerSelect.getText().toString();
 			selectPlayerProperty(playerPropertyList.get(idx));
 			playerPropertyList.remove(idx);
 			playerPropertyList.add(playerPropertyList.size(), stackPlayerPropertyName);
-			tradaAdapter = new TradaAdapter(getBaseContext(), playerPropertyList, false);
-			listViewPlayer.setAdapter(tradaAdapter);
+			TradeAdapter = new TradeAdapter(getBaseContext(), playerPropertyList, false);
+			listViewPlayer.setAdapter(TradeAdapter);
 		}
 	}
 	
@@ -147,13 +147,13 @@ public class TradeActivity extends Activity {
 	}			
 	
 
-	public class TradaAdapter extends BaseAdapter {
+	public class TradeAdapter extends BaseAdapter {
 		Context context;
 		LayoutInflater inflater;
 		ArrayList<String> itemlists;
 		boolean MY = false;
 
-		public TradaAdapter(Context c, ArrayList<String> arrayList, boolean my) {
+		public TradeAdapter(Context c, ArrayList<String> arrayList, boolean my) {
 			this.context = c;
 			this.itemlists = arrayList;
 			this.MY = my;

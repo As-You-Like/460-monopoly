@@ -1,5 +1,8 @@
 package com.example.monopoly;
 
+import com.example.bluetooth.Message;
+import com.example.controllers.HostDevice;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,38 +58,35 @@ public class UpgradeActivity extends Activity {
 
 	// Click Electical Button
 	public void clickEventElectical(View v) {
-		String text = btnElectical.getText().toString();
-		String value = text.substring(1, text.length());
-		Log.i("value", value);
-
-		// HostDevice.host.sendMessage(???, value);
+		//String text = btnElectical.getText().toString();
+		//String value = text.substring(1, text.length());
+		//Log.i("value", value);
+		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, ""+1);
 	}
 
 	// Click Plumbing Button
 	public void clickEventPlumbing(View v) {
-		String text = btnPlumbing.getText().toString();
-		String value = text.substring(1, text.length());
-		Log.i("value", value);
-
-		// HostDevice.host.sendMessage(???, value);
+		//String text = btnPlumbing.getText().toString();
+		//String value = text.substring(1, text.length());
+		//Log.i("value", value);
+		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, ""+2);
 	}
 
 	// Click Vending Button
 	public void clickEventVending(View v) {
-		String text = btnVending.getText().toString();
-		String value = text.substring(1, text.length());
-		Log.i("value", value);
-
-		// HostDevice.host.sendMessage(???, value);
+		//String text = btnVending.getText().toString();
+		//String value = text.substring(1, text.length());
+		//Log.i("value", value);
+		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, ""+3);
 	}
 
 	// Click HVAC Button
 	public void clickEventHvac(View v) {
-		String text = btnHVAC.getText().toString();
-		String value = text.substring(1, text.length());
-		Log.i("value", value);
+		//String text = btnHVAC.getText().toString();
+		//String value = text.substring(1, text.length());
+		//Log.i("value", value);
 
-		// HostDevice.host.sendMessage(???, value);
+		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, ""+4);
 	}
 
 	private void setRegionName(String name) {

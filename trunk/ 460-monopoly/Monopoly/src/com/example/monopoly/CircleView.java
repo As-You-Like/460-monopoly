@@ -53,7 +53,7 @@ public CircleView (Context context, AttributeSet attrs, int defStyle) {
 public void drawOnCanvas (Canvas canvas) {
 	//Ensure it doesn't attempt to render before MapActivity is ready
 	
-	Log.d(null, "CV drawOnCanvas");
+	//Log.d(null, "CV drawOnCanvas");
 	
 	if (MapActivity.activity == null){
 		return;

@@ -85,6 +85,8 @@ public class Message {
 
 	public static final int PLAYER_DATA = 25;
 	
+	//A request by the player for upgrade information about the tile the player is currently on
+	public static final int TILE_GET_UPGRADE_DATA = 26;
 	
 	
 }

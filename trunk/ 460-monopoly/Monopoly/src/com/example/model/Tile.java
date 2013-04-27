@@ -17,9 +17,14 @@ public class Tile extends StaticUnit {
 	public static final double TILE_RADIUS = 20;
 	public static Tile[][] entity = new Tile[400][400];
 	
+	public static final int UPGRADE_ELECTRICAL = 1;
+	public static final int UPGRADE_PLUMBING = 2;
+	public static final int UPGRADE_VENDING = 3;
+	public static final int UPGRADE_HVAC = 4;
+	
 	public static int[] REGION_COLORS = {
-		Color.RED,
-		Color.BLUE,
+		Color.RED, //0
+		Color.BLUE, //1
 		Color.CYAN,
 		Color.MAGENTA,
 		Color.GREEN,
@@ -58,7 +63,8 @@ public class Tile extends StaticUnit {
 	private double price;
 	private double baseRent;
 	
-	public boolean[] upgradeActive;
+	public boolean[] upgraded;
+	private double[] upgradePrices;
 	private ArrayList<MobileUnit> visitors = new ArrayList<MobileUnit>();
 	private ArrayList<Tile> nextStops = new ArrayList<Tile>();
 	
@@ -233,6 +239,21 @@ public class Tile extends StaticUnit {
 			MobileUnit unit = this.visitors.get(i);
 			unit.move(this.getPosition().getPolarOffset(Tile.DEFAULT_POLAROFFSET, angle*i));
 		}
+	}
+	
+	public void upgrade(int upgradeID){
+		this.upgraded[upgradeID] = true;
+	}
+	
+	public void priceUpgrades(double elec, double plum, double vend, double hvac){
+		this.upgradePrices[UPGRADE_ELECTRICAL] = elec;
+		this.upgradePrices[UPGRADE_PLUMBING] = plum;
+		this.upgradePrices[UPGRADE_VENDING] = vend;
+		this.upgradePrices[UPGRADE_HVAC] = hvac;
+	}
+	
+	public double getUpgradePrice(int upgradeID){
+		return this.upgradePrices[upgradeID];
 	}
 	
 	public void addVisitor(MobileUnit unit){
