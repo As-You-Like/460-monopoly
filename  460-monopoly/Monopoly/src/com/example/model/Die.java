@@ -37,18 +37,18 @@ public class Die extends ScreenUnit {
 	
 	@SuppressWarnings("deprecation")
 	private static void stopDiceTimer(){
-		Log.e(null, "Dietest1");
+		
 		if (timerReset == true) return;
-		Log.e(null, "Dietest2");
+		
 		timerReset = true;
-		Log.e(null, "Dietest3");
+		
 		for (int i=0; i<diceCount; i++){
-			Log.e(null, "Dietest4");
+			
 			if(dice[i]!=null)
 				dice[i].timer.cancel();
-			Log.e(null, "Dietest5");
+			
 		}
-		Log.e(null, "Dietest6");
+		
 		
 		//if there is a double, say so, and trigger an event
 		if (dice[0].value == dice[1].value){
@@ -57,11 +57,8 @@ public class Die extends ScreenUnit {
 		}
 		
 		//GAME THREAD CODE GOES HERE FOR RESUMING GAME AFTER DICE ROLL
-		Log.e(null, "Dietest7");
-		//GameThread.gt.resume();
-		GameThread.gt.awaken();
 		
-		Log.e(null, "Dietest8");
+		GameThread.gt.awaken();
 	}
 	
 	/**

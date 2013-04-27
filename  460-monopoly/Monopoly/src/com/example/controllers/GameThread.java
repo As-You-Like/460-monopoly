@@ -165,7 +165,26 @@ public class GameThread extends Thread{
 
 			@Override
 			public void processMessage(int sender, int reciever, String message) {
-				//To do
+				int upgrade = Integer.parseInt(message);
+				Player p = Player.entities[Game.currentPlayer];
+				Tile tile = p.getPiece().getCurrentTile();
+				
+				//pay for the cost of the property
+				p.subBalance(tile.getUpgradePrice(upgrade)); //temporarily deduct 100
+				
+				//upgrade the property
+				tile.upgrade(upgrade);
+				
+				/*switch(upgrade){
+				case Tile.UPGRADE_ELECTRICAL:
+					break;
+				case Tile.UPGRADE_PLUMBING:
+					break;
+				case Tile.UPGRADE_VENDING:
+					break;
+				case Tile.UPGRADE_HVAC:
+					break;
+				}*/
 			}
 
 		});

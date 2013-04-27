@@ -32,6 +32,7 @@ public class CommandCardActivity extends TabActivity {
 	final static int TAB_HOME = 4;
 	final static int TAB_PROPERTIES = 5;
 	final static int TAB_INTERACT = 6;
+	final static int TAB_TRADE = 7;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -287,7 +288,7 @@ public class CommandCardActivity extends TabActivity {
 		spec = tabBar.newTabSpec("Decision").setIndicator("Decision").setContent(intent);
 		tabBar.addTab(spec);
 		
-		// Decision Tab (Not Visible until decision phase) : 0
+		// Upgrade Tab (Not Visible until decision phase) : 0
 		intent = new Intent().setClass(this, UpgradeActivity.class);
 		spec = tabBar.newTabSpec("Upgrade").setIndicator("Upgrade").setContent(intent);
 		tabBar.addTab(spec);
@@ -307,6 +308,11 @@ public class CommandCardActivity extends TabActivity {
 		spec = tabBar.newTabSpec("Interact").setIndicator("Interact").setContent(intent);
 		tabBar.addTab(spec);
 		
+		// Trade Tab : 3 (Not Visible until trade is initiated) : 0
+		intent = new Intent().setClass(this, TradeActivity.class);
+		spec = tabBar.newTabSpec("Trade").setIndicator("Trade").setContent(intent);
+		tabBar.addTab(spec);
+		
 		
 				
 		tabBar.setCurrentTab(TAB_HOME);
@@ -315,6 +321,7 @@ public class CommandCardActivity extends TabActivity {
 		tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.GONE); // Tile tab hidden away
 		tabBar.getTabWidget().getChildTabViewAt(TAB_DECISION).setVisibility(View.GONE); // Decision tab hidden away
 		tabBar.getTabWidget().getChildTabViewAt(TAB_UPGRADE).setVisibility(View.GONE); // Upgrade tab hidden away
+		tabBar.getTabWidget().getChildTabViewAt(TAB_TRADE).setVisibility(View.GONE); // Upgrade tab hidden away
 		
 	}
 	
@@ -326,9 +333,7 @@ public class CommandCardActivity extends TabActivity {
 			//do nothing, decision tab is mandatory, can't leave it
 			createAlert("You must choose a path");
 		} else if (tabBar.getCurrentTab() == TAB_UPGRADE){
-			tabBar.setCurrentTab(TAB_TILE);
-			tabBar.getTabWidget().getChildTabViewAt(TAB_UPGRADE).setVisibility(View.GONE); // Upgrade tab hidden away
-			tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.VISIBLE); // Tile tab made visible
+			this.goToTab(TAB_TILE);
 		}else
 			// else Another Tab, move to Home Tab
 			tabBar.setCurrentTab(TAB_HOME); 
@@ -340,6 +345,13 @@ public class CommandCardActivity extends TabActivity {
 		tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.GONE); // Tile tab made visible
 		tabBar.getTabWidget().getChildTabViewAt(TAB_TURN).setVisibility(View.GONE); // Tile tab made visible
 		tabBar.getTabWidget().getChildTabViewAt(TAB_DECISION).setVisibility(View.GONE); // Tile tab made visible
+		tabBar.getTabWidget().getChildTabViewAt(tabCode).setVisibility(View.VISIBLE); // Tile tab made visible
+	}
+	
+	public void goToInteractTab(int tabCode){
+		tabBar.setCurrentTab(tabCode);
+		tabBar.getTabWidget().getChildTabViewAt(TAB_INTERACT).setVisibility(View.GONE); // Upgrade tab hidden away
+		tabBar.getTabWidget().getChildTabViewAt(TAB_TRADE).setVisibility(View.GONE); // Tile tab made visible
 		tabBar.getTabWidget().getChildTabViewAt(tabCode).setVisibility(View.VISIBLE); // Tile tab made visible
 	}
 

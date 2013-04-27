@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 
+import android.util.Log;
+
 public class EventGenerator {
 	private static Map<String, ArrayList<RandomEvent>> rEvents = new HashMap<String, ArrayList<RandomEvent>>();
 	private static Map<String, ArrayList<TriggeredEvent>> tEvents = new HashMap<String, ArrayList<TriggeredEvent>>();
@@ -195,7 +197,7 @@ public class EventGenerator {
 		}
 		
 		//return null if the arraylist is empty, otherwise return the arraylist in regular array form
-		return result == null ? null : result.toArray(new TriggeredEvent[result.size()]);
+		return (result == null ? null : result.toArray(new TriggeredEvent[result.size()]));
 	}
 	
 	/**
@@ -232,10 +234,13 @@ public class EventGenerator {
 	 * @param events
 	 */
 	public static void executeEvents(Event[] events){
-		/* Fix this line, throws null pointer
-		 * for (Event event : events){
+		if (events == null){
+			Log.e("executeEvents", "No Events Found");
+			return;
+		}
+		for (Event event : events){
 			executeEvent(event);
-		}*/
+		}
 	}
 	
 	/**
