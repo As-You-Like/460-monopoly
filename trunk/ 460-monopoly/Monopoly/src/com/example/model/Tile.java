@@ -33,8 +33,8 @@ public class Tile extends StaticUnit {
 	};
 	
 	public static String[] REGION_NAMES = {
-		"Region One",
-		"Region Two",
+		"THE TREES",      //0
+		"Region Two", //1
 		"Region Three",
 		"Region Four",
 		"Region Five",
@@ -72,6 +72,7 @@ public class Tile extends StaticUnit {
 	private double[] upgradePrices = new double[4];
 	private ArrayList<MobileUnit> visitors = new ArrayList<MobileUnit>();
 	private ArrayList<Tile> nextStops = new ArrayList<Tile>();
+	private double baseRegionRent;
 	
 	public Tile(int hexX, int hexY, int owner){
 		super(Tile.getCartesianPositionFromHexPoint(hexX, hexY), owner, Tile.TILE_RADIUS);
@@ -385,5 +386,18 @@ public class Tile extends StaticUnit {
 	
 	public static Tile getJailTile(){
 		return Tile.jailTile;
+	}
+
+	public void setCompletedRegionRent(double rent) {
+		// TODO Auto-generated method stub
+		this.setBaseRegionRent(rent);
+	}
+
+	public double getBaseRegionRent() {
+		return baseRegionRent;
+	}
+
+	public void setBaseRegionRent(double baseRegionRent) {
+		this.baseRegionRent = baseRegionRent;
 	}
 }
