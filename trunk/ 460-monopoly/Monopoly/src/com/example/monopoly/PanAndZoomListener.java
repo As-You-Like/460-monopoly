@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 /**
  * This class defines an OnTouchListener that you can attach to any view so you
@@ -44,7 +45,7 @@ public class PanAndZoomListener implements OnTouchListener {
   float oldDist = 1f;
   PanZoomCalculator panZoomCalculator;
 
-  public PanAndZoomListener(FrameLayout container, View view, int anchor) {
+  public PanAndZoomListener(RelativeLayout container, View view, int anchor) {
 	  Log.d(null, "PZL Constructor1");
     panZoomCalculator = new PanZoomCalculator(container, view, anchor);
     //Log.e(null, "PanAndZoomListener constructor");
