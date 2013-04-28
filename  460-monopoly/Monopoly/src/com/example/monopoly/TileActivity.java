@@ -156,6 +156,10 @@ public class TileActivity extends Activity {
 	public void setCashInfo(String value){
 		txtValue.setText("Value : " + value);
 	}
+	
+	public void setRent(String value){
+		txtValue.setText("Rent : " + value);
+	}
 
 	
 	public void createToast(String msg){

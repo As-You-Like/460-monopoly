@@ -21,7 +21,7 @@ public class LoadThread extends Thread {
 	Handle mHandler = new Handle();
 	
 	//constants for initial settings
-	public static final double INITIAL_PLAYER_BALANCE = 200;
+	public static final double INITIAL_PLAYER_BALANCE = 2000;
 	public static ArrayList<Integer> LIST_COLORS = new ArrayList<Integer>();
 	public static ArrayList<String> LIST_COLORS_NAMES = new ArrayList<String>();
 	

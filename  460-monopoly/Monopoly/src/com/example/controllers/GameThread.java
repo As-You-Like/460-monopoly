@@ -146,18 +146,16 @@ public class GameThread extends Thread{
 			public void processMessage(int sender, int reciever, String message) {
 				//create a JSON string out of the data above
 				JSONObject map = new JSONObject();
+				Player p = Player.entities[sender];
 				try {
-					map.put("playerName", Player.entities[sender].getName());
+					map.put("playerName", p.getName());
 					map.put("playerColor", Player.COLOR_NAMES[sender]);
-					map.put("playerCash", Player.entities[sender].getBalance());
-					map.put("playerAssets", "");
-					map.put("playerOwned", "");
-					map.put("playerCompleted", "");
-					map.put("playerTime", "");
-					map.put("playerTrade", "");
-					map.put("playerShuttle", "");
-					map.put("playerBoard", "");
-					map.put("playerStop", "");
+					map.put("playerCash", ""+p.getBalance());
+					map.put("playerAssets", ""+p.countAssets());
+					map.put("playerOwned", ""+p.getPlayerTiles().length);
+					map.put("playerCompleted", ""+p.countCompletedRegions());
+					map.put("playerTrade", ""+p.getTradeCount());
+					map.put("playerShuttle", ""+p.countShuttleStops());
 				} catch (JSONException e) {
 					e.printStackTrace();
 				} 
@@ -235,35 +233,36 @@ public class GameThread extends Thread{
 			 * Note: reset all global variables you use between turns (to avoid raw data of one turn interfering with another turn)
 			 */
 			// Movement Phase
+
+			//Figure out who's turn it is
+			Game.instance.determineCurrentTurnPlayer();
 			
-				// Dice Roll Subphase
+			//Weekly Stipends and other start of turn events
+			EventGenerator.executeTriggeredEvents("newTurn");
+			EventGenerator.chooseAndExecuteRandomEvent("newTurn", 0.9);
 			
-					//Figure out who's turn it is
-					Game.instance.determineCurrentTurnPlayer();
-			
-					//Override Home Tab
-					this.startSubTurn();
-					
-					
+			if (!Player.entities[Game.currentPlayer].isJailed()){
+				//Override Home Tab
+				this.startSubTurn();
 				
 				// Player Movement Subphase
 				this.startMovementPhase();
 			
 				// Decision Phase
 				this.startDecisionPhase();
-			
+			}
 			// Conclusion Phase
-				this.startConclusionPhase();
-				/**
-				 * End turn
-				 * If necessary, update turn and subturn counts
-				 * Wipe turn booleans
-				 * Update Entity classes
-				 * Check victory conditions
-				 * 		if elimination game, check if one player remains. if yes, gameWon = true
-				 * 		if turn limit game, check if turnsExecuted = turnLimit.
-				 * 			if yes, gameWon = true and flag player with highest Net Assets as winner
-				 */
+			this.startConclusionPhase();
+			/**
+			 * End turn
+			 * If necessary, update turn and subturn counts
+			 * Wipe turn booleans
+			 * Update Entity classes
+			 * Check victory conditions
+			 * 		if elimination game, check if one player remains. if yes, gameWon = true
+			 * 		if turn limit game, check if turnsExecuted = turnLimit.
+			 * 			if yes, gameWon = true and flag player with highest Net Assets as winner
+			 */
 			
 		}
 		
@@ -382,6 +381,16 @@ public class GameThread extends Thread{
 	}
 	
 	public void startDecisionPhase(){
+		//Execute a random event
+		EventGenerator.chooseAndExecuteRandomEvent(new String[]{
+			"residential"
+		}, 0.9);
+		
+		//End decision phase if an event caused the player to be jailed
+		if (Player.entities[Game.currentPlayer].isJailed()){
+			return;
+		}
+		
 		//Gather tile data
 		Tile currentTile = Player.entities[Game.currentPlayer].getPiece().getCurrentTile();
 		String tileName = currentTile.getName();
@@ -391,6 +400,7 @@ public class GameThread extends Thread{
 			tileOwnerName = Player.entities[currentTile.getOwner()].getName();
 		} 
 		double tilePrice = currentTile.getPrice();
+		double tileRent = currentTile.getRent();
 		int region = currentTile.getRegion();
 		String regionName = Tile.REGION_NAMES[region];
 		int regionTileCount = Tile.getTileCountInRegion(region);
@@ -403,6 +413,7 @@ public class GameThread extends Thread{
 			map.put("tileOwner", tileOwner);
 			map.put("tileOwnerName", tileOwnerName);
 			map.put("tilePrice", tilePrice);
+			map.put("tileRent", tileRent);
 			map.put("regionName", regionName);
 			map.put("regionTileCount", regionTileCount);
 			map.put("regionOwnedTileCount", regionOwnedTileCount);

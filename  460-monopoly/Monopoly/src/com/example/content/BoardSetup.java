@@ -8,6 +8,7 @@ public class BoardSetup {
 		Tile start = new Tile(3, 3, Tile.OWNER_NEUTRAL);
 		start.setName("Tile One");
 		start.setPrice(10);
+		start.setBaseRent(5);
 		start.setRegion(0);
 		start.priceUpgrades(20, 30, 40, 50);
 		
@@ -118,5 +119,6 @@ public class BoardSetup {
 		tile17.setRegion(6);
 		tile17.addNextStop(tile8);
 		
+		Tile.setJailTile(start);
 	}
 }

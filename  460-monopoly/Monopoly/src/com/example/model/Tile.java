@@ -51,6 +51,7 @@ public class Tile extends StaticUnit {
 	
 	public int id;
 	public static int totalTileCount = 0;
+	private static Tile jailTile = null;
 	
 	private double width;
 	private double side;
@@ -63,8 +64,9 @@ public class Tile extends StaticUnit {
 	private String name;
 	private LightingColorFilter regionColorFilter;
 	private int region;
-	private double price;
-	private double baseRent;
+	private double price = 0;
+	private double baseRent = 0;
+	
 	
 	public boolean[] upgraded = new boolean[4];
 	private double[] upgradePrices = new double[4];
@@ -192,6 +194,30 @@ public class Tile extends StaticUnit {
 		return null;
 	}
 	
+	public void setBaseRent(double rent){
+		this.baseRent = rent;
+	}
+	
+	public double getRent(){
+		double result = 0;
+		for (int i=0; i<this.upgraded.length; i++){
+			if (this.upgraded[i]){
+				result += this.upgradePrices[i];
+			}
+		}
+		
+		//return added up upgrades, or baserent if 0 was returned
+		return result == 0 ? this.baseRent : result;
+	}
+	
+	public void setPrice(double price){
+		this.price = price;
+	}
+	
+	public double getPrice(){
+		return this.price;
+	}
+	
 	public static Point getCartesianPositionFromHexPoint(double hexX, double hexY){
 		Point p = new Point();
 		// === For X ===
@@ -208,11 +234,6 @@ public class Tile extends StaticUnit {
 		p.y *= hexY;
 		
 		return p;
-	}
-	
-	public double getRent(){
-		return this.baseRent;
-		
 	}
 	
 	public static Tile getTileFromCartesianPoint(int x, int y){
@@ -250,7 +271,7 @@ public class Tile extends StaticUnit {
 	
 	public void upgrade(int upgradeID){
 		this.upgraded[upgradeID] = true;
-		this.price += this.upgradePrices[upgradeID];
+		//this.price += this.upgradePrices[upgradeID];
 	}
 	
 	public void priceUpgrades(double elec, double plum, double vend, double hvac){
@@ -329,22 +350,6 @@ public class Tile extends StaticUnit {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public double getBaseRent() {
-		return baseRent;
-	}
-
-	public void setBaseRent(double baseRent) {
-		this.baseRent = baseRent;
-	}
 	
 	public static int getTileCountInRegion(int region){
 		int count = 0;
@@ -372,5 +377,13 @@ public class Tile extends StaticUnit {
 			}
 		}
 		return count;
+	}
+	
+	public static void setJailTile(Tile tile){
+		Tile.jailTile  = tile;
+	}
+	
+	public static Tile getJailTile(){
+		return Tile.jailTile;
 	}
 }

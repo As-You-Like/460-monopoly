@@ -101,6 +101,7 @@ public class Player {
 	
 	public void goToJail(){
 		this.jailed = true;
+		this.piece.move(Tile.getJailTile());
 		
 		//place jail tile where null is
 		//this.piece.move(null);
@@ -148,5 +149,57 @@ public class Player {
 			
 		}
 		return result.toArray(new Tile[]{});
+	}
+	
+	public double countAssets(){
+		Tile[] tiles = this.getPlayerTiles();
+		double result = 0;
+		for (int i=0; i<tiles.length; i++){
+			Tile t = tiles[i];
+			result += t.getPrice();
+		}
+		
+		return result;
+	}
+	
+	public boolean isTileOwnedByPlayer(Tile tile){
+		Tile[] tiles = this.getPlayerTiles();
+		for (int b=0; b<tiles.length; b++){
+			Tile t = tiles[b];
+			if (t.id == tile.id){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isRegionComplete(int region){
+		for (int a=0; a<Unit.entity.size(); a++){
+			Unit u = Unit.entity.get(a);
+			if (u instanceof Tile){
+				Tile t = (Tile)u;
+				if (t.getRegion() == region && this.isTileOwnedByPlayer(t)){
+					
+				} else if(t.getRegion() == region){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	public int countCompletedRegions(){
+		int result = 0;
+		for (int i=0; i<Tile.REGION_NAMES.length; i++){
+			if(this.isRegionComplete(i)){
+				result++;
+			}
+		}
+		
+		return result;
+	}
+	
+	public int countShuttleStops(){
+		return 0;
 	}
 }
