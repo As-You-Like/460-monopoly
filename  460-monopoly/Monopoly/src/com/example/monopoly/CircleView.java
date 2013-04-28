@@ -14,6 +14,9 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * This view displays a few rectangles that can be panned and zoomed.
@@ -73,7 +76,7 @@ public void drawOnCanvas (Canvas canvas) {
     for (Unit u : tmp){
     	u.draw(canvas, paint);
     	
-    }
+    }   
     
     this.invalidate();
    // Log.e(null, "CircleView drawOnCanvas");
