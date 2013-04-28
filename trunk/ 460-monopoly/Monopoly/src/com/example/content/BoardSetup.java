@@ -24,7 +24,7 @@ public class BoardSetup {
 		tile2.priceUpgrades(20, 30, 40, 50);
 		
 		Tile tile3 = tile2.addNextStop(Tile.DIRECTION_SOUTHWEST);
-		tile3.setName("Tile Four");
+		tile3.setName("Tile Four"); 
 		tile3.setPrice(40);
 		tile3.setRegion(1);
 		
