@@ -150,8 +150,10 @@ public class EventGenerator {
 			int randValue = (int) (Math.random() * totalCount);
 			
 			//get the appropriate value from the appropriate category
+			Log.e("Random Event", "Start Loop");
 			for (int i = 0; i<categories.length; i++){
-				if (rEvents.containsKey(categories)){
+				Log.d("Random Event", "If rEvents contains category");
+				if (rEvents.containsKey(categories[i])){
 					ArrayList<RandomEvent> eventList = rEvents.get(categories[i]);
 					int size = eventList.size();
 					randValue -= size;
@@ -273,6 +275,7 @@ public class EventGenerator {
 			if (!tEvent.condition()){
 				return; //exit the method immediately if the condition for this event is not met
 			}
+			
 		}
 		event.action();
 	}
@@ -303,7 +306,9 @@ public class EventGenerator {
 	 */
 	public static void chooseAndExecuteRandomEvent(String[] categories, double chanceToHaveEvent){
 		Event event = requestRandomEvent(categories, chanceToHaveEvent);
-		executeEvent(event);
+		if (event != null){
+			executeEvent(event);
+		}
 	}
 	
 	/**
