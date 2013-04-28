@@ -71,6 +71,9 @@ public class EventSetup {
 					if (p != null){
 					if (p.isJailed() == false){
 						p.addBalance(Settings.WEEKLY_STIPEND);
+						Device.player[i].sendMessage(Message.ALERT, "You have received a weekly stipend of " + Settings.WEEKLY_STIPEND);
+					} else {
+						Device.player[i].sendMessage(Message.ALERT, "You have missed your weekly stipend due to being in jail");
 					}
 					}
 				}
@@ -89,7 +92,7 @@ public class EventSetup {
 				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, "You have been caught speeding and promptly sent to jail");
 				
 				//create the releasing event
-				EventGenerator.registerEvent("turnStart", 
+				EventGenerator.registerEvent("newTurn", 
 						new EventSetup.EventJailRelease(Settings.EVENT_ROLL_DOUBLE_JAIL_TIME, Game.currentPlayer)
 				);
 				
@@ -97,5 +100,31 @@ public class EventSetup {
 				
 			}
 		});
+		
+		//Random Event - Getting busted
+		EventGenerator.registerEvent("residential", new RandomEvent(){
+			public void action() {
+				//Send the player to jail
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, "You have been busted not wearing a spring day bracelet");
+			}
+		});
+		
+		//Random Event - Getting smuggled out of jail
+		EventGenerator.registerEvent("newTurn", new RandomEvent(){
+			public void action() {
+				Player p =Player.entities[Game.currentPlayer];
+				if (p.isJailed()){
+					//release the player from jail
+					p.setJailed(false);
+					
+					Device.player[Game.currentPlayer].sendMessage(Message.ALERT, "You have been smuggled out of jail, it's your turn");
+				}
+				
+			}
+		});
+		
 	}
 }

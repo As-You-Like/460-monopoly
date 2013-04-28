@@ -226,11 +226,8 @@ public class CommandCardActivity extends TabActivity {
 								obj.getString("playerAssets"),
 								obj.getString("playerOwned"), 
 								obj.getString("playerCompleted"), 
-								obj.getString("playerTime"), 
 								obj.getString("playerTrade"), 
-								obj.getString("playerShuttle"), 
-								obj.getString("playerBoard"), 
-								obj.getString("playerStop")
+								obj.getString("playerShuttle")
 							);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -257,6 +254,7 @@ public class CommandCardActivity extends TabActivity {
 				int tileOwner = 0;
 				String tileOwnerName = "";
 				double tilePrice = 0D;
+				double tileRent = 0D;
 				String regionName = "";
 				int regionTileCount = 0;
 				int regionOwnedTileCount = 0;
@@ -278,6 +276,7 @@ public class CommandCardActivity extends TabActivity {
 						tileOwner = obj.getInt("tileOwner");
 						tileOwnerName = obj.getString("tileOwnerName");
 						tilePrice = obj.getDouble("tilePrice");
+						tileRent = obj.getDouble("tileRent");
 						regionName = obj.getString("regionName");
 						regionTileCount = obj.getInt("regionTileCount");
 						regionOwnedTileCount = obj.getInt("regionOwnedTileCount");
@@ -300,7 +299,7 @@ public class CommandCardActivity extends TabActivity {
 					}
         		}
 				
-				
+        		TileActivity.activity.setLandInfo(R.drawable.sample_house, tileName, ""+tilePrice, regionName, "Owned by " + tileOwnerName, regionOwnedTileCount, regionTileCount);
         		TileActivity.activity.btnPurchase.setEnabled(true);
 				if (tileOwner == Tile.OWNER_NEUTRAL){
 					//if nobody owns it
@@ -320,10 +319,11 @@ public class CommandCardActivity extends TabActivity {
 					} else {
 						//if somebody else owns it
 						TileActivity.activity.setPurchaseButtonStatus(tileOwner, false);
+						TileActivity.activity.setRent(""+tileRent);
 					}
 				}
 				
-				TileActivity.activity.setLandInfo(R.drawable.sample_house, tileName, ""+tilePrice, regionName, "Owned by " + tileOwnerName, regionOwnedTileCount, regionTileCount);
+				
 			}
 			
 		});

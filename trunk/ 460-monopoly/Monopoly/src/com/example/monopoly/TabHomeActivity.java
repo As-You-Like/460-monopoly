@@ -52,7 +52,7 @@ public class TabHomeActivity extends Activity {
 		final int avatar_resId = R.drawable.ic_launcher; // R.drawable.ic_launcher;
 		final int land_resId = R.drawable.sample_house; // R.drawable.sample_hotel;
 		
-		setInfo(avatar_resId, land_resId, "Mike", "Red", "100000", "20000", "5", "1", "01:03:24", "5", "2", "2", "");
+		//setInfo(avatar_resId, land_resId, "Mike", "Red", "100000", "20000", "5", "1", "01:03:24", "5", "2", "2", "");
 		
 	}
 	
@@ -74,7 +74,7 @@ public class TabHomeActivity extends Activity {
 
 	public void setInfo(int res, int res2, String player, String color,
 			String cash, String assets, String owned, String completed,
-			String time, String trade, String shf, String board, String stop) {
+			String trade, String shf) {
 		
 		imageViewAvater.setImageResource(res);
 		imageViewLand.setImageResource(res2);
@@ -85,12 +85,9 @@ public class TabHomeActivity extends Activity {
 		txtAssets.setText("Cash in Assets : " + assets);
 		txtOwend.setText("Properties Owned  : " + owned);
 		txtCompleted.setText("Regions Completed : " + completed);
-		txtTime.setText("Time played : " + time);
 
 		txtTrade.setText("# of Trades : " + trade);
 		txtShuttle.setText("# of Shuttle Stops owned  : " + shf);
-		txtBoard.setText("# of times traveled around board : " + board);
-		txtStop.setText("Most Frequent stop " + stop);
 	}
 
 	
