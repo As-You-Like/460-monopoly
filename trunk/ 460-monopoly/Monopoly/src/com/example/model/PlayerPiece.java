@@ -9,6 +9,7 @@ import android.util.Log;
 
 public class PlayerPiece extends MobileUnit {
 	Tile currentTile = null;
+	Tile previousTile = null;
 	
 	public PlayerPiece (Tile startPosition, int owner){
 		//initialize variables
@@ -27,6 +28,10 @@ public class PlayerPiece extends MobileUnit {
 		return currentTile;
 	}
 	
+	public Tile getPreviousTile(){
+		return previousTile;
+	}
+	
 	/**
 	 * Moves the player piece to a new tile
 	 * @param Tile tile [this is the target tile you want the piece to move to]
@@ -35,6 +40,7 @@ public class PlayerPiece extends MobileUnit {
 		//tell the old tile that it lost a unit
 		if (currentTile != null){
 			currentTile.removeVisitor(this);
+			previousTile = currentTile;
 		}
 		//tell the new tile that it has gained a unit
 		tile.addVisitor(this);
