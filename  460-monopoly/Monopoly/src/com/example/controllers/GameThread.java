@@ -64,28 +64,7 @@ public class GameThread extends Thread{
 			
 			@Override
 			public void processMessage(int sender, int reciever, String message) {
-				/*GameThread.gt.resume();
-				valueDie1 = Integer.parseInt(message.substring(0, 1));
-				valueDie2 = Integer.parseInt(message.substring(1, 2));
-				
-				if(valueDie1 == valueDie2){
-					Device.player[currentTurnPlayer].sendMessage(Message.ROLLED_DOUBLES, "");
-				}
-				
-				if(doublesOnce == false && valueDie1 == valueDie2){
-					doublesOnce = true;
-				}
-				else if(doublesTwice == false && valueDie1 == valueDie2){
-					doublesTwice = true;
-				} else if(doublesThrice == false && valueDie1 == valueDie2){
-					doublesThrice = true;
-				
-				
-				}
-				*/
-				Log.w(null, "Test3");
 				Die.roll();
-				Log.w(null, "Test4");
 			}
 			
 		});
@@ -160,6 +139,40 @@ public class GameThread extends Thread{
 
 			@Override
 			public boolean typeValid(int type) {
+				return type == Message.REQUEST_HOME_DATA;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				//create a JSON string out of the data above
+				JSONObject map = new JSONObject();
+				try {
+					map.put("playerName", Player.entities[sender].getName());
+					map.put("playerColor", Player.COLOR_NAMES[sender]);
+					map.put("playerCash", Player.entities[sender].getBalance());
+					map.put("playerAssets", "");
+					map.put("playerOwned", "");
+					map.put("playerCompleted", "");
+					map.put("playerTime", "");
+					map.put("playerTrade", "");
+					map.put("playerShuttle", "");
+					map.put("playerBoard", "");
+					map.put("playerStop", "");
+				} catch (JSONException e) {
+					e.printStackTrace();
+				} 
+				
+				String json = map.toString();
+				
+				Device.player[sender].sendMessage(Message.DATA_HOME_TAB, json);
+			}
+
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
 				return type == Message.TILE_ACTIVITY_UPGRADE_PROPERTY;
 			}
 
@@ -174,6 +187,8 @@ public class GameThread extends Thread{
 				
 				//upgrade the property
 				tile.upgrade(upgrade);
+				
+				Device.player[sender].sendMessage(Message.UPGRADE_SUCCESS, ""+upgrade);
 				
 				/*switch(upgrade){
 				case Tile.UPGRADE_ELECTRICAL:
@@ -314,6 +329,11 @@ public class GameThread extends Thread{
 		boolean isDouble = false;
 		do{
 			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
+			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
+			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
+			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
+			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
+			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
 			this.sleepGameThread();
 			Log.e("MovementPhase", "Execution");
 			if(Die.doubleCount < 3){
@@ -387,6 +407,16 @@ public class GameThread extends Thread{
 			map.put("regionTileCount", regionTileCount);
 			map.put("regionOwnedTileCount", regionOwnedTileCount);
 			map.put("currentBalance", Player.entities[Game.currentPlayer].getBalance());
+			
+			map.put("upgrade1", currentTile.getUpgradePrice(0));
+			map.put("upgrade2", currentTile.getUpgradePrice(1));
+			map.put("upgrade3", currentTile.getUpgradePrice(2));
+			map.put("upgrade4", currentTile.getUpgradePrice(3));
+			
+			map.put("upgrade1bool", currentTile.upgraded[0]);
+			map.put("upgrade2bool", currentTile.upgraded[1]);
+			map.put("upgrade3bool", currentTile.upgraded[2]);
+			map.put("upgrade4bool", currentTile.upgraded[3]);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} 

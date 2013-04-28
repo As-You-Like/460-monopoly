@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 public class UpgradeActivity extends Activity {
 	
-	UpgradeActivity activity;
+	public static UpgradeActivity activity;
 
 	TextView txtTopCash;
 	TextView txtTopRent;
@@ -61,7 +61,7 @@ public class UpgradeActivity extends Activity {
 		//String text = btnElectical.getText().toString();
 		//String value = text.substring(1, text.length());
 		//Log.i("value", value);
-		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, ""+1);
+		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, ""+0);
 	}
 
 	// Click Plumbing Button
@@ -69,7 +69,7 @@ public class UpgradeActivity extends Activity {
 		//String text = btnPlumbing.getText().toString();
 		//String value = text.substring(1, text.length());
 		//Log.i("value", value);
-		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, ""+2);
+		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, ""+1);
 	}
 
 	// Click Vending Button
@@ -77,7 +77,7 @@ public class UpgradeActivity extends Activity {
 		//String text = btnVending.getText().toString();
 		//String value = text.substring(1, text.length());
 		//Log.i("value", value);
-		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, ""+3);
+		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, ""+2);
 	}
 
 	// Click HVAC Button
@@ -86,26 +86,33 @@ public class UpgradeActivity extends Activity {
 		//String value = text.substring(1, text.length());
 		//Log.i("value", value);
 
-		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, ""+4);
+		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_UPGRADE_PROPERTY, ""+3);
 	}
 
-	private void setRegionName(String name) {
+	public void setRegionName(String name) {
 		txtRegion.setText("Region Name : " + name);
 	}
 
-	private void setCashValues(int cash, int rent) {
-		txtTopCash.setText("Cash : $" + String.valueOf(cash));
-		txtTopRent.setText("Rent : $" + String.valueOf(rent));
+	public void setCashValues(double currentBalance, double tilePrice) {
+		txtTopCash.setText("Cash : $" + String.valueOf(currentBalance));
+		txtTopRent.setText("Rent : $" + String.valueOf(tilePrice));
 	}
 
-	private void setButtonValue(int electical, int plumbing, int vending, int hvac) {
-		btnElectical.setText("$" + String.valueOf(electical));
-		btnPlumbing.setText("$" + String.valueOf(plumbing));
-		btnVending.setText("$" + String.valueOf(vending));
-		btnHVAC.setText("$" + String.valueOf(hvac));
+	public void setButtonValue(double upgrade, double upgrade2, double upgrade3, double upgrade4) {
+		btnElectical.setText("$" + String.valueOf(upgrade));
+		btnPlumbing.setText("$" + String.valueOf(upgrade2));
+		btnVending.setText("$" + String.valueOf(upgrade3));
+		btnHVAC.setText("$" + String.valueOf(upgrade4));
+	}
+	
+	public void enableUpgradeButtons(boolean electrical, boolean plumbing, boolean vending, boolean hvac){
+		btnElectical.setEnabled(!electrical);
+		btnPlumbing.setEnabled(!plumbing);
+		btnVending.setEnabled(!vending);
+		btnHVAC.setEnabled(!hvac);
 	}
 
-	private void setRentValue(int electical, int plumbing, int vending, int hvac) {
+	public void setRentValue(double electical, double plumbing, double vending, double hvac) {
 		txtValueElectical.setText("$" + String.valueOf(electical));
 		txtValuePlumbing.setText("$" + String.valueOf(plumbing));
 		txtValueVending.setText("$" + String.valueOf(vending));

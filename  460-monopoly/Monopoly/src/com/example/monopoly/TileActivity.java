@@ -152,6 +152,10 @@ public class TileActivity extends Activity {
 		this.count = count;
 		this.totalCount = countTotal;
 	}
+	
+	public void setCashInfo(String value){
+		txtValue.setText("Value : " + value);
+	}
 
 	
 	public void createToast(String msg){

@@ -13,10 +13,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 
 import com.example.bluetooth.Bluetooth;
 import com.example.bluetooth.BluetoothEvent;
 import com.example.bluetooth.Message;
+import com.example.controllers.HostDevice;
 import com.example.controllers.PlayerDevice;
 import com.example.model.Tile;
 
@@ -33,6 +35,11 @@ public class CommandCardActivity extends TabActivity {
 	final static int TAB_PROPERTIES = 5;
 	final static int TAB_INTERACT = 6;
 	final static int TAB_TRADE = 7;
+	
+	public static double[] upgrade = new double[4];
+	public static boolean[] upgradeStat = new boolean[4];
+	public static double cash;
+	public static double rent;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +78,26 @@ public class CommandCardActivity extends TabActivity {
 				TileActivity.activity.count++;
 				TileActivity.activity.txtNotice.setText("You Own " + TileActivity.activity.count + "/" + TileActivity.activity.totalCount + " Properties in This Region");
 				
+			}
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent() {
+			
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.UPGRADE_SUCCESS;
+			}
+			
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				CommandCardActivity.activity.createAlert("You have succesfully upgraded your property");
+				rent += upgrade[Integer.parseInt(message)];
+				upgradeStat[Integer.parseInt(message)] = true;
+				TileActivity.activity.setCashInfo(""+rent);
+				
+				//if (tabHost.)
+				onBackPressed();
 			}
 		});
 		
@@ -121,8 +148,10 @@ public class CommandCardActivity extends TabActivity {
 			@Override
 			public void processMessage(int sender, int reciever, String message) {
 				// TODO Auto-generated method stub
-				TabTurnActivity.activity.btnTurn.setVisibility(View.VISIBLE);
-				TabTurnActivity.activity.txtYourTurn.setText(message);
+				if (TabTurnActivity.activity.btnTurn.getVisibility() != View.VISIBLE){
+					TabTurnActivity.activity.btnTurn.setVisibility(View.VISIBLE);
+					TabTurnActivity.activity.txtYourTurn.setText(message);
+				}
 			}
 			
 		});
@@ -173,6 +202,51 @@ public class CommandCardActivity extends TabActivity {
 
 			@Override
 			public boolean typeValid(int type) {
+				return type == Message.DATA_HOME_TAB;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				JSONObject obj = null;
+        		try {
+					obj = new JSONObject(message);
+				} catch (JSONException e) {
+					Log.e("Message.START_TILE_ACTIVITY", "JSON IS NULL");
+					obj = null;
+				}
+        		if (obj != null){
+        			try {
+						TabHomeActivity.activity.setInfo(
+								0, 
+								0, 
+								obj.getString("playerName"), 
+								obj.getString("playerColor"), 
+								obj.getString("playerCash"), 
+								obj.getString("playerAssets"),
+								obj.getString("playerOwned"), 
+								obj.getString("playerCompleted"), 
+								obj.getString("playerTime"), 
+								obj.getString("playerTrade"), 
+								obj.getString("playerShuttle"), 
+								obj.getString("playerBoard"), 
+								obj.getString("playerStop")
+							);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        		} else {
+        			createAlert("There was an error, go to another tab and come back");
+        		}
+			}
+			
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
 				return type == Message.START_TILE_ACTIVITY;
 			}
 
@@ -208,6 +282,18 @@ public class CommandCardActivity extends TabActivity {
 						regionTileCount = obj.getInt("regionTileCount");
 						regionOwnedTileCount = obj.getInt("regionOwnedTileCount");
 						currentBalance = obj.getDouble("currentBalance");
+						
+						rent = tilePrice;
+						cash = currentBalance;
+						upgrade[0] = obj.getDouble("upgrade1");
+						upgrade[1] = obj.getDouble("upgrade2");
+						upgrade[2] = obj.getDouble("upgrade3");
+						upgrade[3] = obj.getDouble("upgrade4");
+						
+						upgradeStat[0] = obj.getBoolean("upgrade1bool");
+						upgradeStat[1] = obj.getBoolean("upgrade2bool");
+						upgradeStat[2] = obj.getBoolean("upgrade3bool");
+						upgradeStat[3] = obj.getBoolean("upgrade4bool");
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -242,29 +328,39 @@ public class CommandCardActivity extends TabActivity {
 			
 		});
 		
-		/*if (isTablet(this)) { // isTablet : Move to MapActivty
-			Intent i = new Intent(this, MapActivity.class);
-			startActivity(i);
-		}*/
-		
 		setTab();
 		
-		
-		
-		/*Bluetooth.registerBluetoothEvent(new BluetoothEvent() {
-			
+		tabBar.setOnTabChangedListener(new OnTabChangeListener(){
+
 			@Override
-			public boolean typeValid(int type) {
-				//I don't know how it would fit to do so..
-				return type == Message.MOVEMENT_DICE_ROLL; 
-			}
-			
-			@Override
-			public void processMessage(int sender, int reciever, String message) {
+			public void onTabChanged(String tabId) {
 				// TODO Auto-generated method stub
-				
+				if (tabId.equals("Home")){
+					TabHomeActivity.activity.clearInfo();
+					HostDevice.host.sendMessage(Message.REQUEST_HOME_DATA, "");
+				}
+				if (tabId.equals("Upgrade")){
+					UpgradeActivity.activity.setButtonValue(
+							upgrade[0], 
+							upgrade[1], 
+							upgrade[2], 
+							upgrade[3]
+						);
+					
+					UpgradeActivity.activity.setRentValue(
+							upgrade[0]+rent, 
+							upgrade[1]+rent, 
+							upgrade[2]+rent, 
+							upgrade[3]+rent
+						);
+					
+					UpgradeActivity.activity.enableUpgradeButtons(upgradeStat[0], upgradeStat[1], upgradeStat[2], upgradeStat[3]);
+					
+					UpgradeActivity.activity.setCashValues(cash, rent);
+				}
 			}
-		});*/
+			
+		});
 		
 	}
 	

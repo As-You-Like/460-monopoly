@@ -44,8 +44,10 @@ public class Die extends ScreenUnit {
 		
 		for (int i=0; i<diceCount; i++){
 			
-			if(dice[i]!=null)
+			if(dice[i]!=null) {
 				dice[i].timer.cancel();
+				dice[i].timer = null;
+			}
 			
 		}
 		
@@ -79,24 +81,29 @@ public class Die extends ScreenUnit {
 		executionCountTimesDice = executionCount * diceCount;
 		for (int i=0; i<diceCount; i++){
 			if (dice[i] != null){
+				//dice[i].timer = null;
 				dice[i].destroy();
 			}
 			dice[i] = new Die(i);
 		}
 		for (int i=0; i<diceCount; i++){
-			dice[i].timer.scheduleAtFixedRate(new TimerTask(){
-				@Override
-				public void run() {
-					//cycle through random values
-					for (int i=0; i<diceCount; i++){
-						if (dice[i]!=null)
-							dice[i].value = (int)(Math.random() * 6);
+			try {
+				dice[i].timer.scheduleAtFixedRate(new TimerTask(){
+					@Override
+					public void run() {
+						//cycle through random values
+						for (int i=0; i<diceCount; i++){
+							if (dice[i]!=null)
+								dice[i].value = (int)(Math.random() * 6);
+						}
+						
+						Die.executionCountTimesDice--;
+						Die.stopDiceTimer();
 					}
-					
-					Die.executionCountTimesDice--;
-					Die.stopDiceTimer();
-				}
-			}, 0, 100);
+				}, 0, 100);
+			} catch (IllegalStateException e){
+				roll();
+			}
 		}
 	}
 	
