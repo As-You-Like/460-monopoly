@@ -23,12 +23,13 @@ public class LoadThread extends Thread {
 	//constants for initial settings
 	public static final double INITIAL_PLAYER_BALANCE = 200;
 	public static ArrayList<Integer> LIST_COLORS = new ArrayList<Integer>();
+	public static ArrayList<String> LIST_COLORS_NAMES = new ArrayList<String>();
 	
 	public LoadThread(){
-		LIST_COLORS.add(Color.rgb(255, 0, 0));
-		LIST_COLORS.add(Color.rgb(0, 255, 0));
-		LIST_COLORS.add(Color.rgb(0, 0, 255));
-		LIST_COLORS.add(Color.rgb(0, 255, 255));
+		LIST_COLORS.add(Color.rgb(255, 0, 0)); LIST_COLORS_NAMES.add("Red");
+		LIST_COLORS.add(Color.rgb(0, 255, 0)); LIST_COLORS_NAMES.add("Green");
+		LIST_COLORS.add(Color.rgb(0, 0, 255)); LIST_COLORS_NAMES.add("Blue");
+		LIST_COLORS.add(Color.rgb(0, 255, 255)); LIST_COLORS_NAMES.add("Cyan");
 	}
 	
 	public void run(){
@@ -74,6 +75,8 @@ public class LoadThread extends Thread {
 				int colorIndex = (int) (Math.random()*LIST_COLORS.size());
 				int color = LIST_COLORS.get(colorIndex);
 				LIST_COLORS.remove(colorIndex);
+				Player.COLOR_NAMES[i] = LIST_COLORS_NAMES.get(colorIndex);
+				LIST_COLORS_NAMES.remove(colorIndex);
 				
 				Player p = new Player(Device.player[i], i, color);
 				p.setBalance(INITIAL_PLAYER_BALANCE);

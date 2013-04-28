@@ -18,6 +18,8 @@ public class Game extends TimerTask{
 	public static Timer timer;
 	public static long ms = 0;
 	
+	public static int gameType = 0;
+	
 	// Determines if victory has been achieved by a player
 	public static boolean gameWon = false;
 	

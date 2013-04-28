@@ -9,16 +9,19 @@ public class BoardSetup {
 		start.setName("Tile One");
 		start.setPrice(10);
 		start.setRegion(0);
+		start.priceUpgrades(20, 30, 40, 50);
 		
 		Tile tile1 = start.addNextStop(Tile.DIRECTION_EAST);
 		tile1.setName("Tile Two");
 		tile1.setPrice(20);
 		tile1.setRegion(0);
+		tile1.priceUpgrades(20, 30, 40, 50);
 		
 		Tile tile2 = tile1.addNextStop(Tile.DIRECTION_SOUTHEAST);
 		tile2.setName("Tile Three");
 		tile2.setPrice(30);
 		tile2.setRegion(0);
+		tile2.priceUpgrades(20, 30, 40, 50);
 		
 		Tile tile3 = tile2.addNextStop(Tile.DIRECTION_SOUTHWEST);
 		tile3.setName("Tile Four");

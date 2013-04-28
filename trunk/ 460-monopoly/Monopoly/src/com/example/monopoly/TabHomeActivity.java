@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 public class TabHomeActivity extends Activity { 
 
+	public static TabHomeActivity activity;
+	
 	ImageView imageViewAvater;
 	ImageView imageViewLand;
 	TextView txtPlayer;
@@ -18,7 +20,7 @@ public class TabHomeActivity extends Activity {
 	TextView txtCompleted;
 	TextView txtTime;
 	TextView txtTrade;
-	TextView txtShuffle;
+	TextView txtShuttle;
 	TextView txtBoard;
 	TextView txtStop;
 
@@ -28,7 +30,8 @@ public class TabHomeActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_tab_home);
 		
-
+		activity = this;
+		
 		imageViewAvater = (ImageView) findViewById(R.id.img_avater);
 		imageViewLand = (ImageView) findViewById(R.id.img_land);
 		
@@ -41,7 +44,7 @@ public class TabHomeActivity extends Activity {
 		
 		txtTime = (TextView) findViewById(R.id.txt_time);
 		txtTrade = (TextView) findViewById(R.id.txt_trade);
-		txtShuffle = (TextView) findViewById(R.id.txt_shuffle);
+		txtShuttle = (TextView) findViewById(R.id.txt_shuffle);
 		txtBoard = (TextView) findViewById(R.id.txt_board);
 		txtStop = (TextView) findViewById(R.id.txt_stop);
 		
@@ -51,6 +54,22 @@ public class TabHomeActivity extends Activity {
 		
 		setInfo(avatar_resId, land_resId, "Mike", "Red", "100000", "20000", "5", "1", "01:03:24", "5", "2", "2", "");
 		
+	}
+	
+	public void clearInfo(){
+		//set first text to retrieving info and clear the rest
+		txtPlayer.setText("Retrieving Info...");
+		txtColor.setText("");
+		txtCash.setText("");
+		txtAssets.setText("");
+		txtOwend.setText("");
+		txtCompleted.setText("");
+		txtTime.setText("");
+
+		txtTrade.setText("");
+		txtShuttle.setText("");
+		txtBoard.setText("");
+		txtStop.setText("");
 	}
 
 	public void setInfo(int res, int res2, String player, String color,
@@ -69,7 +88,7 @@ public class TabHomeActivity extends Activity {
 		txtTime.setText("Time played : " + time);
 
 		txtTrade.setText("# of Trades : " + trade);
-		txtShuffle.setText("# of Shuffle Stops owned  : " + shf);
+		txtShuttle.setText("# of Shuttle Stops owned  : " + shf);
 		txtBoard.setText("# of times traveled around board : " + board);
 		txtStop.setText("Most Frequent stop " + stop);
 	}

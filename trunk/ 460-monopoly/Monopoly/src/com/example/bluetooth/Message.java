@@ -88,5 +88,14 @@ public class Message {
 	//A request by the player for upgrade information about the tile the player is currently on
 	public static final int TILE_GET_UPGRADE_DATA = 26;
 	
+	//A request by the player to get updated information for the home tab
+	public static final int REQUEST_HOME_DATA = 27;
+
+	//The host sends data to the player to input into the text fields of the home tab
+	public static final int DATA_HOME_TAB = 28;
+	
+	//The host tells the player that the upgrade worked
+	public static final int UPGRADE_SUCCESS = 29;
+	
 	
 }
