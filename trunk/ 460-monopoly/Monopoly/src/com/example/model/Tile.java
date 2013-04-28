@@ -17,10 +17,10 @@ public class Tile extends StaticUnit {
 	public static final double TILE_RADIUS = 20;
 	public static Tile[][] entity = new Tile[400][400];
 	
-	public static final int UPGRADE_ELECTRICAL = 1;
-	public static final int UPGRADE_PLUMBING = 2;
-	public static final int UPGRADE_VENDING = 3;
-	public static final int UPGRADE_HVAC = 4;
+	public static final int UPGRADE_ELECTRICAL = 0;
+	public static final int UPGRADE_PLUMBING = 1;
+	public static final int UPGRADE_VENDING = 2;
+	public static final int UPGRADE_HVAC = 3;
 	
 	public static int[] REGION_COLORS = {
 		Color.RED, //0
@@ -49,6 +49,9 @@ public class Tile extends StaticUnit {
 	public static final int DIRECTION_WEST      = 4;
 	public static final int DIRECTION_NORTHWEST = 5;
 	
+	public int id;
+	public static int totalTileCount = 0;
+	
 	private double width;
 	private double side;
 	private double h;
@@ -63,8 +66,8 @@ public class Tile extends StaticUnit {
 	private double price;
 	private double baseRent;
 	
-	public boolean[] upgraded;
-	private double[] upgradePrices;
+	public boolean[] upgraded = new boolean[4];
+	private double[] upgradePrices = new double[4];
 	private ArrayList<MobileUnit> visitors = new ArrayList<MobileUnit>();
 	private ArrayList<Tile> nextStops = new ArrayList<Tile>();
 	
@@ -74,6 +77,10 @@ public class Tile extends StaticUnit {
 		Tile.entity[hexX][hexY] = this;
 		this.updateDrawAnchor();
 		this.name = "(" + hexX + ", " + hexY + ")";
+		
+		//get id and increment total
+		this.id = totalTileCount;
+		totalTileCount++;
 		
 		this.hexX = hexX;
 		this.hexY = hexY;
@@ -243,6 +250,7 @@ public class Tile extends StaticUnit {
 	
 	public void upgrade(int upgradeID){
 		this.upgraded[upgradeID] = true;
+		this.price += this.upgradePrices[upgradeID];
 	}
 	
 	public void priceUpgrades(double elec, double plum, double vend, double hvac){
