@@ -15,6 +15,7 @@ public class Game extends TimerTask{
 	public static Game instance;
 	public static Game.Handle mHandler = new Game.Handle();
 	public static String name;
+	public static String type;
 	public static Timer timer;
 	public static long ms = 0;
 	
