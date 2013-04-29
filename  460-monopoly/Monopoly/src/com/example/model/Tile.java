@@ -343,6 +343,10 @@ public class Tile extends StaticUnit {
 		return name;
 	}
 	
+	public int getID(){
+		return id;
+	}
+	
 	public String toString(){
 		return ("(" + this.hexX + ", " + this.hexY + ")") + this.name;
 		
@@ -400,4 +404,5 @@ public class Tile extends StaticUnit {
 	public void setBaseRegionRent(double baseRegionRent) {
 		this.baseRegionRent = baseRegionRent;
 	}
+
 }
