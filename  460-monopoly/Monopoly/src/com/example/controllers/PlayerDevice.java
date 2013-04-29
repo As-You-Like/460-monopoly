@@ -19,6 +19,7 @@ public class PlayerDevice extends Device {
 	public boolean self = false; //Indicates if the current device is this player slot
 	public int playerConnectionStatus = 0;
 	public String name = "";
+	public String bluetoothAddress = "";
 	
 	// === If CurrentDevice is the host ===
 	//Thread for the host to communicate with the connected player
@@ -202,6 +203,14 @@ public class PlayerDevice extends Device {
 		//Mark as connected
 		PlayerDevice.currentPlayerConnectionStatus = PlayerDevice.CONNECTION_ACTIVE;
 		HostDevice.connectionStatus = HostDevice.CONNECTION_ACTIVE;
+	}
+
+	public String getBluetoothAddress() {
+		return bluetoothAddress;
+	}
+
+	public void setBluetoothAddress(String bluetoothAddress) {
+		this.bluetoothAddress = bluetoothAddress;
 	}	
 
 }
