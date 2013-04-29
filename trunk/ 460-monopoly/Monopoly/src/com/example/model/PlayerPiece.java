@@ -32,6 +32,10 @@ public class PlayerPiece extends MobileUnit {
 		return previousTile;
 	}
 	
+	public void setPreviousTile(Tile t){
+		this.previousTile = t;
+	}
+	
 	/**
 	 * Moves the player piece to a new tile
 	 * @param Tile tile [this is the target tile you want the piece to move to]
