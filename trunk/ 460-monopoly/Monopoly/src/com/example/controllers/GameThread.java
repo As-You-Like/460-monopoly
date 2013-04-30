@@ -239,15 +239,14 @@ public class GameThread extends Thread{
 			
 			//Weekly Stipends and other start of turn events
 			EventGenerator.executeTriggeredEvents("newTurn");
-			EventGenerator.chooseAndExecuteRandomEvent("newTurn", 0.9);
 			
-			if (!Player.entities[Game.currentPlayer].isJailed()){
+			
 				//Override Home Tab
 				this.startSubTurn();
 				
 				// Player Movement Subphase
 				this.startMovementPhase();
-			
+			if (!Player.entities[Game.currentPlayer].isJailed()){
 				// Decision Phase
 				this.startDecisionPhase();
 			}
@@ -275,7 +274,7 @@ public class GameThread extends Thread{
 	public void setUpBoard(){
 		for(int i = 0; i < Player.entities.length; i++){
 			if (Player.entities[i] != null){
-				Player.entities[i].setPiece(new PlayerPiece(Tile.entity[3][3], i));
+				Player.entities[i].setPiece(new PlayerPiece(Tile.entity[10][10], i));
 			}
 		}
 	}
