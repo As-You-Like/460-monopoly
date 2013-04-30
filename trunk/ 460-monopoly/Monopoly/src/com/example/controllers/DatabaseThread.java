@@ -2,14 +2,24 @@ package com.example.controllers;
 
 import java.util.ArrayList;
 
+import com.example.content.BoardSetup;
+import com.example.content.EventSetup;
+import com.example.content.Image;
+import com.example.model.PlayerPiece;
 import com.example.model.Tile;
+import com.example.monopoly.LoadingActivity;
+import com.example.monopoly.R;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.CalendarContract.Events;
 import android.database.*;
 import android.database.sqlite.*;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.TextView;
 import android.content.*;
@@ -26,25 +36,66 @@ public class DatabaseThread extends Thread {
 	//			(d) Loop through the Players: loop through each Player's turn-based events: get info from Event and insert into database via SQL
 	//			(e) Log confirmation of successful save
 	// (4) IF LOADING: (TO DO)
-	//			(a) Get info for everything from SQL Select statements; store them to Cursors
-	//			(b) Convert Cursors into usable arrays of ints and Strings
-	//			(c) Get info from singular GameQuery array; insert game info into Game class
-	//			(d) Loop through PlayerQuery array; get info from each Player; insert player info into Player and Device classes
-	//			(e) Loop through Player array; loop through TileQuery array; get info of each tile for each player; insert tile info into Tile class
-	//			(f) Loop through Player array; loop through TurnEventInstanceQuery array; get info of each turn-based event for each player; insert event info into Event class
+	//			(a) Execute BoardSetup.setupBoard();
+	//			(b) Load everything
+	//          	(1) Follow order from LoadThread
+	//						Exception being setupPlayers()
+	//							Create PlayerDevice objects - then do setupPlayers() (do not do the colors piece)
+	//							Update most things
+	//							Then instantiate and start GameThread
+	//							consider changes to GameThread to account for differences
+	//							Update some other things?
+	//			(c) Get info for everything from SQL Select statements; store them to Cursors
+	//			(d) Convert Cursors into usable arrays of ints and Strings
+	//			(e) Get info from singular GameQuery array; insert game info into Game class
+	//			(g) Loop through PlayerQuery array; get info from each Player; insert player info into Player and Device classes (create objects)
+	//			(f) Loop through Player array; loop through TileQuery array; get info of each tile for each player; insert tile info into Tile class
+	//			(g) Loop through Player array; loop through TurnEventInstanceQuery array; get info of each turn-based event for each player; insert event info into Event class
+	
+	
+	
+	
+	
+	//     //     //     //     //     //
+	
+	//        General Variables        //
+	
+	//     //     //     //     //     //
 	
 	public static DatabaseThread dt;
 	public static boolean isLoad;
 	public static final String DATABASE_NAME = "smartstartupsdatabasedmd.db";
+	public String selectedGameName = "";
+	public String[] listViewContents;
+	public SQLiteDatabase db;
+	public static String[][][] relationship = {
+		//  {{parent_table  | parent_key | child_table              | child_key    }, {cascade_delete}}
+			{{"GameTable"   , "GameName" , "PlayerTable"            , "GameName"   }, {"true"        }},
+			{{"PlayerTable" , "PlayerID" , "TileTable"              , "OwnerID"    }, {"true"        }},
+			{{"PlayerTable" , "PlayerID" , "TurnEventInstanceTable" , "PlayerID"   }, {"true"        }}
+	};
+	
+	public String gameTableName = "GameTable";
+	public String playerTableName = "PlayerTable";
+	public String tileTableName = "TileTable";
+	public String turnEventInstanceTableName = "TurnEventInstanceTable";
+	
+	private ContentValues values;
+	private Cursor cursor;
 	
 	
-	String selectedGameName = "";
 	
 	
-	String gameName = "GameName";
-	String gameType = "GameType";
-	int turnCount = 0;
-	int playerID = 0;
+	//     //     //     //     //     //
+	
+	//     Saving Method Variables     //
+	
+	//     //     //     //     //     //
+	
+	public String gameName = "GameName";
+	public String gameType = "GameType";
+	public int turnCount = 0;
+	public int playerID = 0;
 	ArrayList<Integer> playerNumber;
 	//int playerNumber = 0;
 	ArrayList<String> playerName;
@@ -63,31 +114,50 @@ public class DatabaseThread extends Thread {
 	//int tradeCount = 0;
 	ArrayList<ArrayList<Integer>> tileID;
 	//int tileID = 0;
-	int turnEventInstanceID = 0;
+	public int turnEventInstanceID = 0;
 	ArrayList<ArrayList<Integer>> eventNumber;
 	//int eventNumber = 0;
 	ArrayList<ArrayList<Integer>> eventTurnsLeft;
 	//int eventTurnsLeft = 0;
-			
-	String[] listViewContents;
 	
-
 	
-	public SQLiteDatabase db;
-	static String[][][] relationship = {
-		//  {{parent_table  | parent_key | child_table              | child_key    }, {cascade_delete}}
-			{{"GameTable"   , "GameName" , "PlayerTable"            , "GameName"   }, {"true"        }},
-			{{"PlayerTable" , "PlayerID" , "TileTable"              , "OwnerID"    }, {"true"        }},
-			{{"PlayerTable" , "PlayerID" , "TurnEventInstanceTable" , "PlayerID"   }, {"true"        }}
-	};
 	
-	public String gameTableName = "GameTable";
-	public String playerTableName = "PlayerTable";
-	public String tileTableName = "TileTable";
-	public String turnEventInstanceTableName = "TurnEventInstanceTable";
 	
-	private ContentValues values;
-	private Cursor cursor;
+	//     //     //     //     //     //
+	
+	//     Loading Method Variables     //
+	
+	//     //     //     //     //     //
+	
+	public Cursor gameQuery;
+	public Cursor playerQuery;
+	public Cursor tileQuery;
+	public Cursor upgradeQuery;
+	public Cursor turnEventInstanceQuery;
+	
+	String[] st = new String[0];
+	
+	String[] tableGame_fieldAll;
+	
+	int[] tablePlayer_fieldPlayerNumber;
+	String[] tablePlayer_fieldPlayerName;
+	String[] tablePlayer_fieldPlayerColor;
+	String[] tablePlayer_fieldBluetoothAddress;
+	String[] tablePlayer_fieldCurrentLocation;
+	String[] tablePlayer_fieldPreviousLocation;
+	int[] tablePlayer_fieldNetCash;
+	int[] tablePlayer_fieldTradeCount;
+	
+	int[] tableTile_fieldOwnerID;
+	int[] tableTile_fieldElectricalBought;
+	int[] tableTile_fieldPlumbingBought;
+	int[] tableTile_fieldVendingBought;
+	int[] tableTile_fieldHVACBought;
+	
+	int[] tableTurnEventInstance_fieldPlayerID;
+	int[] tableTurnEventInstance_fieldEventNumber;
+	int[] tableTurnEventInstance_fieldEventTurnsLeft;
+	
 	
 	public DatabaseThread(){
 		dt = this;
@@ -95,6 +165,9 @@ public class DatabaseThread extends Thread {
 	}
 	
 	public void run(){
+		
+		
+		
 		
 		Log.i("", "Thread start");
 		isLoad = false;
@@ -161,7 +234,7 @@ public class DatabaseThread extends Thread {
 		String sqlTurnEventInstance;
 		
 		sqlGame = "REPLACE INTO " + gameTableName + "(GameName,GameType,TurnCount) VALUES ('" +
-						 Game.name + "','" + gameType + "'," + Game.turn + ");";
+						 Game.name + "','" + Game.type + "'," + Game.turn + ");";
 		Log.i("", sqlGame);
 		
 		for(int i = 0; i < Player.entities.length; i++){
@@ -236,20 +309,23 @@ public class DatabaseThread extends Thread {
 	
 	public void loadGame(){
 		
-		String[] st = new String[0];
-		Cursor gameQuery;
-		Cursor playerQuery;
-		Cursor tileQuery;
-		Cursor upgradeQuery;
-		Cursor turnEventInstanceQuery;
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//  Update Element Values from Database //
 		
-		String sqlGame = "SELECT * FROM " + gameTableName + ";";
+		// SELECT * FROM GameTable WHERE GameName = [get from GameName];
+					// SELECT * FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = [get from GameName]);
+				//For every player:
+					// SELECT * FROM TileTable WHERE OwnerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = [get from GameName]));
+				//For every player:
+					// SELECT * FROM TurnEventInstanceTable WHERE PlayerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = [get from GameName]));
+		
+		String sqlGame = "SELECT * FROM " + gameTableName + " WHERE GameName = " + gameName + ";";
 		Log.i("", sqlGame);
-		String sqlPlayer = "SELECT * FROM " + playerTableName + ";";
+		String sqlPlayer = "SELECT * FROM " + playerTableName + " WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = " + gameName + ");";
 		Log.i("", sqlPlayer);
-		String sqlTile = "SELECT * FROM " + tileTableName + ";";
+		String sqlTile = "SELECT * FROM " + tileTableName + " WHERE OwnerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = " + gameName + "));";
 		Log.i("", sqlTile);
-		String sqlTurnEventInstance = "SELECT * FROM " + turnEventInstanceTableName + ";";
+		String sqlTurnEventInstance = "SELECT * FROM " + turnEventInstanceTableName + " WHERE PlayerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = '" + gameName + "'));";
 		Log.i("", sqlTurnEventInstance);
 		
 		gameQuery = db.rawQuery(sqlGame, st);
@@ -257,38 +333,229 @@ public class DatabaseThread extends Thread {
 		tileQuery = db.rawQuery(sqlTile, st);
 		turnEventInstanceQuery = db.rawQuery(sqlTurnEventInstance, st);
 		
-		/**
-		 * get all the info from the above Cursor objects
-		 * 
-		 * and set them to the proper variables (reverse of what goes on in save)
-		 * 
-		 */
+		// String[] -----> GameTable values for one row
+		// String[][] -----> PlayerTable values for 2-4 rows
+		// String[][][] -----> TileTable values for 2-4 players
+		// String[][][] -----> TurnEventInstanceTable values for 2-4 players
 		
-		
-		String[] gameColumns = gameQuery.getColumnNames();
-		for(int i = 0; i < gameColumns.length; i++){
-			Log.e("", gameColumns[i]);
+		gameQuery.moveToNext();		
+		tableGame_fieldAll = new String[gameQuery.getColumnCount()];
+		for(int i = 0; i < gameQuery.getColumnCount(); i++){
+			tableGame_fieldAll[i] = gameQuery.getString(i);
+			Log.i("", gameQuery.getString(i));
 		}
 		
-		String[] playerColumns = playerQuery.getColumnNames();
-		for(int i = 0; i < playerColumns.length; i++){
-			Log.e("", playerColumns[i]);
+		/////////////////////
+		
+		tablePlayer_fieldPlayerNumber = new int[playerQuery.getCount()];
+		tablePlayer_fieldPlayerName = new String[playerQuery.getCount()];
+		tablePlayer_fieldPlayerColor = new String[playerQuery.getCount()];
+		tablePlayer_fieldBluetoothAddress = new String[playerQuery.getCount()];
+		tablePlayer_fieldCurrentLocation = new String[playerQuery.getCount()];
+		tablePlayer_fieldPreviousLocation = new String[playerQuery.getCount()];
+		tablePlayer_fieldNetCash = new int[playerQuery.getCount()];
+		tablePlayer_fieldTradeCount = new int[playerQuery.getCount()];
+		
+		playerQuery.moveToFirst();
+		for(int i = 0; i < playerQuery.getCount(); i++){
+			tablePlayer_fieldPlayerNumber[i] = playerQuery.getInt(2);
+			tablePlayer_fieldPlayerName[i] = playerQuery.getString(3);
+			tablePlayer_fieldPlayerColor[i] = playerQuery.getString(4);
+			tablePlayer_fieldBluetoothAddress[i] = playerQuery.getString(5);
+			tablePlayer_fieldCurrentLocation[i] = playerQuery.getString(6);
+			tablePlayer_fieldPreviousLocation[i] = playerQuery.getString(7);
+			tablePlayer_fieldNetCash[i] = playerQuery.getInt(8);
+			tablePlayer_fieldTradeCount[i] = playerQuery.getInt(9);
+			playerQuery.moveToNext();
 		}
 		
-		String[] tileColumns = tileQuery.getColumnNames();
-		for(int i = 0; i < tileColumns.length; i++){
-			Log.e("", tileColumns[i]);
+		/////////////////////////////
+		
+		tableTile_fieldOwnerID = new int[tileQuery.getCount()];
+		tableTile_fieldElectricalBought = new int[tileQuery.getCount()];
+		tableTile_fieldPlumbingBought = new int[tileQuery.getCount()];
+		tableTile_fieldVendingBought = new int[tileQuery.getCount()];
+		tableTile_fieldHVACBought = new int[tileQuery.getCount()];
+
+		
+		tileQuery.moveToFirst();
+		for(int i = 0; i < tileQuery.getCount(); i++){
+			tableTile_fieldOwnerID[i] = tileQuery.getInt(1);
+			tableTile_fieldElectricalBought[i] = tileQuery.getInt(2);
+			tableTile_fieldPlumbingBought[i] = tileQuery.getInt(3);
+			tableTile_fieldVendingBought[i] = tileQuery.getInt(4);
+			tableTile_fieldHVACBought[i] = tileQuery.getInt(5);
 		}
 		
-		String[] turnEventInstanceColumns = turnEventInstanceQuery.getColumnNames();
-		for(int i = 0; i < turnEventInstanceColumns.length; i++){
-			Log.e("", turnEventInstanceColumns[i]);
+		////////////////////////
+		
+		tableTurnEventInstance_fieldPlayerID = new int[turnEventInstanceQuery.getCount()];
+		tableTurnEventInstance_fieldEventNumber = new int[turnEventInstanceQuery.getCount()];
+		tableTurnEventInstance_fieldEventTurnsLeft = new int[turnEventInstanceQuery.getCount()];
+		
+		turnEventInstanceQuery.moveToFirst();
+		for(int i = 0; i < turnEventInstanceQuery.getCount(); i++){
+			tableTurnEventInstance_fieldPlayerID[i] = turnEventInstanceQuery.getInt(1);
+			tableTurnEventInstance_fieldEventNumber[i] = turnEventInstanceQuery.getInt(2);
+			tableTurnEventInstance_fieldEventTurnsLeft[i] = turnEventInstanceQuery.getInt(3);
 		}
 		
-		listViewContents = gameColumns;
+		/////////////////////////
 		
-		int co = playerQuery.getCount();
-		Log.i("", co + " PlayerID records in PlayerTable");
+		String gamee = "Game: ";
+		for(int i = 0; i < tableGame_fieldAll.length; i++){
+			gamee = gamee.concat(tableGame_fieldAll[i] + " : ");
+		}
+		
+		String playere = "Player: ";
+		for(int i = 0; i < tablePlayer_fieldPlayerNumber.length; i++){
+			playere = playere.concat(tablePlayer_fieldPlayerNumber[i] + " : ");
+		}
+		playere.concat(" // ");
+				
+		
+		for(int i = 0; i < tablePlayer_fieldPlayerName.length; i++){
+			playere = playere.concat(tablePlayer_fieldPlayerName[i] + " : ");
+		}
+		
+		for(int i = 0; i < tablePlayer_fieldPlayerColor.length; i++){
+			playere = playere.concat(tablePlayer_fieldPlayerColor[i] + " : ");
+		}
+		
+		for(int i = 0; i < tablePlayer_fieldBluetoothAddress.length; i++){
+			playere = playere.concat(tablePlayer_fieldBluetoothAddress[i] + " : ");
+		}
+		
+		for(int i = 0; i < tablePlayer_fieldCurrentLocation.length; i++){
+			playere = playere.concat(tablePlayer_fieldCurrentLocation[i] + " : ");
+		}
+		
+		for(int i = 0; i < tablePlayer_fieldPreviousLocation.length; i++){
+			playere = playere.concat(tablePlayer_fieldPreviousLocation[i] + " : ");
+		}
+		
+		for(int i = 0; i < tablePlayer_fieldNetCash.length; i++){
+			playere = playere.concat(tablePlayer_fieldNetCash[i] + " : ");
+		}
+		
+		for(int i = 0; i < tablePlayer_fieldTradeCount.length; i++){
+			playere = playere.concat(tablePlayer_fieldTradeCount[i] + " : ");
+		}
+		
+		Log.i("", gamee);
+		Log.i("", playere);
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//  Load New Game Elements //
+		
+		
+		//			(b) Load everything
+		//          	(1) Follow order from LoadThread
+		//						Exception being setupPlayers()
+		//							Create PlayerDevice objects - then do setupPlayers() (do not do the colors piece)
+		//							Update most things
+		//							Then instantiate and start GameThread
+		//							consider changes to GameThread to account for differences
+		//							Update some other things?
+		
+		
+		// constants for initial settings
+		ArrayList<Integer> LIST_COLORS = new ArrayList<Integer>();
+		LIST_COLORS.add(Color.rgb(255, 0, 0));
+		LIST_COLORS.add(Color.rgb(0, 255, 0));
+		LIST_COLORS.add(Color.rgb(0, 0, 255));
+		LIST_COLORS.add(Color.rgb(0, 255, 255));
+		
+		// Set up images
+		Image.HEXAGON_TEXTURE = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_blue);
+		Image.HEXAGON_BOTTOM = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_layer_bot);
+		Image.HEXAGON_REGION = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_layer_rgn);
+		Image.HEXAGON_PLAYER = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_layer_plr);
+		
+		Image.DIE[0] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_1);
+		Image.DIE[1] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_2);
+		Image.DIE[2] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_3);
+		Image.DIE[3] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_4);
+		Image.DIE[4] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_5);
+		Image.DIE[5] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_6);
+		
+		// Set up board and events
+		BoardSetup.setupBoard();
+		EventSetup.setupEvents();
+		
+		//Set up Game and GameThread
+		new GameThread();
+		new Game("");
+		Game.instance.name = tableGame_fieldAll[0];
+		Game.instance.numberOfPlayers = tablePlayer_fieldPlayerNumber.length;
+		Game.instance.type = tableGame_fieldAll[1];
+		Game.instance.turn = Integer.parseInt(tableGame_fieldAll[2]);
+		
+		// Set up Player Devices
+		PlayerDevice.player = new PlayerDevice[tablePlayer_fieldPlayerNumber.length];
+		for(int i = 0; i < tablePlayer_fieldPlayerNumber.length; i++){
+			PlayerDevice.player[i] = new PlayerDevice(false, tablePlayer_fieldPlayerNumber[i]);
+			
+			String btAdd = tablePlayer_fieldBluetoothAddress[i];
+			PlayerDevice.player[i].setBluetoothAddress(btAdd);
+		}
+		
+		// Set up Players
+		Player.entities = new Player[tablePlayer_fieldPlayerName.length];
+		for(int i = 0; i < tablePlayer_fieldPlayerName.length; i++){
+			int color = Integer.parseInt(tablePlayer_fieldPlayerColor[i]);
+			Player p = new Player(Device.player[i], tablePlayer_fieldPlayerNumber[i], color);
+			// Set player name
+			p.setBalance(tablePlayer_fieldNetCash[i]);
+			p.setTradeCount(tablePlayer_fieldTradeCount[i]);
+
+			Player.entities[i] = p;
+		}
+		
+		// Set up PlayerPieces, Current Location, and Previous Location
+		for(int i = 0; i < Player.entities.length; i++){
+			int currentLocID = Integer.parseInt(tablePlayer_fieldCurrentLocation[i]);
+			
+			Tile currentLocTile;
+			
+			for(int j = 0; j < Tile.entity.length; j++){
+				
+				for(int k = 0; k < Tile.entity[j].length; k++){
+					
+					if(Tile.entity[j][k].getID() == currentLocID){
+						currentLocTile = Tile.entity[j][k];
+						Player.entities[i].setPiece(new PlayerPiece(currentLocTile, tablePlayer_fieldPlayerNumber[i]));
+					}
+					
+				}
+				
+			}
+			
+		}		
+		
+		for(int i = 0; i < Player.entities.length; i++){
+			int previousLocID = Integer.parseInt(tablePlayer_fieldPreviousLocation[i]);
+			
+			Tile previousLocTile;
+			
+			for(int j = 0; j < Tile.entity.length; j++){
+				
+				for(int k = 0; k < Tile.entity[j].length; k++){
+					
+					if(Tile.entity[j][k].getID() == previousLocID){
+						previousLocTile = Tile.entity[j][k];
+						Player.entities[i].getPiece().setPreviousTile(previousLocTile);
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		// Set upgrades and turn-based events in players
+		//for()
 		
 	}
 	
