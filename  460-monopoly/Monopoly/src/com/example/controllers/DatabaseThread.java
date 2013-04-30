@@ -266,10 +266,12 @@ public class DatabaseThread extends Thread {
 		String sqlTile;
 		String sqlTurnEventInstance;
 		
+		//Replace Game entity
 		sqlGame = "REPLACE INTO " + gameTableName + "(GameName,GameType,TurnCount) VALUES ('" +
 					 Game.name + "','" + Game.type + "'," + Game.turn + ");";
 		Log.i("", sqlGame);
 		
+		//Replace player entities
 		for(int i = 0; i < Player.entities.length; i++){
 			sqlPlayer = "REPLACE INTO " + playerTableName + "(PlayerID,GameName,PlayerNumber,PlayerName,PlayerColor,BluetoothAddress,CurrentLocation,PreviousLocation,NetCash,TradeCount) VALUES (" +
 			 		 playerID + ",'" + Game.name + "'," + Player.entities[i].getPlayerIndex() + ",'" + Player.entities[i].getName() + "','" + Player.COLOR_NAMES[i] + "','" + Device.player[i].device.getAddress() + "','" + Player.entities[i].getPiece().getCurrentTile().id +
@@ -277,7 +279,7 @@ public class DatabaseThread extends Thread {
 			db.execSQL(sqlPlayer);
 			Log.i("", sqlPlayer);
 			
-
+			//Replace player tile ownership data
 			for(int j = 0; j < Player.entities[i].getPlayerTiles().length; j++){
 				Tile[] tiles = Player.entities[i].getPlayerTiles();
 				int electrical = 0;
@@ -298,15 +300,17 @@ public class DatabaseThread extends Thread {
 					hvac = 1;
 				}
 				
-				
+				// TODO: Possible SQL ERROR: you are trying to fit 6 fields when you only defined 2 (ADD UPGRADES)
 				sqlTile = "REPLACE INTO " + tileTableName + "(TileID,OwnerID) VALUES (" +
 				        tiles[j].id  + "," + Player.entities[i].getPlayerIndex() + "," + electrical + "," + plumbing + "," + vending + "," + hvac + ");";
 				db.execSQL(sqlTile);
 				Log.i("", sqlTile);
 			}
 			
-			for(int k = 0; k < Player.entities[i].getPlayerEvents().length; k++){
-				Event[] turnEvents = Player.entities[i].getPlayerEvents();
+			//Replace player events
+			// TODO: Shifted the turnEvents around to reduce confusion.
+			Event[] turnEvents = Player.entities[i].getPlayerEvents();
+			for(int k = 0; k < turnEvents.length; k++){
 				sqlTurnEventInstance = "REPLACE INTO " + turnEventInstanceTableName + "(TurnEventInstanceID,PlayerID,EventNumber,EventTurnsLeft) VALUES (" +
 						 turnEventInstanceID + "," + Player.entities[i].getPlayerIndex() + "," + turnEvents[k].eventNumber + "," + (turnEvents[k].expireTurn - Game.turn) + ");";
 				Log.i("", sqlTurnEventInstance);
@@ -353,6 +357,7 @@ public class DatabaseThread extends Thread {
 	
 	
 	
+	@SuppressWarnings("deprecation")
 	public void loadGame(){
 		
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -365,6 +370,7 @@ public class DatabaseThread extends Thread {
 				//For every player:
 					// SELECT * FROM TurnEventInstanceTable WHERE PlayerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = [get from GameName]));
 		
+		//Define all sql statements
 		String sqlGame = "SELECT * FROM " + gameTableName + " WHERE GameName = " + gameName + ";";
 		Log.i("", sqlGame);
 		String sqlPlayer = "SELECT * FROM " + playerTableName + " WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = " + gameName + ");";
@@ -374,6 +380,7 @@ public class DatabaseThread extends Thread {
 		String sqlTurnEventInstance = "SELECT * FROM " + turnEventInstanceTableName + " WHERE PlayerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = '" + gameName + "'));";
 		Log.i("", sqlTurnEventInstance);
 		
+		//Retrieve all database data
 		gameQuery = db.rawQuery(sqlGame, st);
 		playerQuery = db.rawQuery(sqlPlayer, st);
 		tileQuery = db.rawQuery(sqlTile, st);
@@ -384,15 +391,19 @@ public class DatabaseThread extends Thread {
 		// String[][][] -----> TileTable values for 2-4 players
 		// String[][][] -----> TurnEventInstanceTable values for 2-4 players
 		
+		// === Game Entity ===
 		gameQuery.moveToNext();		
 		tableGame_fieldAll = new String[gameQuery.getColumnCount()];
+		//Loop through all columns and insert the data into tableGame_fieldAll array
 		for(int i = 0; i < gameQuery.getColumnCount(); i++){
 			tableGame_fieldAll[i] = gameQuery.getString(i);
 			Log.i("", gameQuery.getString(i));
 		}
 		
+		// === Player Entity ===
 		/////////////////////
 		
+		//Instantiate player data fields where the index represents the player.
 		tablePlayer_fieldPlayerNumber = new int[playerQuery.getCount()];
 		tablePlayer_fieldPlayerName = new String[playerQuery.getCount()];
 		tablePlayer_fieldPlayerColor = new String[playerQuery.getCount()];
@@ -402,6 +413,7 @@ public class DatabaseThread extends Thread {
 		tablePlayer_fieldNetCash = new int[playerQuery.getCount()];
 		tablePlayer_fieldTradeCount = new int[playerQuery.getCount()];
 		
+		//fill in the above player data fields
 		playerQuery.moveToFirst();
 		for(int i = 0; i < playerQuery.getCount(); i++){
 			tablePlayer_fieldPlayerNumber[i] = playerQuery.getInt(2);
@@ -415,15 +427,17 @@ public class DatabaseThread extends Thread {
 			playerQuery.moveToNext();
 		}
 		
+		// === Tile Entity ===
 		/////////////////////////////
 		
+		//Instantiate tile data fields where the index represents a different tile row
 		tableTile_fieldOwnerID = new int[tileQuery.getCount()];
 		tableTile_fieldElectricalBought = new int[tileQuery.getCount()];
 		tableTile_fieldPlumbingBought = new int[tileQuery.getCount()];
 		tableTile_fieldVendingBought = new int[tileQuery.getCount()];
 		tableTile_fieldHVACBought = new int[tileQuery.getCount()];
 
-		
+		//fill in the above tile data fields
 		tileQuery.moveToFirst();
 		for(int i = 0; i < tileQuery.getCount(); i++){
 			tableTile_fieldOwnerID[i] = tileQuery.getInt(1);
@@ -433,8 +447,10 @@ public class DatabaseThread extends Thread {
 			tableTile_fieldHVACBought[i] = tileQuery.getInt(5);
 		}
 		
+		// === Turn Event Entity ===
 		////////////////////////
 		
+		//Instantiate event data fields where the index represents individual event instances
 		tableTurnEventInstance_fieldPlayerID = new int[turnEventInstanceQuery.getCount()];
 		tableTurnEventInstance_fieldEventNumber = new int[turnEventInstanceQuery.getCount()];
 		tableTurnEventInstance_fieldEventTurnsLeft = new int[turnEventInstanceQuery.getCount()];
@@ -446,8 +462,9 @@ public class DatabaseThread extends Thread {
 			tableTurnEventInstance_fieldEventTurnsLeft[i] = turnEventInstanceQuery.getInt(3);
 		}
 		
+		// === Testing Code ===
 		/////////////////////////
-		
+		// TODO: I can't for the life of me figure out what these concats are for.
 		String gamee = "Game: ";
 		for(int i = 0; i < tableGame_fieldAll.length; i++){
 			gamee = gamee.concat(tableGame_fieldAll[i] + " : ");
@@ -513,6 +530,7 @@ public class DatabaseThread extends Thread {
 		LIST_COLORS.add(Color.rgb(0, 255, 255));
 		
 		// Set up images
+		// TODO: Hmm, this causes a dangerous redundancy, remind me to create a setup method in the Image class.
 		Image.HEXAGON_TEXTURE = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_blue);
 		Image.HEXAGON_BOTTOM = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_layer_bot);
 		Image.HEXAGON_REGION = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_layer_rgn);
@@ -533,26 +551,32 @@ public class DatabaseThread extends Thread {
 		new GameThread();
 		GameThread.gt.isFromSavedGame = true;
 		new Game("");
-		Game.instance.name = tableGame_fieldAll[0];
-		Game.instance.numberOfPlayers = tablePlayer_fieldPlayerNumber.length;
-		Game.instance.type = tableGame_fieldAll[1];
-		Game.instance.turn = Integer.parseInt(tableGame_fieldAll[2]);
+		Game.name = tableGame_fieldAll[0];
+		Game.numberOfPlayers = tablePlayer_fieldPlayerNumber.length;
+		Game.type = tableGame_fieldAll[1];
+		Game.turn = Integer.parseInt(tableGame_fieldAll[2]);
 		
 		// Set up Player Devices
-		PlayerDevice.player = new PlayerDevice[tablePlayer_fieldPlayerNumber.length];
+		// TODO: The size of this array was already instituted in the global scope, you don't need to do it.
+		//Device.player = new PlayerDevice[tablePlayer_fieldPlayerNumber.length];
 		for(int i = 0; i < tablePlayer_fieldPlayerNumber.length; i++){
-			PlayerDevice.player[tablePlayer_fieldPlayerNumber[i]] = new PlayerDevice(false, tablePlayer_fieldPlayerNumber[i]);
+			Device.player[tablePlayer_fieldPlayerNumber[i]] = new PlayerDevice(false, tablePlayer_fieldPlayerNumber[i]);
 			
 			String btAdd = tablePlayer_fieldBluetoothAddress[i];
-			PlayerDevice.player[tablePlayer_fieldPlayerNumber[i]].setBluetoothAddress(btAdd);
+			Device.player[tablePlayer_fieldPlayerNumber[i]].setBluetoothAddress(btAdd);
 		}
 		
 		// Set up Players
-		Player.entities = new Player[tablePlayer_fieldPlayerName.length];
+		// TODO: Bad idea to use the length of your field results. the size of this array should always be the max amount of players supported
+		//Player.entities = new Player[tablePlayer_fieldPlayerName.length];
+		Player.entities = new Player[Device.player.length]; //I changed it
 		for(int i = 0; i < tablePlayer_fieldPlayerName.length; i++){
 			int color = Integer.parseInt(tablePlayer_fieldPlayerColor[i]);
 			Player p = new Player(Device.player[i], tablePlayer_fieldPlayerNumber[i], color);
 			// Set player name
+			// TODO: The name of the player exists in PlayerDevice, I added the line below
+			Device.player[tablePlayer_fieldPlayerNumber[i]].name = tablePlayer_fieldPlayerName[i];
+			
 			p.setBalance(tablePlayer_fieldNetCash[i]);
 			p.setTradeCount(tablePlayer_fieldTradeCount[i]);
 
@@ -568,12 +592,13 @@ public class DatabaseThread extends Thread {
 			for(int j = 0; j < Tile.entity.length; j++){
 				
 				for(int k = 0; k < Tile.entity[j].length; k++){
-					
-					if(Tile.entity[j][k].getID() == currentLocID){
-						currentLocTile = Tile.entity[j][k];
-						Player.entities[i].setPiece(new PlayerPiece(currentLocTile, tablePlayer_fieldPlayerNumber[i]));
+					// TODO: added null check
+					if (Tile.entity[j][k] != null){
+						if(Tile.entity[j][k].getID() == currentLocID){
+							currentLocTile = Tile.entity[j][k];
+							Player.entities[i].setPiece(new PlayerPiece(currentLocTile, tablePlayer_fieldPlayerNumber[i]));
+						}
 					}
-					
 				}
 				
 			}
@@ -588,13 +613,14 @@ public class DatabaseThread extends Thread {
 			for(int j = 0; j < Tile.entity.length; j++){
 				
 				for(int k = 0; k < Tile.entity[j].length; k++){
-					
-					if(Tile.entity[j][k].getID() == previousLocID){
-						previousLocTile = Tile.entity[j][k];
-						Player.entities[i].getPiece().setPreviousTile(previousLocTile);
-						
+					// TODO: added null check
+					if (Tile.entity[j][k] != null){
+						if(Tile.entity[j][k].getID() == previousLocID){
+							previousLocTile = Tile.entity[j][k];
+							Player.entities[i].getPiece().setPreviousTile(previousLocTile);
+							
+						}
 					}
-					
 				}
 				
 			}
@@ -620,6 +646,8 @@ public class DatabaseThread extends Thread {
 				} else {
 					elecUpgradeBool = false;
 				}
+				// TODO: Here is a 1-liner if statement that is the exact same as the above 5 liner
+				elecUpgradeBool = elecUpgrade == 1 ? true : false;
 				
 				if (plumUpgrade == 1){
 					plumUpgradeBool = true;
@@ -668,6 +696,7 @@ public class DatabaseThread extends Thread {
 	
 	public void populateGameNameListView(){
 		
+		// TODO: Which is there a WHERE filter on this sql statement? don't you want them all?
 		String sqlGame = "SELECT GameName FROM " + gameTableName + " WHERE GameName = " + gameName + ";";
 		Log.i("", sqlGame);
 		
@@ -739,27 +768,33 @@ public class DatabaseThread extends Thread {
 		}
 	}
 	
+	//Handling for starting game module
 	private static class Handle extends Handler {
 		public void handleMessage(Message msg){
-			if(HostDevice.self){
+			// TODO: check for HostDevice.self is redundant since the device that runs this code is always the host
+			//if(HostDevice.self){
 				DataLoadingActivity.startGameModule();
 				//Toast.makeText(this, "Host Finished Loading", Toast.LENGTH_SHORT).show();
-			} else {
+			//} else {
 				//HostDevice.host.sendMessage(com.example.bluetooth.Message.PLAYER_READY, "");
 				//Toast.makeText(this, "Player Finished Loading", Toast.LENGTH_SHORT).show();
-			}
+			//}
 		}
 	}
 	
+	//Handler for populating game list
 	private static class HandleTwo extends Handler {
 		public void handleMessage(Message msg){
-			if(HostDevice.self){
+			HostDevice.self = true;
+			// TODO: check for HostDevice.self is redundant since the device that runs this code is always the host
+			// TODO: also, we should set that variable to true :) ... this device needs to know that it's the host 
+			//if(HostDevice.self){
 				SaveGameActivity.populateListView();
 				//Toast.makeText(this, "Host Finished Loading", Toast.LENGTH_SHORT).show();
-			} else {
+			//} else {
 				//HostDevice.host.sendMessage(com.example.bluetooth.Message.PLAYER_READY, "");
 				//Toast.makeText(this, "Player Finished Loading", Toast.LENGTH_SHORT).show();
-			}
+			//}
 		}
 	}
 	
