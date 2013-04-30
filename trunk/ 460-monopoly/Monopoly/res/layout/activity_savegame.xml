@@ -10,39 +10,44 @@
     android:textColor="#0000ff"
     tools:context=".WelcomeActivity" >
 
-    <TextView
-        android:id="@+id/txtTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp"
-        android:text="BentleyDev"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#0000ff"
-        android:textSize="40sp" />
+     <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/btnHost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btnPlayer"
-        android:layout_alignRight="@+id/btnPlayer"
-        android:layout_below="@+id/txtTitle"
-        android:layout_marginTop="109dp"
-        android:text="Host"
-        android:textColor="#0000ff"
-        android:textSize="30sp" />
+            <TextView
+                android:id="@+id/txtGameName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select a saved game"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#0000ff" />
 
-    <Button
-        android:id="@+id/btnPlayer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnHost"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp"
-        android:text="Player"
-        android:textColor="#0000ff"
-        android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2.88"
+            android:orientation="vertical" >
+
+            <ListView
+                android:id="@+id/lstGames"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            
+            <Button
+                android:id="@+id/btnStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start" />
+        </LinearLayout>
 
 </RelativeLayout>
