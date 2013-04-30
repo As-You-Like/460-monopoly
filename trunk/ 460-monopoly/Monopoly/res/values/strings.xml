@@ -10,5 +10,6 @@
     <string name="title_activity_popup">PopupActivity</string>
     <string name="title_activity_turn">TurnActivity</string>
     <string name="title_activity_trade">TradeActivity</string>
+    <string name="title_activity_data_loading">DataLoadingActivity</string>
 
 </resources>
