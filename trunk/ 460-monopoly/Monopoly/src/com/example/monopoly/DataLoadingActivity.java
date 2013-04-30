@@ -4,23 +4,33 @@ import com.example.bluetooth.Message;
 import com.example.controllers.DatabaseThread;
 import com.example.controllers.Device;
 import com.example.controllers.Game;
+import com.example.controllers.SQLHelper;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 
 public class DataLoadingActivity extends Activity {
 	
 	public static DataLoadingActivity activity;
+	
+	SQLHelper helper;
+	Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_data_loading);
 		activity = this;
+		context = this;
 		
 		DatabaseThread dbt = new DatabaseThread();
+		helper = new SQLHelper(context);
+		dbt.db = helper.getWritableDatabase();
+		
+		
 		dbt.isLoad = true;
 		dbt.start();
 	}
