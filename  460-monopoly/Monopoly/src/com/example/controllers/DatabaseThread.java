@@ -557,7 +557,7 @@ public class DatabaseThread extends Thread {
 		Game.turn = Integer.parseInt(tableGame_fieldAll[2]);
 		
 		// Set up Player Devices
-		// TODO: The size of this array was already instituted in the global scope, you don't need to do it.
+		// TODO: The size of this array was already instantiated in the global scope, you don't need to do it.
 		//Device.player = new PlayerDevice[tablePlayer_fieldPlayerNumber.length];
 		for(int i = 0; i < tablePlayer_fieldPlayerNumber.length; i++){
 			Device.player[tablePlayer_fieldPlayerNumber[i]] = new PlayerDevice(false, tablePlayer_fieldPlayerNumber[i]);
