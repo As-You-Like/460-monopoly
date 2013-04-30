@@ -7,6 +7,7 @@ import com.example.content.EventSetup;
 import com.example.content.Image;
 import com.example.model.PlayerPiece;
 import com.example.model.Tile;
+import com.example.monopoly.DataLoadingActivity;
 import com.example.monopoly.LoadingActivity;
 import com.example.monopoly.R;
 
@@ -82,7 +83,7 @@ public class DatabaseThread extends Thread {
 	
 	private ContentValues values;
 	private Cursor cursor;
-	
+	Handle mHandler = new Handle();
 	
 	
 	
@@ -170,9 +171,9 @@ public class DatabaseThread extends Thread {
 		
 		
 		Log.i("", "Thread start");
-		isLoad = false;
+		//isLoad = false;
 		
-		/*if(isLoad == true){
+		if(isLoad == true){
 			dt.setUpDatabase();
 			dt.loadGame();
 		}
@@ -180,15 +181,15 @@ public class DatabaseThread extends Thread {
 		else if(isLoad == false){
 			dt.setUpDatabase();
 			dt.saveGame();
-		}*/
+		}
 		
-		dt.setUpDatabase();
+		/*dt.setUpDatabase();
 		dt.saveGame();
 		isLoad = true;
-		dt.loadGame();
+		dt.loadGame();*/
 
 		db.close();
-		
+		mHandler.obtainMessage().sendToTarget();
 	}
 	
 	public void setUpDatabase(){
@@ -485,6 +486,7 @@ public class DatabaseThread extends Thread {
 		
 		//Set up Game and GameThread
 		new GameThread();
+		GameThread.gt.isFromSavedGame = true;
 		new Game("");
 		Game.instance.name = tableGame_fieldAll[0];
 		Game.instance.numberOfPlayers = tablePlayer_fieldPlayerNumber.length;
@@ -494,10 +496,10 @@ public class DatabaseThread extends Thread {
 		// Set up Player Devices
 		PlayerDevice.player = new PlayerDevice[tablePlayer_fieldPlayerNumber.length];
 		for(int i = 0; i < tablePlayer_fieldPlayerNumber.length; i++){
-			PlayerDevice.player[i] = new PlayerDevice(false, tablePlayer_fieldPlayerNumber[i]);
+			PlayerDevice.player[tablePlayer_fieldPlayerNumber[i]] = new PlayerDevice(false, tablePlayer_fieldPlayerNumber[i]);
 			
 			String btAdd = tablePlayer_fieldBluetoothAddress[i];
-			PlayerDevice.player[i].setBluetoothAddress(btAdd);
+			PlayerDevice.player[tablePlayer_fieldPlayerNumber[i]].setBluetoothAddress(btAdd);
 		}
 		
 		// Set up Players
@@ -555,7 +557,62 @@ public class DatabaseThread extends Thread {
 		}
 		
 		// Set upgrades and turn-based events in players
-		//for()
+		for(int i = 0; i < Player.entities.length; i++){
+			for(int j = 0; j < Player.entities[i].getPlayerTiles().length; j++){
+				
+				boolean elecUpgradeBool;
+				boolean plumUpgradeBool;
+				boolean vendUpgradeBool;
+				boolean hvacUpgBool;
+				
+				int elecUpgrade = tableTile_fieldElectricalBought[i];
+				int plumUpgrade = tableTile_fieldPlumbingBought[i];
+				int vendUpgrade = tableTile_fieldVendingBought[i];
+				int hvacUpg = tableTile_fieldHVACBought[i];
+				
+				if (elecUpgrade == 1){
+					elecUpgradeBool = true;
+				} else {
+					elecUpgradeBool = false;
+				}
+				
+				if (plumUpgrade == 1){
+					plumUpgradeBool = true;
+				} else {
+					plumUpgradeBool = false;
+				}
+				
+				if (vendUpgrade == 1){
+					vendUpgradeBool = true;
+				} else {
+					vendUpgradeBool = false;
+				}
+				
+				if (hvacUpg == 1){
+					hvacUpgBool = true;
+				} else {
+					hvacUpgBool = false;
+				}
+				
+				
+				Player.entities[i].getPlayerTiles()[j].upgraded[0] = elecUpgradeBool;
+				Player.entities[i].getPlayerTiles()[j].upgraded[1] = plumUpgradeBool;
+				Player.entities[i].getPlayerTiles()[j].upgraded[2] = vendUpgradeBool;
+				Player.entities[i].getPlayerTiles()[j].upgraded[3] = hvacUpgBool;
+				
+			}
+			
+			for(int k = 0; k < tableTurnEventInstance_fieldPlayerID.length; k++){
+				
+				//If: Event Jail Release
+				if(tableTurnEventInstance_fieldEventNumber[k] == 0){
+					EventGenerator.registerEvent("newTurn", new EventSetup.EventJailRelease(tableTurnEventInstance_fieldEventTurnsLeft[k], tableTurnEventInstance_fieldPlayerID[k]));
+				}
+				
+				//else if()
+				
+			}
+		}
 		
 	}
 	
@@ -603,6 +660,18 @@ public class DatabaseThread extends Thread {
 	public void closeDatabase(){
 		if(db != null){
 			db.close();
+		}
+	}
+	
+	private static class Handle extends Handler {
+		public void handleMessage(Message msg){
+			if(HostDevice.self){
+				DataLoadingActivity.startGameModule();
+				//Toast.makeText(this, "Host Finished Loading", Toast.LENGTH_SHORT).show();
+			} else {
+				HostDevice.host.sendMessage(com.example.bluetooth.Message.PLAYER_READY, "");
+				//Toast.makeText(this, "Player Finished Loading", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 	
