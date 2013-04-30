@@ -54,7 +54,7 @@ public class SaveGameActivity extends Activity {
 					long id) {
 				// TODO Auto-generated method stub
 				// === Respond to clicks on a specific game here ===
-				Intent intent = new Intent(LobbyActivity.activity, LoadingActivity.class);
+				Intent intent = new Intent(LobbyActivity.activity, DataLoadingActivity.class);
 				startActivity(intent);	
 			}
 			
