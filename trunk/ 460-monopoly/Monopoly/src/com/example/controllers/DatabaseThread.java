@@ -10,6 +10,7 @@ import com.example.model.Tile;
 import com.example.monopoly.DataLoadingActivity;
 import com.example.monopoly.LoadingActivity;
 import com.example.monopoly.R;
+import com.example.monopoly.SaveGameActivity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -65,6 +66,7 @@ public class DatabaseThread extends Thread {
 	
 	public static DatabaseThread dt;
 	public static boolean isLoad;
+	public static boolean isGettingGameNames;
 	public static final String DATABASE_NAME = "smartstartupsdatabasedmd.db";
 	public String selectedGameName = "";
 	public String[] listViewContents;
@@ -84,6 +86,7 @@ public class DatabaseThread extends Thread {
 	private ContentValues values;
 	private Cursor cursor;
 	Handle mHandler = new Handle();
+	HandleTwo nHandler = new HandleTwo();
 	
 	
 	
@@ -136,18 +139,19 @@ public class DatabaseThread extends Thread {
 	public Cursor upgradeQuery;
 	public Cursor turnEventInstanceQuery;
 	
-	String[] st = new String[0];
+	public String[] st = new String[0];
 	
-	String[] tableGame_fieldAll;
+	public String[] tableGame_fieldAll;
+	public String[] tableGame_fieldGameName;
 	
-	int[] tablePlayer_fieldPlayerNumber;
-	String[] tablePlayer_fieldPlayerName;
-	String[] tablePlayer_fieldPlayerColor;
-	String[] tablePlayer_fieldBluetoothAddress;
-	String[] tablePlayer_fieldCurrentLocation;
-	String[] tablePlayer_fieldPreviousLocation;
-	int[] tablePlayer_fieldNetCash;
-	int[] tablePlayer_fieldTradeCount;
+	public int[] tablePlayer_fieldPlayerNumber;
+	public String[] tablePlayer_fieldPlayerName;
+	public String[] tablePlayer_fieldPlayerColor;
+	public String[] tablePlayer_fieldBluetoothAddress;
+	public String[] tablePlayer_fieldCurrentLocation;
+	public String[] tablePlayer_fieldPreviousLocation;
+	public int[] tablePlayer_fieldNetCash;
+	public int[] tablePlayer_fieldTradeCount;
 	
 	int[] tableTile_fieldOwnerID;
 	int[] tableTile_fieldElectricalBought;
@@ -165,17 +169,24 @@ public class DatabaseThread extends Thread {
 		
 	}
 	
+	
+	
+	
 	public void run(){
-		
-		
-		
 		
 		Log.i("", "Thread start");
 		//isLoad = false;
 		
-		if(isLoad == true){
+		if(isGettingGameNames == true){
+			dt.setUpDatabase();
+			dt.populateGameNameListView();
+			nHandler.obtainMessage().sendToTarget();
+		}
+		
+		else if(isLoad == true){
 			dt.setUpDatabase();
 			dt.loadGame();
+			mHandler.obtainMessage().sendToTarget();
 		}
 		
 		else if(isLoad == false){
@@ -189,8 +200,15 @@ public class DatabaseThread extends Thread {
 		dt.loadGame();*/
 
 		db.close();
-		mHandler.obtainMessage().sendToTarget();
+		
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	public void setUpDatabase(){
 		
@@ -227,6 +245,20 @@ public class DatabaseThread extends Thread {
        Log.i("", "Enforcing referential integrity");
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void saveGame(){
 		
 		String sqlGame;
@@ -235,7 +267,7 @@ public class DatabaseThread extends Thread {
 		String sqlTurnEventInstance;
 		
 		sqlGame = "REPLACE INTO " + gameTableName + "(GameName,GameType,TurnCount) VALUES ('" +
-						 Game.name + "','" + Game.type + "'," + Game.turn + ");";
+					 Game.name + "','" + Game.type + "'," + Game.turn + ");";
 		Log.i("", sqlGame);
 		
 		for(int i = 0; i < Player.entities.length; i++){
@@ -307,6 +339,19 @@ public class DatabaseThread extends Thread {
 		Log.i("", "Saving complete");
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public void loadGame(){
 		
@@ -616,6 +661,37 @@ public class DatabaseThread extends Thread {
 		
 	}
 	
+	
+	
+	
+	
+	
+	public void populateGameNameListView(){
+		
+		String sqlGame = "SELECT GameName FROM " + gameTableName + " WHERE GameName = " + gameName + ";";
+		Log.i("", sqlGame);
+		
+		gameQuery = db.rawQuery(sqlGame, st);
+		
+		gameQuery.moveToNext();		
+		tableGame_fieldGameName = new String[gameQuery.getCount()];
+		for(int i = 0; i < gameQuery.getCount(); i++){
+			tableGame_fieldGameName[i] = gameQuery.getString(i);
+			Log.i("", gameQuery.getString(i));
+			gameQuery.moveToNext();
+		}
+		
+		SaveGameActivity.listViewContents = tableGame_fieldGameName;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	public void enforceReferentialIntegrity(){
 		
 		for (int r=0; r<relationship.length; r++){ //for each relationship
@@ -669,7 +745,19 @@ public class DatabaseThread extends Thread {
 				DataLoadingActivity.startGameModule();
 				//Toast.makeText(this, "Host Finished Loading", Toast.LENGTH_SHORT).show();
 			} else {
-				HostDevice.host.sendMessage(com.example.bluetooth.Message.PLAYER_READY, "");
+				//HostDevice.host.sendMessage(com.example.bluetooth.Message.PLAYER_READY, "");
+				//Toast.makeText(this, "Player Finished Loading", Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+	
+	private static class HandleTwo extends Handler {
+		public void handleMessage(Message msg){
+			if(HostDevice.self){
+				SaveGameActivity.populateListView();
+				//Toast.makeText(this, "Host Finished Loading", Toast.LENGTH_SHORT).show();
+			} else {
+				//HostDevice.host.sendMessage(com.example.bluetooth.Message.PLAYER_READY, "");
 				//Toast.makeText(this, "Player Finished Loading", Toast.LENGTH_SHORT).show();
 			}
 		}
