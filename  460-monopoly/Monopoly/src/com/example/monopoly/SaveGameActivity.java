@@ -34,6 +34,7 @@ public class SaveGameActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_savegame);
+		activity = this;
 		
 		lstGames = (ListView)this.findViewById(R.id.lstGames);
 		
@@ -54,7 +55,7 @@ public class SaveGameActivity extends Activity {
 					long id) {
 				// TODO Auto-generated method stub
 				// === Respond to clicks on a specific game here ===
-				Intent intent = new Intent(LobbyActivity.activity, DataLoadingActivity.class);
+				Intent intent = new Intent(SaveGameActivity.activity, DataLoadingActivity.class);
 				startActivity(intent);	
 			}
 			
