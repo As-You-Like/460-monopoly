@@ -3,6 +3,7 @@ package com.example.controllers;
 import java.util.ArrayList;
 
 import com.example.bluetooth.Message;
+import com.example.content.EventSetup;
 import com.example.model.PlayerPiece;
 import com.example.model.Tile;
 import com.example.model.Unit;
@@ -102,6 +103,8 @@ public class Player {
 	public void goToJail(){
 		this.jailed = true;
 		this.piece.move(Tile.getJailTile());
+		
+		EventGenerator.registerEvent("newTurn", new EventSetup.EventJailRelease(EventSetup.JAIL_RELEASE, this.getPlayerIndex()));
 		
 		//place jail tile where null is
 		//this.piece.move(null);

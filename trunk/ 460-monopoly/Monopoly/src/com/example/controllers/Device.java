@@ -1,5 +1,7 @@
 package com.example.controllers;
 
+import java.util.ArrayList;
+
 import android.util.Log;
 
 /**
@@ -27,6 +29,9 @@ public abstract class Device {
 	//static references to the players in the game
 	public static PlayerDevice[] player = new PlayerDevice[4];
 	
+	//static references to the players attempting to connect to a game in progress (4 allowed at a time)
+	public static ArrayList<PlayerDevice> connectingPlayer = new ArrayList<PlayerDevice>();
+	
 	//temporary reference to hold the player object until the host sends the assigned player number
 	public static PlayerDevice tmpCurrentPlayer = null;
 	
@@ -38,7 +43,9 @@ public abstract class Device {
 		if (HostDevice.self){ //if host, return -1 (indicator of host)
 			return -1;
 		} else { //loop through players looking for "self" and return the corresponding index
-			for (int i=0; i<Device.player.length; i++){
+			return Device.currentPlayer;
+			
+			/*for (int i=0; i<Device.player.length; i++){
 				if (Device.player[i] != null){
 					Log.e("getCurrentDevice " + i, Device.player[i].self ? "self is true" : "self is false!");
 					if (Device.player[i].self){ 
@@ -48,9 +55,21 @@ public abstract class Device {
 					//Log.e("Device.getCurrentDevice", "player[" + i + "] does not exist!");
 				}
 			}
+			
+			//loop through all reconnecting player and find "self"
+			for (int i=0; i<Device.connectingPlayer.size(); i++){
+				if (Device.connectingPlayer.get(i) != null){
+					Log.e("getCurrentDevice " + i, Device.connectingPlayer.get(i).self ? "self is true" : "self is false!");
+					if (Device.connectingPlayer.get(i).self){ 
+						return i;
+					}
+				} else {
+					//Log.e("Device.getCurrentDevice", "player[" + i + "] does not exist!");
+				}
+			}*/
 		}
 		//return failure
-		return -2;
+		//return -2;
 	}
 	
 	//send message to target device

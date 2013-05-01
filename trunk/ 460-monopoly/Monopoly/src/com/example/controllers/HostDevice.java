@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.bluetooth.Bluetooth;
 import com.example.bluetooth.Message;
+import com.example.monopoly.MapActivity;
 
 /**
  * Class that manages everything to do with the host
@@ -103,10 +104,11 @@ public class HostDevice extends Device {
 				this.listenStop();
 				HostDevice.accept = Bluetooth.entity.new AcceptThread();
 			}
+			HostDevice.accept.start(); 
+			Bluetooth.changeDeviceName(deviceName);
+			HostDevice.connectionStatus = HostDevice.CONNECTION_LISTENING;
 		}
-		HostDevice.accept.start(); 
-		Bluetooth.changeDeviceName(deviceName);
-		HostDevice.connectionStatus = HostDevice.CONNECTION_LISTENING;
+		
 	}
 	
 	public void listenStop(){
@@ -124,6 +126,30 @@ public class HostDevice extends Device {
 	 * @param device
 	 */
 	public static synchronized void activate(BluetoothSocket socket, BluetoothDevice device){
+		//Handle reconnects differently
+		if (MapActivity.activity != null){ //MapActivity will not be loaded if the game was not yet started
+			//this is how we differentiate between a lobby game setup and an in-game reconnect
+			PlayerDevice pd = new PlayerDevice(true);
+			pd.device = device;
+			pd.active = Bluetooth.entity.new ActiveThread(socket);
+			pd.active.start();
+			
+			//Assign the connecting player to a temporary arraylist.
+			Device.connectingPlayer.add(pd);
+			
+			//send a message to the connecting player
+			
+			//get all the player names into a formatted string (incoming player is to choose which one he wants to join as)
+			String message = "";
+			for (PlayerDevice d : Device.player){
+				message += (d != null ? d.name : "<<empty>>") + ":";
+			}
+			
+			//send reconnect message
+			pd.sendMessage(Message.RECONNECT_START, message);
+			
+			return;
+		}
 		//Assign a player number
 		int p = 0;
 		

@@ -53,7 +53,7 @@ public class PanAndZoomListener implements OnTouchListener {
   }
 
   public boolean onTouch(View view, MotionEvent event) {
-	  Log.d(null, "PZL.onTouch");
+	 // Log.d(null, "PZL.onTouch");
 
     // Handle touch events here...
     switch (event.getAction() & MotionEvent.ACTION_MASK) {

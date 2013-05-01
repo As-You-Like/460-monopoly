@@ -148,6 +148,7 @@ public class CommandCardActivity extends TabActivity {
 			@Override
 			public void processMessage(int sender, int reciever, String message) {
 				// TODO Auto-generated method stub
+				Log.e("", "Event 22 Executed");
 				if (TabTurnActivity.activity.btnTurn.getVisibility() != View.VISIBLE){
 					TabTurnActivity.activity.btnTurn.setVisibility(View.VISIBLE);
 					TabTurnActivity.activity.txtYourTurn.setText(message);
