@@ -15,6 +15,7 @@ import com.example.monopoly.SaveGameActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.CalendarContract.Events;
 import android.database.*;
@@ -68,6 +69,7 @@ public class DatabaseThread extends Thread {
 	public static boolean isLoad;
 	public static boolean isGettingGameNames;
 	public static final String DATABASE_NAME = "smartstartupsdatabasedmd.db";
+	public volatile Looper mMyLooper;
 	public String selectedGameName = "";
 	public String[] listViewContents;
 	public SQLiteDatabase db;
@@ -173,6 +175,7 @@ public class DatabaseThread extends Thread {
 	
 	
 	public void run(){
+		Looper.prepare();
 		
 		Log.i("", "Thread start");
 		//isLoad = false;
@@ -180,18 +183,25 @@ public class DatabaseThread extends Thread {
 		if(isGettingGameNames == true){
 			dt.setUpDatabase();
 			dt.populateGameNameListView();
-			nHandler.obtainMessage().sendToTarget();
+			Message msg = nHandler.obtainMessage();
+			msg.what = 1;
+			msg.sendToTarget();
 		}
 		
 		else if(isLoad == true){
 			dt.setUpDatabase();
 			dt.loadGame();
-			mHandler.obtainMessage().sendToTarget();
+			Message msg = nHandler.obtainMessage();
+			msg.what = 2;
+			msg.sendToTarget();
 		}
 		
 		else if(isLoad == false){
 			dt.setUpDatabase();
 			dt.saveGame();
+			Message msg = nHandler.obtainMessage();
+			msg.what = 3;
+			msg.sendToTarget();
 		}
 		
 		/*dt.setUpDatabase();
@@ -199,8 +209,11 @@ public class DatabaseThread extends Thread {
 		isLoad = true;
 		dt.loadGame();*/
 
-		db.close();
 		
+		isLoad = false;
+		isGettingGameNames = false;
+		db.close();
+		Looper.loop();
 	}
 	
 	
@@ -761,11 +774,9 @@ public class DatabaseThread extends Thread {
 		}
 	}
 	
-	//close database
-	public void closeDatabase(){
-		if(db != null){
-			db.close();
-		}
+	//kill Looper
+	public void killLooper(){
+		mMyLooper.quit();
 	}
 	
 	//Handling for starting game module
@@ -773,7 +784,7 @@ public class DatabaseThread extends Thread {
 		public void handleMessage(Message msg){
 			// TODO: check for HostDevice.self is redundant since the device that runs this code is always the host
 			//if(HostDevice.self){
-				DataLoadingActivity.startGameModule();
+				
 				//Toast.makeText(this, "Host Finished Loading", Toast.LENGTH_SHORT).show();
 			//} else {
 				//HostDevice.host.sendMessage(com.example.bluetooth.Message.PLAYER_READY, "");
@@ -789,7 +800,17 @@ public class DatabaseThread extends Thread {
 			// TODO: check for HostDevice.self is redundant since the device that runs this code is always the host
 			// TODO: also, we should set that variable to true :) ... this device needs to know that it's the host 
 			//if(HostDevice.self){
+			if(msg.what == 1){
 				SaveGameActivity.populateListView();
+			}
+			
+			else if(msg.what == 2){
+				DataLoadingActivity.startGameModule();
+			}
+			else if(msg.what == 3){
+				dt.killLooper();
+			}
+				
 				//Toast.makeText(this, "Host Finished Loading", Toast.LENGTH_SHORT).show();
 			//} else {
 				//HostDevice.host.sendMessage(com.example.bluetooth.Message.PLAYER_READY, "");
