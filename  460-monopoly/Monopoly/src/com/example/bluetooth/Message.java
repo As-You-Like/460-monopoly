@@ -132,19 +132,19 @@ public class Message {
 	public static final int TRADE_CHANGE_DETAILS = 40;
 	
 	//The host updating both players with the new details of trade
-	public static final int TRADE_UPDATE_DETAILS = 40;
+	public static final int TRADE_UPDATE_DETAILS = 41;
 	
 	//A player informing the host of trade being accepted
-	public static final int TRADE_ACCEPT = 41;
+	public static final int TRADE_ACCEPT = 42;
 	
 	//A player informing the host of trade being rejected
-	public static final int TRADE_REJECT = 42;
+	public static final int TRADE_REJECT = 43;
 	
 	//The host informing the player of Trade success
-	public static final int TRADE_SUCCESS = 43;
+	public static final int TRADE_SUCCESS = 44;
 	
 	//The host informing the player of Trade failure
-	public static final int TRADE_FAIL = 44;
+	public static final int TRADE_FAIL = 45;
 
 
 	
