@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.example.content.Image;
 
+import android.R.color;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
@@ -23,24 +24,69 @@ public class Tile extends StaticUnit {
 	public static final int UPGRADE_HVAC = 3;
 	
 	public static int[] REGION_COLORS = {
-		Color.RED, //0
-		Color.BLUE, //1
+		Color.RED,  
 		Color.CYAN,
 		Color.MAGENTA,
-		Color.GREEN,
 		Color.YELLOW,
-		Color.rgb(255, 63, 0)
+		Color.BLUE,
+		Color.GRAY,
+		Color.LTGRAY,
+		Color.DKGRAY,
+		Color.BLACK,
+		color.holo_green_light,
+		color.holo_red_light,
+		color.holo_blue_bright,
+		color.holo_orange_light,
+		color.primary_text_dark_nodisable,
+		color.holo_red_dark,
+		color.holo_orange_dark,
+		Color.GREEN,
+		color.holo_purple,
+		color.holo_green_dark
 	};
 	
 	public static String[] REGION_NAMES = {
 		"THE TREES",      //0
-		"Region Two", //1
-		"Region Three",
-		"Region Four",
-		"Region Five",
-		"Region Six",
-		"Region Seven"
+		"Freshman Dorms", //1
+		"Shuttle",
+		"Student Center",
+		"Eateries",
+		"Special",
+		"Senior Apartments",
+		"Sophomore Suites",
+		"Falcone Apartment",
+		"Upper Campus Classic",
+		"Upper Campus Modern",
+		"Possessions",
+		"Parking Spaces",
+		"Lower Campus Suites",
+		"Athletic Complex",
+		"Dana Center",
+		"Non-Buyable properties",
+		"Pathways",
+		"Lower Campus Apartment"
+		
 	};
+	
+	public static final int REGION_TREES = 0;
+	public static final int REGION_FRESHMAN  =1;
+	public static final int REGION_SHUTTLE=2;
+	public static final int REGION_STUDENT_CENTER=3;
+	public static final int REGION_EATERIES=4;
+	public static final int REGION_SPECIAL=5;
+	public static final int REGION_SENIAL_ART=6;
+	public static final int REGION_SOPHMORE_SUITES=7;
+	public static final int REGION_FALCONE_ART=8;
+	public static final int REGION_UPPER_CAMPUS_CLASSIC=9;
+	public static final int REGION_UPPER_CAMPUS_MODERN=10;
+	public static final int REGION_POSSESSIONS=11;
+	public static final int REGION_PARKING_SPACES=12;
+	public static final int REGION_LOWER_CAMPUS_SUITES=13;
+	public static final int REGION_ATHLETIC_COMPLEX=14;
+	public static final int REGION_DANA_CENTER=15;
+	public static final int REGION_NON_BUYABLE=16;
+	public static final int REGION_PATHWAYS=17;
+	public static final int REGION_LOWER_CAMPUS_APT=18;
 	
 	public static final int DIRECTION_NORTHEAST = 0;
 	public static final int DIRECTION_EAST      = 1;
