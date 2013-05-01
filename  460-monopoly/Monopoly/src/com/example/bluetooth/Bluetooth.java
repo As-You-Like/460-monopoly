@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -182,12 +184,12 @@ public class Bluetooth {
 				try {
 					socket = mmServerSocket.accept();
 				} catch (IOException e){
-					Log.e("1", "AcceptThread server socket error");
+					Log.e("1", e.getMessage());
 					break; 
 				}
 				
 				if (socket != null){
-					Log.e("5", socket.getRemoteDevice().getName());
+					Log.e("5", socket.getRemoteDevice().getName()); 
 					synchronized (Bluetooth.this){
 						HostDevice.activate(socket, socket.getRemoteDevice()); 
 						
@@ -325,34 +327,51 @@ public class Bluetooth {
 	            	
 	                // Send the obtained bytes to the UI Activity
 	            	if (builder.length() > 0){ 
-	            		String json = builder.toString();
-	            		JSONObject obj = null;
-	            		try {
-							obj = new JSONObject(json);
-						} catch (JSONException e) {
-							Log.e("AcceptThread", "JSON IS NULL");
-							obj = null;
-						}
-	            		if (obj != null){
-	            			
-	            			Message msg = Bluetooth.mHandler.obtainMessage(Bluetooth.MESSAGE_RECIEVE, obj);
-	            			if (HostDevice.self == true){
-	            				msg.arg1 = 0; //identify which playerdevice has the current activethread
-	            				for (int i=0; i<Device.player.length; i++){
-	            					if (Device.player[i] != null){
-	            						if (Device.player[i].active.getId() == this.getId()){
-	            							Log.d("getId()", "i = " + i);
-	            							msg.arg1 = i;
-	            						}
-	            					}
-	            				}
-	            			} else {
-	            				msg.arg1 = -1; //All messages are recieved from the host only
-	            			}
-	            			
-	            			msg.sendToTarget();
-	            		}
 	            		
+	            		String jsonString = builder.toString() + "{";
+	            		Log.e("Master Json", jsonString);
+	            		
+	            		
+	            		int index = -1;
+	            		int prevIndex;
+	            		//do while loop to loop through jammed messages if they are present.
+	            		do {
+	            			//get next json
+	            			prevIndex = index;
+	            			index = jsonString.indexOf("}{", prevIndex+1);
+	            			if (index != -1){
+		            			String json = jsonString.substring(prevIndex+1, index+1);
+		            			
+		            			Log.e("json", json);
+		            			JSONObject obj = null;
+			            		try {
+									obj = new JSONObject(json);
+									obj.put("JSON", json);
+								} catch (JSONException e) {
+									Log.e("AcceptThread", "JSON IS NULL");
+									obj = null;
+								}
+			            		if (obj != null){
+			            			
+			            			Message msg = Bluetooth.mHandler.obtainMessage(Bluetooth.MESSAGE_RECIEVE, obj);
+			            			if (HostDevice.self == true){
+			            				msg.arg1 = 0; //identify which playerdevice has the current activethread
+			            				for (int i=0; i<Device.player.length; i++){
+			            					if (Device.player[i] != null){
+			            						if (Device.player[i].active.getId() == this.getId()){
+			            							Log.d("getId()", "i = " + i);
+			            							msg.arg1 = i;
+			            						}
+			            					}
+			            				}
+			            			} else {
+			            				msg.arg1 = -1; //All messages are recieved from the host only
+			            			}
+			            			
+			            			msg.sendToTarget();
+			            		}
+	            			}
+	            		} while(index != -1);
 	            	}
 	            	
 	                builder.delete(0, builder.length());
@@ -368,6 +387,7 @@ public class Bluetooth {
         					if (Device.player[i] != null){
         						if (Device.player[i].active.getId() == this.getId()){
         							Log.d("getId()", "i = " + i);
+        							Device.player[i].playerConnectionStatus = PlayerDevice.CONNECTION_DISCONNECTED;
         							msg.arg1 = i;
         						}
         					}
@@ -419,9 +439,11 @@ public class Bluetooth {
 							+ " to " + reciever
 							+ " type: " + type + "] " 
 							+ message;
+					String debugMsg2 = obj.getString("JSON");
 					
 					
 					Log.d("message", debugMsg);
+					Log.d("jsonMessage", debugMsg2);
 					/*Toast.makeText(context, 
 							
 							debugMsg
@@ -463,22 +485,55 @@ public class Bluetooth {
 			case Bluetooth.MESSAGE_ERROR: 
 				String message = (String)msg.obj;
 				if (message.equals("playerDisconnect")){
-					if (HostDevice.self){
-						Device.player[msg.arg1] = null;
-						Toast.makeText(context, "Player " + msg.arg1 + " has disconnected", Toast.LENGTH_SHORT).show();
-						LobbyActivity.activity.updatePlayerList();
-					} else {
-						Toast.makeText(context, "You have disconnected from the game", Toast.LENGTH_SHORT).show();
-						
-						//go back
-						if (LobbyActivity.activity != null)
-							LobbyActivity.activity.finish();
-						
-						//flush out existing knowledge of lobby
-						for (int i=0; i<Device.player.length; i++){
-							if (Device.player[i] != null){
-								Device.player[i] = null;
+					if (MapActivity.activity == null){
+						if (HostDevice.self){
+							Log.e("arg1", msg.arg1+"");
+							/*LobbyActivity
+								.activity
+								.createAlert("Player " + Device
+										.player[msg.arg1]
+												.name + " has disconnected");*/
+							
+							Device.player[msg.arg1] = null;
+							
+							LobbyActivity.activity.updatePlayerList();
+						} else {
+							Toast.makeText(context, "You have disconnected from the game", Toast.LENGTH_SHORT).show();
+							
+							//go back
+							if (LobbyActivity.activity != null)
+								LobbyActivity.activity.finish();
+							
+							//flush out existing knowledge of lobby
+							for (int i=0; i<Device.player.length; i++){
+								if (Device.player[i] != null){
+									Device.player[i] = null;
+								}
 							}
+						}
+					} else {
+						if (HostDevice.self){
+							Log.e("arg1", msg.arg1+"");
+							MapActivity
+								.activity
+								.createAlert("Player " + Device
+										.player[msg.arg1]
+												.name + " has disconnected");
+							
+							Device.player[msg.arg1].active.cancel();
+							Device.player[msg.arg1].active = null;
+							
+							//Toast.makeText(context, "Player " + msg.arg1 + " has disconnected", Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(context, "You have disconnected from the game", Toast.LENGTH_SHORT).show();
+							CommandCardActivity
+							.activity
+							.createAlert("You have disconnected from the game");
+							//go back
+							
+							Device.player[Device.currentPlayer].active.cancel();
+							Device.player[Device.currentPlayer].active = null;
+							
 						}
 					}
 					
