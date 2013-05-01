@@ -2,6 +2,7 @@ package com.example.monopoly;
 
 import java.util.ArrayList;
 
+import com.example.bluetooth.Message;
 import com.example.controllers.HostDevice;
 
 import android.app.Activity;
@@ -51,7 +52,7 @@ public class TabInteractActivity extends Activity {
 	}
 	
 	public void clickEventGoTrade(View v){
-		HostDevice.host.sendMessage(Message.START_TRADE, )
+		HostDevice.host.sendMessage(Message.START_TRADE, "");
 		Intent intent = new Intent(this, TradeActivity.class);
 		startActivity(intent);
 	}
