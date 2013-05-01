@@ -95,9 +95,36 @@ public class Message {
 	public static final int DATA_HOME_TAB = 28;
 	
 	//The host tells the player that the upgrade worked
+	
 	public static final int UPGRADE_SUCCESS = 29;
+	
+	//The player tells the host which player he's reconnecting as
+	public static final int RECONNECT_CHOICE = 30;
 
+	//The host tells the player that the player choice from RECONNECT_CHOICE was accepted
+	public static final int RECONNECT_CHOICE_ACCEPT = 31;
+
+	//The host tells the player that the player choice from RECONNECT_CHOICE was rejected
+	public static final int RECONNECT_CHOICE_REJECT = 32;
+
+	//The host confirming the connection attempt by the player and starting the reconnect process
+	public static final int RECONNECT_START = 33;
+
+	//The player requesting the host to provide properties owned by the current player
+	public static final int REQUEST_PROPERTIES_DATA = 34; 
+	
+	//The host responding to REQUEST_PROPERTIES_DATA event with data
+	public static final int REQUEST_PROPERTIES_DATA_ACCEPT = 35;
+
+	//The player requesting tile data on a specific tile
+	public static final int REQUEST_TILE_DATA = 36;
+
+	//The host responding to REQUEST_TILE_DATA
+	public static final int REQUEST_TILE_DATA_ACCEPT = 37; 
+	
 	public static final int START_TRADE = 38; 
+
+
 	
 	
 }
