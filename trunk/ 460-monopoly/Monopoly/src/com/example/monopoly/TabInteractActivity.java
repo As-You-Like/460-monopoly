@@ -52,7 +52,7 @@ public class TabInteractActivity extends Activity {
 	}
 	
 	public void clickEventGoTrade(View v){
-		HostDevice.host.sendMessage(Message.START_TRADE, "");
+		HostDevice.host.sendMessage(Message.TRADE_START, "");
 		Intent intent = new Intent(this, TradeActivity.class);
 		startActivity(intent);
 	}
