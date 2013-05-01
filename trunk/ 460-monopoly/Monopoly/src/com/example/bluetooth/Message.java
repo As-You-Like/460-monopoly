@@ -122,7 +122,26 @@ public class Message {
 	//The host responding to REQUEST_TILE_DATA
 	public static final int REQUEST_TILE_DATA_ACCEPT = 37; 
 	
-	public static final int START_TRADE = 38; 
+	//A player starting trade
+	public static final int TRADE_START = 38; 
+	
+	//Hosting informing second player of trade
+	public static final int TRADE_START_PLAYER = 39;
+	
+	//A player informing the host of changing trade details
+	public static final int TRADE_CHANGE_DETAILS = 40;
+	
+	//A player informing the host of trade being accepted
+	public static final int TRADE_ACCEPT = 41;
+	
+	//A player informing the host of trade being rejected
+	public static final int TRADE_REJECT = 42;
+	
+	//The host informing the player of Trade success
+	public static final int TRADE_SUCCESS = 43;
+	
+	//The host informing the player of Trade failure
+	public static final int TRADE_FAIL = 44;
 
 
 	
