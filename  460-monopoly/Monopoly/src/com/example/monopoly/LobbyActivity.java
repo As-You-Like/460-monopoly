@@ -168,28 +168,32 @@ public class LobbyActivity extends Activity {
 				@Override
 				public void processMessage(int sender, int reciever, String message) {
 					if (reciever == -1 && message.substring(0, 11).equals("nameRequest")){
-						int playerNum = sender;
-						String playerName = message.substring(11);
-						
-						//check if name is available
-						String error = PlayerDevice.isNameAvailable(playerName);
-						
-						if (error == null){
-							//update data
-							PlayerDevice.player[playerNum].name = playerName;
+						if (MapActivity.activity == null){
+							//this is a lobby event
+							int playerNum = sender;
+							String playerName = message.substring(11);
 							
-							//update UI
-							LobbyActivity.activity.updatePlayerList();
+							//check if name is available
+							String error = PlayerDevice.isNameAvailable(playerName);
 							
-							//send message to player indicating name is accepted
-							Log.d("System Message", "Name Accepted: " + playerName + " for Player " + playerNum);
-							//PlayerDevice.player[playerNum].sendMessage(Device.MESSAGE_TYPE_SYSTEM, "nameRequestAccepted" + playerName);
-							Device.sendMessageToAllPlayers(Message.NAME_REQUEST_ACCEPTED, "nameRequestAccepted" + playerNum + playerName);
-						} else {
-							//send message to player indicating name is rejected
-							Log.e("System Message", "Name Rejected: " + playerName + " for Player " + playerNum);
-							PlayerDevice.player[playerNum].sendMessage(Message.NAME_REQUEST_REJECTED, "nameRequestRejected" + error);
-						}
+							if (error == null){
+								//update data
+								PlayerDevice.player[playerNum].name = playerName;
+								
+								//update UI
+								LobbyActivity.activity.updatePlayerList();
+								
+								//send message to player indicating name is accepted
+								Log.d("System Message", "Name Accepted: " + playerName + " for Player " + playerNum);
+								//PlayerDevice.player[playerNum].sendMessage(Device.MESSAGE_TYPE_SYSTEM, "nameRequestAccepted" + playerName);
+								Device.sendMessageToAllPlayers(Message.NAME_REQUEST_ACCEPTED, "nameRequestAccepted" + playerNum + playerName);
+							} else {
+								//send message to player indicating name is rejected
+								Log.e("System Message", "Name Rejected: " + playerName + " for Player " + playerNum);
+								PlayerDevice.player[playerNum].sendMessage(Message.NAME_REQUEST_REJECTED, "nameRequestRejected" + error);
+							}
+						} 
+						
 					}
 				}
 				
@@ -398,6 +402,17 @@ public class LobbyActivity extends Activity {
             this.startActivity(discoverableIntent);
         }
     }
+	
+	public void createAlert(String msg){
+		new AlertDialog.Builder(this)
+		.setMessage(msg)
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which){
+				// TODO
+			}
+		})
+		.show();		
+	}
 		
 	
 	@Override

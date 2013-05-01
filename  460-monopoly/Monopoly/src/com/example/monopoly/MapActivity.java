@@ -1,7 +1,11 @@
 package com.example.monopoly;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,6 +19,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -24,7 +29,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bluetooth.Bluetooth;
+import com.example.controllers.Game;
 import com.example.controllers.GameThread;
+import com.example.controllers.HostDevice;
 import com.example.controllers.TickerObject;
 import com.example.monopoly.PanAndZoomListener;
 import com.example.monopoly.PanAndZoomListener.Anchor;
@@ -38,12 +46,8 @@ public class MapActivity extends Activity {
 	public Canvas canvas= new Canvas();
 	public RelativeLayout view;
 	
-	final int PICK1 = Menu.FIRST + 1;
-	final int PICK2 = Menu.FIRST + 2;
-	final int PICK3 = Menu.FIRST + 3;
-	final int PICK4 = Menu.FIRST + 4;
-	final int PICK5 = Menu.FIRST + 5;
-	
+	public MenuItem menuExit;
+	public MenuItem menuListen;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -120,15 +124,56 @@ public class MapActivity extends Activity {
 		
 	};
 	
+	private void ensureDiscoverable(boolean checkStatus) {
+	       // if(D) Log.d(TAG, "ensure discoverable");
+	        if (Bluetooth.mAdapter.getScanMode() !=
+	            BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE || checkStatus == false) {
+	            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+	            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 120);
+	            this.startActivity(discoverableIntent);
+	        }
+	    }
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
-		MenuItem item1 = menu.add(0, PICK1, Menu.NONE, "Save List");
-		MenuItem item2 = menu.add(0, PICK2, Menu.NONE, "Close App");
-		MenuItem item3 = menu.add(0, PICK3, Menu.NONE, "Add Entry");
-		MenuItem item4 = menu.add(0, PICK4, Menu.NONE, "Delete Entry");
-		MenuItem item5 = menu.add(0, PICK5, Menu.NONE, "Update Entry");
+		menuExit = menu.add(0, 1, Menu.NONE, "Rules");
+		menuListen = menu.add(0, 2, Menu.NONE, "Listen for Joining Players");
+		
+		menuExit.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// TODO Auto-generated method stub
+				return true;
+			}
+			
+		});
+		
+		menuListen.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// TODO Auto-generated method stub
+				HostDevice.host.listenStart(true, Game.name);
+				MapActivity.activity.ensureDiscoverable(false);
+				
+				return true;
+			}
+			
+		});
 		return true;
+	}
+	
+	public void createAlert(String msg){
+		new AlertDialog.Builder(this)
+		.setMessage(msg)
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which){
+				// TODO
+			}
+		})
+		.show();		
 	}
 }

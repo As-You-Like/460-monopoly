@@ -3,6 +3,15 @@ package com.example.monopoly;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.example.bluetooth.Bluetooth;
+import com.example.bluetooth.BluetoothEvent;
+import com.example.bluetooth.Message;
+import com.example.controllers.HostDevice;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -41,15 +50,71 @@ public class TabPropertiesActivity extends Activity {
 		mGroudList = new ArrayList<TileProperty>();
 		mChildList = new ArrayList<ArrayList<String>>();
 		
+		HostDevice.host.sendMessage(Message.REQUEST_PROPERTIES_DATA, "");
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.REQUEST_PROPERTIES_DATA_ACCEPT;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				JSONArray jsonArr = null;
+				activity.mGroudList.clear();
+				try {
+					jsonArr = new JSONArray(message);
+					
+					for (int i=0; i<jsonArr.length(); i++){
+						String tileJSON = jsonArr.getString(0);
+						JSONObject jsonObj = new JSONObject(tileJSON);
+						TileProperty item = new TileProperty();
+						item.setId(jsonObj.getString("id"));
+						item.setName(jsonObj.getString("n"));
+						item.setRegion(jsonObj.getString("r"));
+						item.setValue(jsonObj.getString("v"));
+						
+						activity.mGroudList.add(item);
+						activity.setChildList();
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+			}
+			
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.REQUEST_TILE_DATA_ACCEPT;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
 		/** 
 		 * TileProperty item generate > mGroudList.add(item)
 		 * */
-		TileProperty item = new TileProperty();
-		item.setName("Freshman Dams");
-		item.setOwned("owned : true");
+		/*TileProperty item = new TileProperty();
+		item.setName("Miller");
+		item.setRegion("Freshman Dorms");
 		item.setValue("$1000");
 		
-		mGroudList.add(item);
+		mGroudList.add(item);*/
 
 		setChildList();
 		
@@ -70,6 +135,7 @@ public class TabPropertiesActivity extends Activity {
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 				//Toast.makeText(getApplicationContext(), "child click = " + childPosition, Toast.LENGTH_SHORT).show();
+				HostDevice.host.sendMessage(Message.REQUEST_TILE_DATA, mGroudList.get(groupPosition).getId());
 				return false;
 			}
 		});
@@ -95,7 +161,7 @@ public class TabPropertiesActivity extends Activity {
 		mChildList.clear();
 		for (int i = 0; i < mGroudList.size(); i++) {
 			mChildListContent = new ArrayList<String>();
-			mChildListContent.add(mGroudList.get(i).getOwned());
+			mChildListContent.add(mGroudList.get(i).getRegion());
 			mChildListContent.add(mGroudList.get(i).getValue());
 			mChildList.add(mChildListContent);
 		}
@@ -243,11 +309,20 @@ public class TabPropertiesActivity extends Activity {
 
 		public static final long serialVersionUID = 1L;
 
+		public String itemId;
 		public String itemName; 
-		public String itemOwned; 
+		public String itemRegion;
 		public String itemValue; 
 		
 		public TileProperty() {
+		}
+		
+		public String getId(){
+			return itemId;
+		}
+		
+		public void setId(String id){
+			this.itemId = id;
 		}
 
 		public String getName() {
@@ -258,12 +333,12 @@ public class TabPropertiesActivity extends Activity {
 			this.itemName = name;
 		}
 
-		public String getOwned() {
-			return itemOwned;
+		public String getRegion() {
+			return itemRegion;
 		}
 
-		public void setOwned(String data) {
-			this.itemOwned = data;
+		public void setRegion(String data) {
+			this.itemRegion = data;
 		}
 		public String getValue() {
 			return itemValue;

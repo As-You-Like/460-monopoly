@@ -6,16 +6,21 @@ import com.example.bluetooth.Bluetooth;
 import com.example.bluetooth.BluetoothEvent;
 import com.example.bluetooth.Message;
 import com.example.controllers.Device;
+import com.example.controllers.HostDevice;
 import com.example.controllers.PlayerDevice;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -96,6 +102,36 @@ public class FindHostActivity extends Activity {
 		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 		this.registerReceiver(this.mReceiver, filter);
 		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.RECONNECT_START;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				PlayerDevice.currentPlayerConnectionStatus = PlayerDevice.CONNECTION_ACTIVE;
+				//Device.tmpCurrentPlayer.;
+				Device.currentPlayer = reciever;
+				
+				int divider1 = message.indexOf(":");
+				int divider2 = message.indexOf(":", divider1+1);
+				int divider3 = message.indexOf(":", divider2+1);
+				String[] players = new String[]{
+						message.substring(27, divider1), //get first name
+						message.substring(divider1+1, divider2), //get second name
+						message.substring(divider2+1, divider3), //get third name
+						message.substring(divider3+1) //get fourth name
+				};
+				//if the game has already started (a reconnect has occurred)
+				dialogChoosePlayer(players);
+			}
+			
+		});
+		
 		//register LOBBY_SLOT event
 		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
 			public boolean typeValid(int type) {
@@ -105,15 +141,17 @@ public class FindHostActivity extends Activity {
 			public void processMessage(int sender, int reciever, String message) {
 				//extract player data
 				int playerNum = Integer.parseInt(message.substring(9, 10));
-				String deviceMac = message.substring(10);
+				String deviceMac = message.substring(10, 27);
+				
+				
 				
 				if (deviceMac.equals(Bluetooth.mAdapter.getAddress())){
 					//the new player is the current device
-					
 					PlayerDevice.currentPlayerConnectionStatus = PlayerDevice.CONNECTION_ACTIVE;
 					Device.player[playerNum] = Device.tmpCurrentPlayer;
 					Device.currentPlayer = playerNum;
 					FindHostActivity.goToLobby();
+					
 				} else {
 					//the new player is not the current device
 					
@@ -128,6 +166,98 @@ public class FindHostActivity extends Activity {
 				}
 			}
 			
+		});
+		
+		//Register RECONNECT_CHOICE_ACCEPT event
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.RECONNECT_CHOICE_ACCEPT;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		//Register RECONNECT_CHOICE_REJECT event
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.RECONNECT_CHOICE_REJECT;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				int divider1 = message.indexOf(":");
+				int divider2 = message.indexOf(":", divider1+1);
+				int divider3 = message.indexOf(":", divider2+1);
+				String[] players = new String[]{
+						message.substring(0, divider1), //get first name
+						message.substring(divider1+1, divider2), //get second name
+						message.substring(divider2+1, divider3), //get third name
+						message.substring(divider3+1) //get fourth name
+				};
+				dialogChoosePlayer(players);
+				createAlert("The player you requested was already taken, please choose another");
+			}
+			
+		});
+		
+		//Register RECONNECT_CHOICE event (to be moved to GameThread)
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.RECONNECT_CHOICE;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				int divider = message.indexOf(":");
+				int source = Integer.parseInt(message.substring(divider+1));
+				int which = Integer.parseInt(message.substring(0, divider));
+				
+				if (Device.player[which].playerConnectionStatus == PlayerDevice.CONNECTION_DISCONNECTED){
+					//accept player request
+					Device.connectingPlayer.get(sender).sendMessage(Message.RECONNECT_CHOICE_ACCEPT, "");
+					Device.player[which].playerConnectionStatus = PlayerDevice.CONNECTION_CONNECTING;
+				} else {
+					//reject player request
+					Device.connectingPlayer.get(sender).sendMessage(Message.RECONNECT_CHOICE_REJECT, "");
+				}
+			}
+			
+		});
+	}
+	
+	private void dialogChoosePlayer(String[] players){
+		LayoutInflater inflater = getLayoutInflater();
+		AlertDialog.Builder alertBuilder = new AlertDialog.Builder(FindHostActivity.activity);
+		
+		alertBuilder.setTitle("Who are you?");
+		alertBuilder.setItems(players, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				if (HostDevice.host == null){
+					Log.e("requestName()", "Host is not defined, unable to send message");
+					createAlert("There was a problem, please try again");
+					return;
+				}
+				HostDevice.host.sendMessage(Message.RECONNECT_CHOICE, ""+which);
+			}
 		});
 	}
 	
@@ -205,5 +335,16 @@ public class FindHostActivity extends Activity {
             }
         }
     };
+    
+    public void createAlert(String msg){
+		new AlertDialog.Builder(this)
+		.setMessage(msg)
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which){
+				// TODO
+			}
+		})
+		.show();		
+	}
 
 }

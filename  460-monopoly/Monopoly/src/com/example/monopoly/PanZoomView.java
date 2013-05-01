@@ -208,7 +208,7 @@ public class PanZoomView extends View {
 	
 	@Override public boolean onTouchEvent(MotionEvent ev) {
 	
-		Log.d(null, "PZV.onTouchEvent");
+		//Log.d(null, "PZV.onTouchEvent");
 	    // If we are not supporting either zoom or pan, return early.
 	    if (!mSupportsZoom && !mSupportsPan) return false;
 	

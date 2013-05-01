@@ -20,6 +20,7 @@ public class PlayerDevice extends Device {
 	public int playerConnectionStatus = 0;
 	public String name = "";
 	public String bluetoothAddress = "";
+	public int playerNumber = -1;
 	
 	// === If CurrentDevice is the host ===
 	//Thread for the host to communicate with the connected player
@@ -92,9 +93,22 @@ public class PlayerDevice extends Device {
 	}
 	
 	public int getPlayerNumber(){
+		if (this.playerNumber != -1){
+			return this.playerNumber;
+		}
 		for (int i=0; i<Device.player.length; i++){
 			if (Device.player[i] != null){
 				if (Device.player[i].equals(this)){
+					this.playerNumber = i;
+					return i;
+				}
+			}
+		}
+		//check connecting players
+		for (int i=0; i<Device.connectingPlayer.size(); i++){
+			if (Device.connectingPlayer.get(i) != null){
+				if (Device.connectingPlayer.get(i).equals(this)){
+					this.playerNumber = i;
 					return i;
 				}
 			}

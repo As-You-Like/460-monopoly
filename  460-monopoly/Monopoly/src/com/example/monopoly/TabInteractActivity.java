@@ -2,6 +2,8 @@ package com.example.monopoly;
 
 import java.util.ArrayList;
 
+import com.example.controllers.HostDevice;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -49,6 +51,7 @@ public class TabInteractActivity extends Activity {
 	}
 	
 	public void clickEventGoTrade(View v){
+		HostDevice.host.sendMessage(Message.START_TRADE, )
 		Intent intent = new Intent(this, TradeActivity.class);
 		startActivity(intent);
 	}

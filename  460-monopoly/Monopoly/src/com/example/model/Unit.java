@@ -100,7 +100,11 @@ public abstract class Unit {
 	
 	public void setOwner(int o){
 		this.owner = o;
-		this.colorFilter = new LightingColorFilter(Player.entities[owner].getColor(), 1);
+		if (this.owner < Player.entities.length){
+			this.colorFilter = new LightingColorFilter(Player.entities[owner].getColor(), 1);
+		} else {
+			this.colorFilter = new LightingColorFilter(Color.WHITE, 1);
+		}
 	}
 	
 	

@@ -55,6 +55,7 @@ public class Game extends TimerTask{
 	public Game(String name){
 		Game.name = name;
 		Game.instance = this;
+		
 	}
 	
 	//method to be run during loading of game module

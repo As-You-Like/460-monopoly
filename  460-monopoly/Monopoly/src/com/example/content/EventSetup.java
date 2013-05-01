@@ -17,13 +17,13 @@ import com.example.model.Die;
 
 public class EventSetup {
 	
-	public static final int JAIL_RELEASE = 0;
+	public static final int JAIL_RELEASE = 3;
 	
 	public static class EventJailRelease extends TriggeredEvent {
+		final int evenNumber = 0;
 		
 		public EventJailRelease(int time, int player){
 			this.expireTurn = Game.turn + time;
-			this.eventNumber = JAIL_RELEASE;
 		}
 		
 		@Override
@@ -35,12 +35,31 @@ public class EventSetup {
 		@Override
 		public void action() {
 			Player.entities[this.player].setJailed(false);
-			Device.player[this.player].sendMessage(Message.ALERT, "You have been released from jail");
+			String[] releaseLines = new String[]{
+					"You have been released from jail",
+					"You have been released from jail",
+					"You have been released from jail",
+					"You have been released from jail",
+					"You have been released from jail",
+					"You have bribed your way out of jail",
+					"You have bribed your way out of jail",
+					"You have bribed your way out of jail",
+					"You have bribed your way out of jail",
+					"You have bribed your way out of jail",
+					"You have seduced your way out of jail",
+					"You woke up near the front entrance of the police station",
+					"You have broke your way out of jail",
+					"You have broke your way out of jail",
+					"You crawled through a river of shit, and came out clean on the other side"
+			};
+			Device.player[this.player].sendMessage(Message.ALERT, releaseLines[(int)(Math.random()*releaseLines.length)]);
 		}
 		
 	}
 	
 	public static void setupEvents(){
+		
+		//EventGenerator.registerEvent("newTurn", new EventJailRelease(time, player));
 		
 		//Random Event - Being robbed
 		EventGenerator.registerEvent("residential", new RandomEvent(){
@@ -101,28 +120,27 @@ public class EventSetup {
 			}
 		});
 		
+		//Triggered Event - rolling a double while in jail causes you to be smuggled out
+		EventGenerator.registerEvent("diceRoll", new TriggeredEvent(){
+			public boolean condition() {
+				return Player.entities[Game.currentPlayer].isJailed();
+			}
+
+			
+			public void action() {
+				Player.entities[Game.currentPlayer].setJailed(false);
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, "You have been smuggled out of jail");
+			}
+		});
+		
 		//Random Event - Getting busted
 		EventGenerator.registerEvent("residential", new RandomEvent(){
 			public void action() {
 				//Send the player to jail
 				Player.entities[Game.currentPlayer].goToJail();
 				
-				//Inform the player of the subtraction
-				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, "You have been busted not wearing a spring day bracelet");
-			}
-		});
-		
-		//Random Event - Getting smuggled out of jail
-		EventGenerator.registerEvent("newTurn", new RandomEvent(){
-			public void action() {
-				Player p =Player.entities[Game.currentPlayer];
-				if (p.isJailed()){
-					//release the player from jail
-					p.setJailed(false);
-					
-					Device.player[Game.currentPlayer].sendMessage(Message.ALERT, "You have been smuggled out of jail, it's your turn");
-				}
-				
+				//Inform the player of this unfortunate occurrence
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, "You have been thrown in jail for not wearing a spring day bracelet");
 			}
 		});
 		
