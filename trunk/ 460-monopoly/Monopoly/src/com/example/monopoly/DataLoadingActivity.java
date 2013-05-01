@@ -4,6 +4,7 @@ import com.example.bluetooth.Message;
 import com.example.controllers.DatabaseThread;
 import com.example.controllers.Device;
 import com.example.controllers.Game;
+import com.example.controllers.GameThread;
 import com.example.controllers.SQLHelper;
 
 import android.os.Bundle;
@@ -26,7 +27,8 @@ public class DataLoadingActivity extends Activity {
 		activity = this;
 		context = this;
 		
-		DatabaseThread dbt = new DatabaseThread();
+		GameThread.DBHandle handle = new GameThread.DBHandle();
+		DatabaseThread dbt = new DatabaseThread(handle);
 		helper = new SQLHelper(context);
 		dbt.db = helper.getWritableDatabase();
 		
