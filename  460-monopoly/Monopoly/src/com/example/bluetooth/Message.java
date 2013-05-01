@@ -95,7 +95,9 @@ public class Message {
 	public static final int DATA_HOME_TAB = 28;
 	
 	//The host tells the player that the upgrade worked
-	public static final int UPGRADE_SUCCESS = 29; 
+	public static final int UPGRADE_SUCCESS = 29;
+
+	public static final int START_TRADE = 38; 
 	
 	
 }
