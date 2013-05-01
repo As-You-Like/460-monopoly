@@ -131,6 +131,9 @@ public class Message {
 	//A player informing the host of changing trade details
 	public static final int TRADE_CHANGE_DETAILS = 40;
 	
+	//The host updating both players with the new details of trade
+	public static final int TRADE_UPDATE_DETAILS = 40;
+	
 	//A player informing the host of trade being accepted
 	public static final int TRADE_ACCEPT = 41;
 	
