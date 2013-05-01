@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.example.content.BoardSetup;
 import com.example.content.EventSetup;
 import com.example.content.Image;
+import com.example.controllers.GameThread.DBHandle;
 import com.example.model.PlayerPiece;
 import com.example.model.Tile;
 import com.example.monopoly.DataLoadingActivity;
@@ -85,10 +86,7 @@ public class DatabaseThread extends Thread {
 	public String tileTableName = "TileTable";
 	public String turnEventInstanceTableName = "TurnEventInstanceTable";
 	
-	private ContentValues values;
-	private Cursor cursor;
-	Handle mHandler = new Handle();
-	HandleTwo nHandler = new HandleTwo();
+	private DBHandle handler;
 	
 	
 	
@@ -166,8 +164,9 @@ public class DatabaseThread extends Thread {
 	int[] tableTurnEventInstance_fieldEventTurnsLeft;
 	
 	
-	public DatabaseThread(){
+	public DatabaseThread(DBHandle h){
 		dt = this;
+		handler = h;
 		
 	}
 	
@@ -175,7 +174,7 @@ public class DatabaseThread extends Thread {
 	
 	
 	public void run(){
-		Looper.prepare();
+		//Looper.prepare();
 		
 		Log.i("", "Thread start");
 		//isLoad = false;
@@ -183,7 +182,7 @@ public class DatabaseThread extends Thread {
 		if(isGettingGameNames == true){
 			dt.setUpDatabase();
 			dt.populateGameNameListView();
-			Message msg = nHandler.obtainMessage();
+			Message msg = handler.obtainMessage();
 			msg.what = 1;
 			msg.sendToTarget();
 		}
@@ -191,7 +190,7 @@ public class DatabaseThread extends Thread {
 		else if(isLoad == true){
 			dt.setUpDatabase();
 			dt.loadGame();
-			Message msg = nHandler.obtainMessage();
+			Message msg = handler.obtainMessage();
 			msg.what = 2;
 			msg.sendToTarget();
 		}
@@ -199,7 +198,7 @@ public class DatabaseThread extends Thread {
 		else if(isLoad == false){
 			dt.setUpDatabase();
 			dt.saveGame();
-			Message msg = nHandler.obtainMessage();
+			Message msg = handler.obtainMessage();
 			msg.what = 3;
 			msg.sendToTarget();
 		}
@@ -213,7 +212,7 @@ public class DatabaseThread extends Thread {
 		isLoad = false;
 		isGettingGameNames = false;
 		db.close();
-		Looper.loop();
+		//Looper.loop();
 	}
 	
 	
@@ -784,32 +783,6 @@ public class DatabaseThread extends Thread {
 		public void handleMessage(Message msg){
 			// TODO: check for HostDevice.self is redundant since the device that runs this code is always the host
 			//if(HostDevice.self){
-				
-				//Toast.makeText(this, "Host Finished Loading", Toast.LENGTH_SHORT).show();
-			//} else {
-				//HostDevice.host.sendMessage(com.example.bluetooth.Message.PLAYER_READY, "");
-				//Toast.makeText(this, "Player Finished Loading", Toast.LENGTH_SHORT).show();
-			//}
-		}
-	}
-	
-	//Handler for populating game list
-	private static class HandleTwo extends Handler {
-		public void handleMessage(Message msg){
-			HostDevice.self = true;
-			// TODO: check for HostDevice.self is redundant since the device that runs this code is always the host
-			// TODO: also, we should set that variable to true :) ... this device needs to know that it's the host 
-			//if(HostDevice.self){
-			if(msg.what == 1){
-				SaveGameActivity.populateListView();
-			}
-			
-			else if(msg.what == 2){
-				DataLoadingActivity.startGameModule();
-			}
-			else if(msg.what == 3){
-				dt.killLooper();
-			}
 				
 				//Toast.makeText(this, "Host Finished Loading", Toast.LENGTH_SHORT).show();
 			//} else {
