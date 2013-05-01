@@ -27,6 +27,7 @@ public class GameThread extends Thread{
 	///Global Variables///
 	
 	public static GameThread gt; 
+	public DatabaseThread dbt;
 	
 	// isFromSavedGame: determines if game was loaded from New Game (false) or from Saved Game (true)
 	public boolean isFromSavedGame = false;
@@ -242,9 +243,10 @@ public class GameThread extends Thread{
 			//Figure out who's turn it is
 			Game.instance.determineCurrentTurnPlayer();
 			
+			/*
 			//Weekly Stipends and other start of turn events
 			EventGenerator.executeTriggeredEvents("newTurn");
-			
+			*/
 			
 				//Override Home Tab
 				this.startSubTurn();
@@ -386,9 +388,9 @@ public class GameThread extends Thread{
 	
 	public void startDecisionPhase(){
 		//Execute a random event
-		EventGenerator.chooseAndExecuteRandomEvent(new String[]{
+		/*EventGenerator.chooseAndExecuteRandomEvent(new String[]{
 			"residential"
-		}, 0.9);
+		}, 0.9);*/
 		
 		//End decision phase if an event caused the player to be jailed
 		if (Player.entities[Game.currentPlayer].isJailed()){
@@ -494,6 +496,8 @@ public class GameThread extends Thread{
 			while(Game.playerTurnOrder[Game.playerTurnOrderCounter] == 666);
 			
 			if((Game.subturn % Game.numberOfPlayers) == 0){
+				dbt = new DatabaseThread();
+				dbt.start();
 				Game.turn++;
 			}
 			
