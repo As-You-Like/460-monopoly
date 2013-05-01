@@ -126,12 +126,13 @@ public class Message {
 	public static final int TRADE_START = 38; 
 	
 	//Hosting informing second player of trade
-	public static final int TRADE_START_PLAYER = 39;
+	public static final int TRADE_INFORM = 39;
 	
 	//A player informing the host of changing trade details
 	public static final int TRADE_CHANGE_DETAILS = 40;
 	
-	//The host updating both players with the new details of trade
+	//The host updating both players with the new details of trade 
+	//If the trade has been accepted by one player, this will cause the rejection of a trade
 	public static final int TRADE_UPDATE_DETAILS = 41;
 	
 	//A player informing the host of trade being accepted
@@ -146,7 +147,11 @@ public class Message {
 	//The host informing the player of Trade failure
 	public static final int TRADE_FAIL = 45;
 
-
+	// The host informs the opposite player that their trade partner accepted
+	public static final int TRADE_ACCEPT_INFORM = 46;
+	
+	// The host informs the player who accepted a trade that their partner has rejected it
+	public static final int TRADE_REJECT_INFORM = 47;
 	
 	
 }
