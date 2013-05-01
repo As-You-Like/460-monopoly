@@ -2,6 +2,7 @@ package com.example.controllers;
 
 import java.util.ArrayList;
 
+import com.example.content.BluetoothListeners;
 import com.example.content.BoardSetup;
 import com.example.content.EventSetup;
 import com.example.content.Image;
@@ -40,6 +41,7 @@ public class LoadThread extends Thread {
 			//loading code for host goes here
 			this.setupImages();
 			this.setupPlayers();
+			BluetoothListeners.setup();
 			BoardSetup.setupBoard();
 			EventSetup.setupEvents();
 			//initialize the main game thread (it gets started later)
