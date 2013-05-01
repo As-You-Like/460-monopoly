@@ -3,6 +3,7 @@ package com.example.controllers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Handler;
 import android.util.Log;
 
 import com.example.bluetooth.Bluetooth;
@@ -11,7 +12,9 @@ import com.example.bluetooth.Message;
 import com.example.model.Die;
 import com.example.model.PlayerPiece;
 import com.example.model.Tile;
+import com.example.monopoly.DataLoadingActivity;
 import com.example.monopoly.LoadingActivity;
+import com.example.monopoly.SaveGameActivity;
 
 /**
  * Main game thread of the game module. the run method of the thread contains all the logic of a single turn
@@ -496,7 +499,8 @@ public class GameThread extends Thread{
 			while(Game.playerTurnOrder[Game.playerTurnOrderCounter] == 666);
 			
 			if((Game.subturn % Game.numberOfPlayers) == 0){
-				dbt = new DatabaseThread();
+				DBHandle handle = new DBHandle();
+				dbt = new DatabaseThread(handle);
 				dbt.start();
 				Game.turn++;
 			}
@@ -504,5 +508,26 @@ public class GameThread extends Thread{
 		}
 		
 	}
+	
+	//Handler for DatabaseThread
+		public static class DBHandle extends Handler {
+			public void handleMessage(android.os.Message msg){
+				HostDevice.self = true;
+				// TODO: check for HostDevice.self is redundant since the device that runs this code is always the host
+				// TODO: also, we should set that variable to true :) ... this device needs to know that it's the host 
+				//if(HostDevice.self){
+				if(msg.what == 1){
+					SaveGameActivity.populateListView();
+				}
+				
+				else if(msg.what == 2){
+					DataLoadingActivity.startGameModule();
+				}
+				else if(msg.what == 3){
+					//dt.killLooper();
+				}
+
+			}
+		}
 	
 }
