@@ -383,8 +383,8 @@ public class TradeActivity extends Activity {
 			JSONArray tileArr = new JSONArray(tiles);
 			JSONArray tileNameArr = new JSONArray(tileNames);
 			
-			JSONArray otherTileArr = new JSONArray(tiles);
-			JSONArray otherTileNameArr = new JSONArray(tileNames);
+			JSONArray otherTileArr = new JSONArray(otherTiles);
+			JSONArray otherTileNameArr = new JSONArray(otherTileNames);
 			
 			for (int i=0; i<tileArr.length(); i++){
 				new TradeActivity.GhostTile(tileNameArr.getString(i), tileArr.getInt(i), 0);
