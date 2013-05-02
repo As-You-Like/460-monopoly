@@ -25,8 +25,8 @@ public class SplashActivity extends Activity {
 		new Bluetooth(this.getApplicationContext());
 		
 		
-		Intent intent = new Intent(SplashActivity.activity, TradeActivity.class);
-		startActivity(intent);
+		Intent intent = new Intent(SplashActivity.activity, WelcomeActivity.class);
+		startActivity(intent); 
 	}
 	
 	protected void onStart(){
