@@ -651,22 +651,22 @@ public class BoardSetup {
         Road10.setBaseRegionRent(50);
         Road10.priceUpgrades(200, 300, 500, 700);
         
-        Tile Road11 = Road10.addNextStop(Tile.DIRECTION_WEST);
-        Road11.setName("Road11");
-        Road11.setRegion(Tile.REGION_PATHWAYS);
-        Road11.setPrice(50);
-        Road11.setBaseRent(50);
-        Road11.setBaseRegionRent(50);
-        Road11.priceUpgrades(200, 300, 500, 700);
-        
-        Tile Callahan = MadFalcon.addNextStop(Tile.DIRECTION_WEST);
+        Tile Callahan = Greenspace.addNextStop(Tile.DIRECTION_WEST);
         Callahan.setName("Callahan Police Station");
         Callahan.setRegion(Tile.REGION_SPECIAL);
         Callahan.setPrice(300);
         Callahan.setBaseRent(60);
         Callahan.setBaseRegionRent(30);
         Callahan.priceUpgrades(225, 450, 675, 900);
+        Callahan.addNextStop(Greenspace);
         
+        Tile Road11 = Callahan.addNextStop(Tile.DIRECTION_WEST);
+        Road11.setName("Road11");
+        Road11.setRegion(Tile.REGION_PATHWAYS);
+        Road11.setPrice(50);
+        Road11.setBaseRent(50);
+        Road11.setBaseRegionRent(50);
+        Road11.priceUpgrades(200, 300, 500, 700);
         //Lower Campus APT
         
         Tile Orchard_North = Road10.addNextStop(Tile.DIRECTION_SOUTHEAST);

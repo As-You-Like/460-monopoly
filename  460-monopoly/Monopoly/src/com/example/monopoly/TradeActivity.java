@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -18,14 +18,18 @@ import android.widget.Toast;
 
 public class TradeActivity extends Activity {
 
-	TradaAdapter tradaAdapter;
+	TradaAdapter myAdapter;
+	TradaAdapter playerAdapter;
+	TradaAdapter mySelectAdapter;
+	TradaAdapter playerSelectAdapter;
+	
 	ArrayList<String> myPropertyList;
 	ArrayList<String> playerPropertyList;
+	ArrayList<String> mySelectList;
+	ArrayList<String> playerSelectList;
 	
 	String stackMyPropertyName = "";
 	String stackPlayerPropertyName = "";
-	boolean FIRST_SELECT_MY = true;
-	boolean FIRST_SELECT_PLAYER = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,85 +57,57 @@ public class TradeActivity extends Activity {
 		playerPropertyList.add("Annie's Westone");
 		playerPropertyList.add("Annie's APT");
 		
-
+		mySelectList = new ArrayList<String>(); 	// Annie Select list
+		playerSelectList = new ArrayList<String>(); // Katarina Select list
 		
-		tradaAdapter = new TradaAdapter(this, myPropertyList, true);
-		listViewMy.setAdapter(tradaAdapter);
-		listViewMy.setOnItemClickListener(new OnItemClickListener() {
+		myAdapter = new TradaAdapter(this, myPropertyList, true);
+		lvMy.setAdapter(myAdapter);
+		
+		mySelectAdapter = new TradaAdapter(getBaseContext(), mySelectList, true);
+		lvMySelect.setAdapter(mySelectAdapter);
+		
+		playerAdapter = new TradaAdapter(this, playerPropertyList, false);
+		lvPlayer.setAdapter(playerAdapter);
+		
+		playerSelectAdapter = new TradaAdapter(this, playerSelectList, false);
+		lvPlayerSelect.setAdapter(playerSelectAdapter);
+		
+		
+		lvMy.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				if (FIRST_SELECT_MY) {
-					FIRST_SELECT_MY = false;
-					stackMyPropertyName = myPropertyList.get(position);
-					selectMyProperty(myPropertyList.get(position));
-					myPropertyList.remove(position);
-					tradaAdapter = new TradaAdapter(getBaseContext(), myPropertyList, true);
-					listViewMy.setAdapter(tradaAdapter);
-				} else {
-					stackMyPropertyName = txtMySelect.getText().toString();
-					selectMyProperty(myPropertyList.get(position));
-					myPropertyList.remove(position);
-					if(!stackMyPropertyName.equals(""))
-						myPropertyList.add(myPropertyList.size(), stackMyPropertyName);
-					
-					tradaAdapter = new TradaAdapter(getBaseContext(), myPropertyList, true);
-					listViewMy.setAdapter(tradaAdapter);
-				}
-				
-				// send my list index to Katarina
+				mySelectList.add(myPropertyList.get(position));
+				myPropertyList.remove(position);
+				myAdapter.notifyDataSetChanged();
 				selectPlayerProperty(position);
 			}
 		});
-		
-		tradaAdapter = new TradaAdapter(this, playerPropertyList, false);
-		listViewPlayer.setAdapter(tradaAdapter);
-		
-		// clear my select
-		txtMySelect.setOnClickListener(new OnClickListener() {
+
+		lvMySelect.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onClick(View v) {
-				if(!txtMySelect.getText().toString().equals("")){
-					myPropertyList.add(myPropertyList.size(),txtMySelect.getText().toString());
-					tradaAdapter = new TradaAdapter(getBaseContext(), myPropertyList, true);
-					listViewMy.setAdapter(tradaAdapter);
-					selectMyProperty("");
-					clearPlayerSelect();
-				}
-					
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+				myPropertyList.add(mySelectList.get(position));
+				mySelectList.remove(position);
+				mySelectAdapter.notifyDataSetChanged();
+				returnPlayerProperty(position);
 			}
 		});
 	}
 	
-	/**
-	 * Annie's list index to here 
-	 **/
-	public void selectPlayerProperty(int idx){
-		if (FIRST_SELECT_PLAYER) {
-			FIRST_SELECT_PLAYER = false;
-			stackPlayerPropertyName = playerPropertyList.get(idx);
-			selectPlayerProperty(playerPropertyList.get(idx));
-			//playerPropertyList.remove(idx);
-			tradaAdapter = new TradaAdapter(getBaseContext(), playerPropertyList, false);
-			listViewPlayer.setAdapter(tradaAdapter);
-		} else {
-			stackPlayerPropertyName = txtPlayerSelect.getText().toString();
-			selectPlayerProperty(playerPropertyList.get(idx));
-			//playerPropertyList.remove(idx);
-			if(!stackPlayerPropertyName.equals(""))
-				playerPropertyList.add(playerPropertyList.size(), stackPlayerPropertyName);
-			
-			tradaAdapter = new TradaAdapter(getBaseContext(), playerPropertyList, false);
-			listViewPlayer.setAdapter(tradaAdapter);
-		}
-	}
 	
-	public void clearPlayerSelect(){
-		playerPropertyList.add(playerPropertyList.size(),txtPlayerSelect.getText().toString());
-		tradaAdapter = new TradaAdapter(getBaseContext(), playerPropertyList, false);
-		listViewPlayer.setAdapter(tradaAdapter);
-		selectPlayerProperty("");
-	}
-	
+    public void selectPlayerProperty(int idx){
+    	playerSelectList.add(playerPropertyList.get(idx));
+    	playerPropertyList.remove(idx);
+    	playerAdapter.notifyDataSetChanged();
+    }
+    
+    public void returnPlayerProperty(int idx){
+    	playerPropertyList.add(playerSelectList.get(idx));
+    	playerSelectList.remove(idx);
+    	playerSelectAdapter.notifyDataSetChanged();
+    }
+    
+    
 	/**
 	 *  If experiencing margin..
 	 *  @param who 0: my , 1: player
@@ -142,14 +118,6 @@ public class TradeActivity extends Activity {
 			txtMyMagrin.setText(String.valueOf(val));
 		else if (who == 1) // set player margin
 			txtPlayerMagrin.setText(String.valueOf(val));
-	}
-
-	private void selectMyProperty(String property){
-		txtMySelect.setText(property);
-	}
-	
-	private void selectPlayerProperty(String property){
-		txtPlayerSelect.setText(property);
 	}
 	
 	/**
@@ -224,12 +192,12 @@ public class TradeActivity extends Activity {
 		txtMyCash = (TextView) findViewById(R.id.txt_mycash);
 		txtPlayerCash = (TextView) findViewById(R.id.txt_playercash);
 
-		txtMySelect = (TextView) findViewById(R.id.txt_mychoice);
-		txtPlayerSelect = (TextView) findViewById(R.id.txt_playerchoice);
+		lvMySelect = (ListView) findViewById(R.id.selectlistview);
+		lvPlayerSelect = (ListView) findViewById(R.id.playerSelectlistview);
 		txtMyMagrin = (TextView) findViewById(R.id.txt_my_margin);
 		txtPlayerMagrin = (TextView) findViewById(R.id.txt_player_margin);
-		listViewMy = (ListView) findViewById(R.id.mylistview);
-		listViewPlayer = (ListView) findViewById(R.id.playerlistview);
+		lvMy = (ListView) findViewById(R.id.mylistview);
+		lvPlayer = (ListView) findViewById(R.id.playerlistview);
 
 	}
 	
@@ -237,11 +205,13 @@ public class TradeActivity extends Activity {
 	TextView txtPlayer;
 	TextView txtMyCash;
 	TextView txtPlayerCash;
-	TextView txtMySelect;
-	TextView txtPlayerSelect;
 	TextView txtMyMagrin;
 	TextView txtPlayerMagrin;
-	ListView listViewMy;
-	ListView listViewPlayer;
+	
+	
+	ListView lvMySelect;
+	ListView lvPlayerSelect;
+	ListView lvMy;
+	ListView lvPlayer;
 	
 }
