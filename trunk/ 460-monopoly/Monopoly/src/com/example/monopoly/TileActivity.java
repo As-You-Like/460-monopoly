@@ -115,7 +115,8 @@ public class TileActivity extends Activity {
 				btnPurchase.setVisibility(View.INVISIBLE);
 			} else {
 				type = PAYFREE;
-				btnPurchase.setText("Pay Free");
+				btnPurchase.setText("Pay Fee");
+				this.btnEndTurn.setEnabled(false);
 			}
 			
 		}
@@ -139,6 +140,7 @@ public class TileActivity extends Activity {
 	// TODO payfree
 	private void payfree(){
 		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_PAY_RENT, "");
+		this.btnEndTurn.setEnabled(true);
 	}
 
 	
