@@ -18,6 +18,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import com.example.bluetooth.Bluetooth;
 import com.example.bluetooth.BluetoothEvent;
 import com.example.bluetooth.Message;
+import com.example.controllers.Device;
 import com.example.controllers.HostDevice;
 import com.example.controllers.PlayerDevice;
 import com.example.model.Tile;
@@ -40,6 +41,7 @@ public class CommandCardActivity extends TabActivity {
 	public static boolean[] upgradeStat = new boolean[4];
 	public static double cash;
 	public static double rent;
+	public static boolean turn = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +130,7 @@ public class CommandCardActivity extends TabActivity {
 			public void processMessage(int sender, int reciever, String message) {
 				// TODO Auto-generated method stub
 				Log.e("turn start", "TAB_TURN");
+				CommandCardActivity.turn = true;
 				tabBar.getTabWidget().getChildTabViewAt(TAB_TURN).setEnabled(true);
 				tabBar.getTabWidget().getChildTabViewAt(TAB_TURN).setVisibility(View.VISIBLE);
 				tabBar.getTabWidget().getChildTabViewAt(TAB_TILE).setVisibility(View.GONE);
@@ -363,6 +366,52 @@ public class CommandCardActivity extends TabActivity {
 			
 		});
 		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.TRADE_INFORM;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				try {
+					JSONObject msg = new JSONObject(message);
+					int tradeReceiver = msg.getInt("Player");
+					double cash = msg.getDouble("Cash");
+					String tiles = msg.getString("Tiles");
+					String tileNames = msg.getString("TileNames");
+					
+					String otherTiles = msg.getString("OtherTiles");
+					String otherTileNames = msg.getString("OtherTileNames");
+					
+					//do a check
+					if (Device.currentPlayer == tradeReceiver){
+						//if the current player is the trade recipient
+						Intent intent = new Intent(TabInteractActivity.activity, TradeActivity.class);
+						intent.putExtra("Tiles", tiles);
+						intent.putExtra("TileNames", tileNames);
+						intent.putExtra("OtherTiles", otherTiles);
+						intent.putExtra("OtherTileNames", otherTileNames);
+						startActivity(intent);
+						//ADD TO LISTVIEW
+						//return
+					} else {
+						//If the current player is the trade starter (will already be in TradeActivity)
+						TradeActivity.activity.populateList(tiles, tileNames, otherTiles, otherTileNames);
+					}
+					//ADD TO LISTVIEW
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		});
+		
 	}
 	
 	private void setTab(){
@@ -420,7 +469,7 @@ public class CommandCardActivity extends TabActivity {
 		tabBar.getTabWidget().getChildTabViewAt(TAB_UPGRADE).setVisibility(View.GONE); // Upgrade tab hidden away
 		tabBar.getTabWidget().getChildTabViewAt(TAB_TRADE).setVisibility(View.GONE); // Upgrade tab hidden away
 		
-		tabBar.getTabWidget().getChildTabViewAt(TAB_INTERACT).setEnabled(false); // Upgrade tab hidden away
+		//tabBar.getTabWidget().getChildTabViewAt(TAB_INTERACT).setEnabled(false); // Upgrade tab hidden away
 		
 	}
 	

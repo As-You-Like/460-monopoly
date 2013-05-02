@@ -88,6 +88,7 @@ public class TileActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				CommandCardActivity.turn = false;
 				HostDevice.host.sendMessage(Message.TILE_ACTIVITY_END_TURN, "");
 				CommandCardActivity.activity.tabBar.setCurrentTab(CommandCardActivity.TAB_HOME);
 				CommandCardActivity.activity.tabBar.getTabWidget().getChildTabViewAt(CommandCardActivity.TAB_TURN).setVisibility(View.VISIBLE);
