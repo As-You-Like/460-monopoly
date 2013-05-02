@@ -79,7 +79,7 @@ public class TradeActivity extends Activity {
 				mySelectList.add(myPropertyList.get(position));
 				myPropertyList.remove(position);
 				myAdapter.notifyDataSetChanged();
-				selectPlayerProperty(position);
+				
 			}
 		});
 
@@ -89,7 +89,7 @@ public class TradeActivity extends Activity {
 				myPropertyList.add(mySelectList.get(position));
 				mySelectList.remove(position);
 				mySelectAdapter.notifyDataSetChanged();
-				returnPlayerProperty(position);
+				
 			}
 		});
 	}
