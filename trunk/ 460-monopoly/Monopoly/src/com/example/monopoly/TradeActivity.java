@@ -110,13 +110,13 @@ public class TradeActivity extends Activity {
 			FIRST_SELECT_PLAYER = false;
 			stackPlayerPropertyName = playerPropertyList.get(idx);
 			selectPlayerProperty(playerPropertyList.get(idx));
-			playerPropertyList.remove(idx);
+			//playerPropertyList.remove(idx);
 			tradaAdapter = new TradaAdapter(getBaseContext(), playerPropertyList, false);
 			listViewPlayer.setAdapter(tradaAdapter);
 		} else {
 			stackPlayerPropertyName = txtPlayerSelect.getText().toString();
 			selectPlayerProperty(playerPropertyList.get(idx));
-			playerPropertyList.remove(idx);
+			//playerPropertyList.remove(idx);
 			if(!stackPlayerPropertyName.equals(""))
 				playerPropertyList.add(playerPropertyList.size(), stackPlayerPropertyName);
 			
