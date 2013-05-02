@@ -7,7 +7,7 @@ public class BoardSetup {
 		
 		//create central circle
 
-		Tile start = new Tile(10, 10, Tile.OWNER_UNOWNABLE);
+		Tile start = new Tile(3, 0, Tile.OWNER_UNOWNABLE);
 		start.setName("Pond");
 		start.setPrice(420);
 		start.setRegion(Tile.REGION_NON_BUYABLE);

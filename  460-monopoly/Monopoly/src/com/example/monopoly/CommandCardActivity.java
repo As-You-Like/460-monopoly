@@ -420,6 +420,8 @@ public class CommandCardActivity extends TabActivity {
 		tabBar.getTabWidget().getChildTabViewAt(TAB_UPGRADE).setVisibility(View.GONE); // Upgrade tab hidden away
 		tabBar.getTabWidget().getChildTabViewAt(TAB_TRADE).setVisibility(View.GONE); // Upgrade tab hidden away
 		
+		tabBar.getTabWidget().getChildTabViewAt(TAB_INTERACT).setEnabled(false); // Upgrade tab hidden away
+		
 	}
 	
 	@Override
