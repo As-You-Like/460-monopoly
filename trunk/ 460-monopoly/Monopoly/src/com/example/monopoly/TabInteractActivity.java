@@ -98,58 +98,14 @@ public class TabInteractActivity extends Activity {
 		addNewMessage(new ChatMessage("mmm, well...", true));
 		
 		//Trade Inform
-		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
-
-			@Override
-			public boolean typeValid(int type) {
-				// TODO Auto-generated method stub
-				return type == Message.TRADE_INFORM;
-			}
-
-			@Override
-			public void processMessage(int sender, int reciever, String message) {
-				// TODO Auto-generated method stub
-				try {
-					JSONObject msg = new JSONObject(message);
-					int tradeReceiver = msg.getInt("Player");
-					double cash = msg.getDouble("Cash");
-					String tiles = msg.getString("Tiles");
-					String tileNames = msg.getString("TileNames");
-					
-					String otherTiles = msg.getString("OtherTiles");
-					String otherTileNames = msg.getString("OtherTileNames");
-					
-					//do a check
-					if (Device.currentPlayer == tradeReceiver){
-						//if the current player is the trade recipient
-						Intent intent = new Intent(TabInteractActivity.activity, TradeActivity.class);
-						intent.putExtra("Tiles", tiles);
-						intent.putExtra("TileNames", tileNames);
-						intent.putExtra("OtherTiles", otherTiles);
-						intent.putExtra("OtherTileNames", otherTileNames);
-						startActivity(intent);
-						//ADD TO LISTVIEW
-						//return
-					} else {
-						//If the current player is the trade starter (will already be in TradeActivity)
-						TradeActivity.activity.populateList(tiles, tileNames, otherTiles, otherTileNames);
-					}
-					//ADD TO LISTVIEW
-					
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-		});
+		
 		
 		
 	}
 	
 	public void clickEventGoTrade(View v){
 		//if it's the current player's turn
-		if (Device.currentPlayer == Game.currentPlayer){
+		if (CommandCardActivity.turn == true){ //if it's your turn
 			HostDevice.host.sendMessage(Message.TRADE_START, ""+this.targetPlayer);
 			Intent intent = new Intent(this, TradeActivity.class);
 			startActivity(intent);
