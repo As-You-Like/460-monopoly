@@ -33,12 +33,33 @@ public class Trade {
 		JSONObject json1 = new JSONObject();
 		JSONObject json2 = new JSONObject();
 		try {
+			JSONArray initTileArr = new JSONArray();
+			JSONArray initTileNameArr = new JSONArray();
+			JSONArray recTileArr = new JSONArray();
+			JSONArray recTileNameArr = new JSONArray();
+			
+			for (Tile t : initTiles){
+				initTileArr.put(t.id);
+				initTileNameArr.put(t.getName());
+			}
+			
+			for (Tile t : recTiles){
+				recTileArr.put(t.id);
+				recTileNameArr.put(t.getName());
+			}
+			
 			json1.put("Player", initiator);
 			json1.put("Cash", initCash);
-			json1.put("Tiles", initTiles);
+			json1.put("Tiles", initTileArr);
+			json1.put("TileNames", initTileNameArr);
+			json1.put("OtherTiles", recTileArr);
+			json1.put("OtherTileNames", recTileNameArr);
 			json2.put("Player", recipient);
 			json2.put("Cash", recCash);
-			json2.put("Tiles", initTiles);
+			json2.put("Tiles", recTileArr);
+			json2.put("TileNames", recTileNameArr);
+			json2.put("OtherTiles", initTileArr);
+			json2.put("OtherTileNames", initTileNameArr);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

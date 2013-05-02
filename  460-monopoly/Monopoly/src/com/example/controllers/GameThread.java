@@ -499,9 +499,9 @@ public class GameThread extends Thread{
 			while(Game.playerTurnOrder[Game.playerTurnOrderCounter] == 666);
 			
 			if((Game.subturn % Game.numberOfPlayers) == 0){
-				DBHandle handle = new DBHandle();
+				/*DBHandle handle = new DBHandle();
 				dbt = new DatabaseThread(handle);
-				dbt.start();
+				dbt.start();*/
 				Game.turn++;
 			}
 			

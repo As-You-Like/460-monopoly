@@ -43,7 +43,7 @@ public class SaveGameActivity extends Activity {
 		activity = this;
 		context = this;
 		
-		DatabaseThread dbt = new DatabaseThread();
+		DatabaseThread dbt = new DatabaseThread(null);
 		helper = new SQLHelper(context);
 		dbt.db = helper.getWritableDatabase();
 		

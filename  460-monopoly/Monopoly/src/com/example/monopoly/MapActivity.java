@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -30,6 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bluetooth.Bluetooth;
+import com.example.content.BoardSetup;
+import com.example.content.Image;
 import com.example.controllers.Game;
 import com.example.controllers.GameThread;
 import com.example.controllers.HostDevice;
@@ -72,6 +75,12 @@ public class MapActivity extends Activity {
 		
 		resources = c.getResources();
 		
+		
+		/*Image.HEXAGON_TEXTURE = BitmapFactory.decodeResource(MapActivity.activity.getResources(), R.drawable.hexagon_blue);
+		Image.HEXAGON_BOTTOM = BitmapFactory.decodeResource(MapActivity.activity.getResources(), R.drawable.hexagon_layer_bot);
+		Image.HEXAGON_REGION = BitmapFactory.decodeResource(MapActivity.activity.getResources(), R.drawable.hexagon_layer_rgn);
+		Image.HEXAGON_PLAYER = BitmapFactory.decodeResource(MapActivity.activity.getResources(), R.drawable.hexagon_layer_plr);
+		BoardSetup.setupBoard();*/
 		GameThread.gt.start();
 		
 		TickerObject.entity.add(new TickerObject("A",3));

@@ -2,8 +2,19 @@ package com.example.monopoly;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import com.example.bluetooth.Bluetooth;
+import com.example.bluetooth.BluetoothEvent;
+import com.example.bluetooth.Message;
+import com.example.controllers.Device;
+import com.example.controllers.HostDevice;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +29,8 @@ import android.widget.Toast;
 
 public class TradeActivity extends Activity {
 
+	public static TradeActivity activity;
+	
 	TradaAdapter myAdapter;
 	TradaAdapter playerAdapter;
 	TradaAdapter mySelectAdapter;
@@ -41,21 +54,30 @@ public class TradeActivity extends Activity {
 		
 		// Create Annie Property list
 		myPropertyList = new ArrayList<String>();
-		myPropertyList.add("Slade Hill");
+		/*myPropertyList.add("Slade Hill");
 		myPropertyList.add("Boyston");
 		myPropertyList.add("Currito");
 		myPropertyList.add("Pres Villa");
 		myPropertyList.add("Westone");
-		myPropertyList.add("APT");
+		myPropertyList.add("APT");*/
 		
 		// Create Katarina Property list
 		playerPropertyList = new ArrayList<String>();
-		playerPropertyList.add("Annie's Slade Hill");
+		/*playerPropertyList.add("Annie's Slade Hill");
 		playerPropertyList.add("Annie's Boyston");
 		playerPropertyList.add("Annie's Currito");
 		playerPropertyList.add("Annie's Pres Villa");
 		playerPropertyList.add("Annie's Westone");
-		playerPropertyList.add("Annie's APT");
+		playerPropertyList.add("Annie's APT");*/
+		
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+		    String tiles = extras.getString("Tiles");
+		    String tileNames = extras.getString("TileNames");
+		    String otherTiles = extras.getString("OtherTiles");
+		    String otherTileNames = extras.getString("OtherTileNames");
+		    this.populateList(tiles, tileNames, otherTiles, otherTileNames);
+		}
 		
 		mySelectList = new ArrayList<String>(); 	// Annie Select list
 		playerSelectList = new ArrayList<String>(); // Katarina Select list
@@ -78,7 +100,14 @@ public class TradeActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				mySelectList.add(myPropertyList.get(position));
 				myPropertyList.remove(position);
+				
+				GhostTile t = GhostTile.myList.get(position);
+				//GhostTile.myOfferList.add(t);
+				//GhostTile.myList.remove(t);
+				
 				myAdapter.notifyDataSetChanged();
+				
+				HostDevice.host.sendMessage(Message.TRADE_CHANGE_DETAILS, t.id + ":" + 1);
 				
 			}
 		});
@@ -88,9 +117,141 @@ public class TradeActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				myPropertyList.add(mySelectList.get(position));
 				mySelectList.remove(position);
+				
+				
+				GhostTile t = GhostTile.myOfferList.get(position);
+				//GhostTile.myOfferList.remove(t);
+				//GhostTile.myList.add(t);
+				
 				mySelectAdapter.notifyDataSetChanged();
 				
+				HostDevice.host.sendMessage(Message.TRADE_CHANGE_DETAILS, t.id + ":" + 0);
 			}
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.TRADE_UPDATE_DETAILS;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				//message = "$amount/tileId:directions:changePlayer";
+				int delimiter = message.indexOf(":");
+				int delimiter2 = message.indexOf(":", delimiter+1);
+				String data = message.substring(0, delimiter);
+				String direction = message.substring(delimiter+1, delimiter2);
+				int player = Integer.parseInt(message.substring(delimiter2+1));
+				double cash = -1;
+				int tile = -1;
+				
+				if (data.charAt(0) == '$'){
+					cash = Double.parseDouble(data.substring(1));
+					if (Device.currentPlayer == player){
+						
+						
+					} else {
+						//If the data is about the other player
+						
+					}
+				} else {
+					tile = Integer.parseInt(data);
+					if (Device.currentPlayer == player){
+						//If the data is about the current player
+						if (direction.equals("0")){ //remove from offer list
+							GhostTile t = GhostTile.myOfferList.get(tile);
+							GhostTile.myOfferList.remove(t);
+							GhostTile.myList.add(t);
+							
+							myPropertyList.add(t.name);
+							mySelectList.remove(t.name);
+						} else { //add to offer list
+							GhostTile t = GhostTile.myList.get(tile);
+							GhostTile.myOfferList.add(t);
+							GhostTile.myList.remove(t);
+							
+							myPropertyList.remove(t.name);
+							mySelectList.add(t.name);
+						}
+					} else {
+						//If the data is about the other player
+						if (direction.equals("0")){ //remove from offer list
+							GhostTile t = GhostTile.otherOfferList.get(tile);
+							GhostTile.otherOfferList.remove(t);
+							GhostTile.otherList.add(t);
+							
+							playerPropertyList.add(t.name);
+							playerSelectList.remove(t.name);
+						} else { //add to offer list
+							GhostTile t = GhostTile.otherList.get(tile);
+							GhostTile.otherOfferList.add(t);
+							GhostTile.otherList.remove(t);
+							
+							playerPropertyList.remove(t.name);
+							playerSelectList.add(t.name);
+						}
+					}
+				}
+				
+				
+				
+			}
+			
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.TRADE_ACCEPT_INFORM;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				// Message: <name of other party> has accepted the trade in it's current state.
+				createAlert("The other person has accepted the trade in it's current state");
+			}
+			
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.TRADE_REJECT_INFORM;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				// Message: Your terms were rejected
+				createAlert("The other person has rejected your trade");
+			}
+			
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.TRADE_SUCCESS;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				createAlert("The Trade was successful");
+				TradeActivity.activity.finish();
+			}
+			
 		});
 	}
 	
@@ -135,10 +296,12 @@ public class TradeActivity extends Activity {
 
 	public void clickEventAccept(View v){
 		Toast.makeText(this, "Accpet..", Toast.LENGTH_SHORT).show();
+		HostDevice.host.sendMessage(Message.TRADE_ACCEPT, "");
 	}
 
 	public void clickEventDeny(View v){
 		Toast.makeText(this, "Deny..", Toast.LENGTH_SHORT).show();
+		HostDevice.host.sendMessage(Message.TRADE_REJECT, "");
 	}			
 	
 
@@ -213,5 +376,71 @@ public class TradeActivity extends Activity {
 	ListView lvPlayerSelect;
 	ListView lvMy;
 	ListView lvPlayer;
+
+	public void populateList(String tiles, String tileNames, String otherTiles, String otherTileNames) {
+		// TODO Auto-generated method stub
+		try {
+			JSONArray tileArr = new JSONArray(tiles);
+			JSONArray tileNameArr = new JSONArray(tileNames);
+			
+			JSONArray otherTileArr = new JSONArray(tiles);
+			JSONArray otherTileNameArr = new JSONArray(tileNames);
+			
+			for (int i=0; i<tileArr.length(); i++){
+				new TradeActivity.GhostTile(tileNameArr.getString(i), tileArr.getInt(i), 0);
+				myPropertyList.add(tileNameArr.getString(i));
+			}
+			
+			for (int i=0; i<otherTileArr.length(); i++){
+				new TradeActivity.GhostTile(otherTileNameArr.getString(i), otherTileArr.getInt(i), 2);
+				playerPropertyList.add(otherTileNameArr.getString(i));
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public static class GhostTile {
+		public String name;
+		public int id;
+		
+		public static ArrayList<TradeActivity.GhostTile> myList = new ArrayList<TradeActivity.GhostTile>();
+		public static ArrayList<TradeActivity.GhostTile> myOfferList = new ArrayList<TradeActivity.GhostTile>();
+		public static ArrayList<TradeActivity.GhostTile> otherList = new ArrayList<TradeActivity.GhostTile>();
+		public static ArrayList<TradeActivity.GhostTile> otherOfferList = new ArrayList<TradeActivity.GhostTile>();
+		
+		public GhostTile(String name, int id, int type){
+			this.name = name;
+			this.id = id;
+			
+			switch (type){
+			case 0:
+				myList.add(this);
+				break;
+			case 1:
+				myOfferList.add(this);
+				break;
+			case 2:
+				otherList.add(this);
+				break;
+			case 3:
+				otherOfferList.add(this);
+				break;
+			}
+		}
+	}
+	
+	public void createAlert(String msg){
+		new AlertDialog.Builder(this)
+			.setMessage(msg)
+			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which){
+					// TODO
+				}
+			})
+			.show();		
+	}
 	
 }
