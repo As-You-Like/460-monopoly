@@ -160,17 +160,29 @@ public class TradeActivity extends Activity {
 					}
 				} else {
 					tile = Integer.parseInt(data);
+					int id = -1;
+					
 					if (Device.currentPlayer == player){
 						//If the data is about the current player
 						if (direction.equals("0")){ //remove from offer list
-							GhostTile t = GhostTile.myOfferList.get(tile);
+							for (int i=0; i<GhostTile.myOfferList.size(); i++){
+								if (GhostTile.myOfferList.get(i).id == tile){
+									id = i;
+								}
+							}
+							GhostTile t = GhostTile.myOfferList.get(id);
 							GhostTile.myOfferList.remove(t);
 							GhostTile.myList.add(t);
 							
 							myPropertyList.add(t.name);
 							mySelectList.remove(t.name);
 						} else { //add to offer list
-							GhostTile t = GhostTile.myList.get(tile);
+							for (int i=0; i<GhostTile.myList.size(); i++){
+								if (GhostTile.myList.get(i).id == tile){
+									id = i;
+								}
+							}
+							GhostTile t = GhostTile.myList.get(id);
 							GhostTile.myOfferList.add(t);
 							GhostTile.myList.remove(t);
 							
@@ -180,14 +192,24 @@ public class TradeActivity extends Activity {
 					} else {
 						//If the data is about the other player
 						if (direction.equals("0")){ //remove from offer list
-							GhostTile t = GhostTile.otherOfferList.get(tile);
+							for (int i=0; i<GhostTile.otherOfferList.size(); i++){
+								if (GhostTile.otherOfferList.get(i).id == tile){
+									id = i;
+								}
+							}
+							GhostTile t = GhostTile.otherOfferList.get(id);
 							GhostTile.otherOfferList.remove(t);
 							GhostTile.otherList.add(t);
 							
 							playerPropertyList.add(t.name);
 							playerSelectList.remove(t.name);
 						} else { //add to offer list
-							GhostTile t = GhostTile.otherList.get(tile);
+							for (int i=0; i<GhostTile.otherList.size(); i++){
+								if (GhostTile.otherList.get(i).id == tile){
+									id = i;
+								}
+							}
+							GhostTile t = GhostTile.otherList.get(id);
 							GhostTile.otherOfferList.add(t);
 							GhostTile.otherList.remove(t);
 							
