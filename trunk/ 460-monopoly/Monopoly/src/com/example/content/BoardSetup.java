@@ -17,15 +17,15 @@ public class BoardSetup {
 		
 		// Tree
 		
-		Tile Sqruce = start.addNextStop(Tile.DIRECTION_EAST);
-		Sqruce.setName("Sqruce Hall");
-		Sqruce.setPrice(50);
-		Sqruce.setRegion(Tile.REGION_SHUTTLE);
-		Sqruce.setBaseRent(5);
-		Sqruce.setBaseRegionRent(10);
-		Sqruce.priceUpgrades(37.5, 75, 112.5, 150);
+		Tile Spruce = start.addNextStop(Tile.DIRECTION_EAST);
+		Spruce.setName("Spruce Hall");
+		Spruce.setPrice(50);
+		Spruce.setRegion(Tile.REGION_TREES);
+		Spruce.setBaseRent(5);
+		Spruce.setBaseRegionRent(10);
+		Spruce.priceUpgrades(37.5, 75, 112.5, 150);
 		
-		Tile Oak = Sqruce.addNextStop(Tile.DIRECTION_EAST);
+		Tile Oak = Spruce.addNextStop(Tile.DIRECTION_EAST);
 		Oak.setName("Oak Hall");
 		Oak.setPrice(50);
 		Oak.setRegion(Tile.REGION_TREES);
@@ -65,7 +65,7 @@ public class BoardSetup {
 		Birch.setBaseRegionRent(10);
 		Birch.priceUpgrades(37.5, 75, 112.5, 150);
 		
-		Tile Alder = Birch.addNextStop(Tile.DIRECTION_SOUTHEAST);
+		Tile Alder = Birch.addNextStop(Tile.DIRECTION_EAST);
 		Alder.setName("Alder Hall");
 		Alder.setRegion(Tile.REGION_TREES);
 		Alder.setPrice(50);
@@ -278,15 +278,15 @@ public class BoardSetup {
 		SATC.setBaseRegionRent(45);
 		SATC.priceUpgrades(337.5, 675, 1012.5, 1350);
 		
-		Tile Morrison = SATC.addNextStop(Tile.DIRECTION_NORTHWEST);
+		/*Tile Morrison = SATC.addNextStop(Tile.DIRECTION_NORTHWEST);
 		Morrison.setName("Morrison Hall");
 		Morrison.setRegion(Tile.REGION_UPPER_CAMPUS_MODERN);
 		Morrison.setPrice(450);
 		Morrison.setBaseRent(90);
 		Morrison.setBaseRegionRent(45);
-		Morrison.priceUpgrades(337.5, 675, 1012.5, 1350);
+		Morrison.priceUpgrades(337.5, 675, 1012.5, 1350);*/
 		
-		Tile AAC = Morrison.addNextStop(Tile.DIRECTION_NORTHWEST);
+		Tile AAC = SATC.addNextStop(Tile.DIRECTION_NORTHWEST);
 		AAC.setName("Admian Academic Center");
 		AAC.setRegion(Tile.REGION_UPPER_CAMPUS_MODERN);
 		AAC.setPrice(450);
@@ -318,14 +318,6 @@ public class BoardSetup {
 		Falcon_Statue.setBaseRegionRent(50);
 		Falcon_Statue.priceUpgrades(375, 750, 1125, 1500);
 
-		Tile spruce = start.addNextStop(Tile.DIRECTION_EAST);
-		spruce.setName("Spruce");
-		spruce.setPrice(50); //initial cost
-		spruce.setCompletedRegionRent(10); //Rent w/ entire region
-		spruce.setBaseRent(5); //Rent w/o upgrade
-		spruce.setRegion(0); //region
-		spruce.priceUpgrades(37.5, 75, 112.5, 150); //upgrades
-
 		Tile Presidential = Falcon_Statue.addNextStop(Tile.DIRECTION_NORTHEAST);
 		Presidential.setName("Presidential Villa");
 		Presidential.setRegion(Tile.REGION_POSSESSIONS);
@@ -334,7 +326,9 @@ public class BoardSetup {
 		Presidential.setBaseRegionRent(50);
 		Presidential.priceUpgrades(375, 750, 1125, 1500);
 		
-		Tile oakhall = spruce.addNextStop(Tile.DIRECTION_SOUTHWEST);
+		Presidential.addNextStop(start);
+		
+		/*Tile oakhall = spruce.addNextStop(Tile.DIRECTION_SOUTHWEST);
 		oakhall.setName("Oak Hall");
 		oakhall.setPrice(50);
 		oakhall.setCompletedRegionRent(10);
@@ -694,7 +688,7 @@ public class BoardSetup {
         Castle.priceUpgrades(200187.5, 375, 562.5, 750);
         //
       
-       
+       */
         
 		Tile.setJailTile(start);
 	}

@@ -2,8 +2,19 @@ package com.example.monopoly;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.example.bluetooth.Bluetooth;
+import com.example.bluetooth.BluetoothEvent;
 import com.example.bluetooth.Message;
+import com.example.controllers.Device;
+import com.example.controllers.Game;
 import com.example.controllers.HostDevice;
+import com.example.model.PlayerPiece;
+import com.example.model.Tile;
+import com.example.model.Unit;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,24 +26,61 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class TabInteractActivity extends Activity {
+	
+	static TabInteractActivity activity;
 
+	ArrayList<ArrayList<ChatMessage>> messageLists = new ArrayList<ArrayList<ChatMessage>>(4);
 	ArrayList<ChatMessage> messageList;
 	ChatAdapter chatAdapter;
 	EditText mEdittext;
+	Spinner spnPlayerNumber;
 	ListView lv;
+	int targetPlayer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_tab_interact);
+		
+		activity = this;
+		
+		spnPlayerNumber = (Spinner)findViewById(R.id.spnPlayerNumber);
+		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		for (int p=0; p<Device.player.length; p++){
+			if (Device.player[p] != null){
+				adapter.add("Interact with " + Device.player[p].name);
+			} else {
+				adapter.add("");
+			}
+		}
+		spnPlayerNumber.setAdapter(adapter);
+		spnPlayerNumber.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+				targetPlayer = position;
+				//messageList = messageLists.get(position);
+				//chatAdapter = new ChatAdapter(activity, messageList);
+				//lv.setAdapter(chatAdapter);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {}
+			
+		});
 
 		mEdittext = (EditText) this.findViewById(R.id.edittext);
 		lv = (ListView) this.findViewById(R.id.list_chat);
@@ -48,13 +96,66 @@ public class TabInteractActivity extends Activity {
 		
 		// send message
 		addNewMessage(new ChatMessage("mmm, well...", true));
+		
+		//Trade Inform
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
 
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.TRADE_INFORM;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				try {
+					JSONObject msg = new JSONObject(message);
+					int tradeReceiver = msg.getInt("Player");
+					double cash = msg.getDouble("Cash");
+					String tiles = msg.getString("Tiles");
+					String tileNames = msg.getString("TileNames");
+					
+					String otherTiles = msg.getString("OtherTiles");
+					String otherTileNames = msg.getString("OtherTileNames");
+					
+					//do a check
+					if (Device.currentPlayer == tradeReceiver){
+						//if the current player is the trade recipient
+						Intent intent = new Intent(TabInteractActivity.activity, TradeActivity.class);
+						intent.putExtra("Tiles", tiles);
+						intent.putExtra("TileNames", tileNames);
+						intent.putExtra("OtherTiles", otherTiles);
+						intent.putExtra("OtherTileNames", otherTileNames);
+						startActivity(intent);
+						//ADD TO LISTVIEW
+						//return
+					} else {
+						//If the current player is the trade starter (will already be in TradeActivity)
+						TradeActivity.activity.populateList(tiles, tileNames, otherTiles, otherTileNames);
+					}
+					//ADD TO LISTVIEW
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		});
+		
+		
 	}
 	
 	public void clickEventGoTrade(View v){
-		HostDevice.host.sendMessage(Message.TRADE_START, "");
-		Intent intent = new Intent(this, TradeActivity.class);
-		startActivity(intent);
+		//if it's the current player's turn
+		if (Device.currentPlayer == Game.currentPlayer){
+			HostDevice.host.sendMessage(Message.TRADE_START, ""+this.targetPlayer);
+			Intent intent = new Intent(this, TradeActivity.class);
+			startActivity(intent);
+		} else {
+			CommandCardActivity.activity.createAlert("You can initiate a trade only during your turn");
+		}
 	}
 
 	public void clickEventSendMessage(View v) {
