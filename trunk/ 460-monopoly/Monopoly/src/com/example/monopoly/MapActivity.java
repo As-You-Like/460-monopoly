@@ -110,6 +110,7 @@ public class MapActivity extends Activity {
 		view.setOnTouchListener(new PanAndZoomListener(view, c, Anchor.TOPLEFT));
 
 	}
+	
 	Runnable background = new Runnable() {
 		public void run() {
 			try {
@@ -188,10 +189,10 @@ public class MapActivity extends Activity {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO Auto-generated method stub
+				SplashActivity.activity.cascadeQuitBool = true;
 				Player.entities = null;
 				Game.instance = null;
 				Unit.entity = null;
-				Intent intent = new Intent(MapActivity.activity, SplashActivity.class);
 				MapActivity.activity.terminate();				
 				return true;
 			}
@@ -222,10 +223,10 @@ public class MapActivity extends Activity {
 		
 	}
 	
-	public void terminate()
-	   {
+	public void terminate() {
 	      Log.i("","terminated!!");
 	      super.onDestroy();
 	      this.finish();
-	   }
+	}
+	
 }
