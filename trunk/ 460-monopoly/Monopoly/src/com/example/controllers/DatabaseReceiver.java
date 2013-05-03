@@ -26,6 +26,11 @@ public class DatabaseReceiver extends BroadcastReceiver {
         	   Log.i("", "POPULATELISTVIEW - running SaveGameActivity.populateListView()");
         	   SaveGameActivity.populateListView();
            }
+           else if(intent.getAction() == "Bentley.action.MAKEGAME"){
+        	   Log.i("", "MAKEGAME - constructing Game object");
+        	   new Game("");
+        	   DatabaseThread.gameMade = true;
+           }
            else {
         	   Log.i("", "Database Receiver got nothing");
            }
