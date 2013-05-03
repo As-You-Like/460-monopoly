@@ -14,6 +14,7 @@ import com.example.model.PlayerPiece;
 import com.example.model.Tile;
 import com.example.monopoly.DataLoadingActivity;
 import com.example.monopoly.LoadingActivity;
+import com.example.monopoly.MapActivity;
 import com.example.monopoly.SaveGameActivity;
 
 /**
@@ -499,9 +500,8 @@ public class GameThread extends Thread{
 			while(Game.playerTurnOrder[Game.playerTurnOrderCounter] == 666);
 			
 			if((Game.subturn % Game.numberOfPlayers) == 0){
-				/*DBHandle handle = new DBHandle();
-				dbt = new DatabaseThread(handle);
-				dbt.start();*/
+				//DBHandle handle = new DBHandle();
+				MapActivity.activity.openDatabase();
 				Game.turn++;
 			}
 			
@@ -509,6 +509,7 @@ public class GameThread extends Thread{
 		
 	}
 	
+	/*
 	//Handler for DatabaseThread
 		public static class DBHandle extends Handler {
 			public void handleMessage(android.os.Message msg){
@@ -529,5 +530,5 @@ public class GameThread extends Thread{
 
 			}
 		}
-	
+		*/
 }
