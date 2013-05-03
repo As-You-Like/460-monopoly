@@ -36,7 +36,7 @@ public class Trade {
 		getRecProperties();
 		
 		entity=this;
-		JSONObject json1 = new JSONObject();
+		JSONObject json1 = new JSONObject(); 
 		JSONObject json2 = new JSONObject();
 		
 		try {

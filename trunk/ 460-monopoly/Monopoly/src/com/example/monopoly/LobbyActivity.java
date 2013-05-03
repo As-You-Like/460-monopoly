@@ -68,6 +68,8 @@ public class LobbyActivity extends Activity {
 		
 		this.txtGameName.setText("Game Name: " + extras.getString("gn"));
 		
+		
+		
 		// Register player data event
 		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
 
@@ -269,26 +271,7 @@ public class LobbyActivity extends Activity {
 				
 			});
 			
-			//register LOBBY_NEW_PLAYER event
-			Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
-				public boolean typeValid(int type) {
-					return type == Message.LOBBY_NEW_PLAYER;
-				}
-
-				@Override
-				public void processMessage(int sender, int reciever, String message) {
-					int playerNum = Integer.parseInt(message.substring(11,12));
-					String name = message.substring(12);
-					
-					PlayerDevice p = new PlayerDevice(false, playerNum);
-					p.name = name;
-					
-					if (LobbyActivity.activity != null){
-						LobbyActivity.activity.updatePlayerList();
-					}
-				}
-				
-			});
+			
 			
 			// Setup dialog
 			LayoutInflater inflater = this.getLayoutInflater();
