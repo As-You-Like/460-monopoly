@@ -17,9 +17,25 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
+        <receiver android:name="com.example.controllers.DatabaseReceiver">
+            <intent-filter>
+                <action android:name="Bentley.action.GOSERVICE" />
+            </intent-filter>                      
+            
+            <intent-filter>
+                <action android:name="Bentley.action.POPULATELISTVIEW" />
+            </intent-filter>   
+            
+            <intent-filter>
+                <action android:name="Bentley.action.MAKEGAME" />
+            </intent-filter>   
+        </receiver>
+        
         <activity
             android:name="com.example.monopoly.SplashActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,47 +44,58 @@
         </activity>
         <activity
             android:name="com.example.monopoly.WelcomeActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.example.monopoly.LobbyActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.CreateHostActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.FindHostActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.NewLoadActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.LoadingActivity"
-            android:label="@string/title_activity_loading" >
+            android:label="@string/title_activity_loading"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.SaveGameActivity"
-            android:label="@string/title_activity_loading" >
+            android:label="@string/title_activity_loading"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.PopupActivity"
-            android:label="@string/title_activity_popup" >
+            android:label="@string/title_activity_popup"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.UpgradeActivity"
-            android:label="@string/title_activity_popup" >
+            android:label="@string/title_activity_popup"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.DecisionActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.CommandCardActivity"
-            android:label="Command Card" >
+            android:label="Command Card"
+            android:screenOrientation="portrait" >
 
             <!--
             <intent-filter>
@@ -80,7 +107,8 @@
         </activity>
         <activity
             android:name="com.example.monopoly.MapActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -89,39 +117,48 @@
         </activity>
         <activity
             android:name="com.example.monopoly.TabHomeActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.TabStatActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.TabInteractActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.TabPropertiesActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.TabTurnActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.TileActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.TurnActivity"
-            android:label="@string/title_activity_turn" >
+            android:label="@string/title_activity_turn"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.TradeActivity"
-            android:label="@string/title_activity_trade" >
+            android:label="@string/title_activity_trade"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.example.monopoly.DataLoadingActivity"
-            android:label="@string/title_activity_data_loading" >
+            android:label="@string/title_activity_data_loading"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
