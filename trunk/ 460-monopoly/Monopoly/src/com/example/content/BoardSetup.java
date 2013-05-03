@@ -325,20 +325,9 @@ public class BoardSetup {
 		Presidential.setBaseRent(100);
 		Presidential.setBaseRegionRent(50);
 		Presidential.priceUpgrades(375, 750, 1125, 1500);
-		
 		Presidential.addNextStop(start);
-		
-		/*Tile oakhall = spruce.addNextStop(Tile.DIRECTION_SOUTHWEST);
-		oakhall.setName("Oak Hall");
-		oakhall.setPrice(50);
-		oakhall.setCompletedRegionRent(10);
-		oakhall.setBaseRent(0);
-		oakhall.setRegion(0);
-		oakhall.priceUpgrades(20, 30, 40, 50);
 
-		// Road
-
-		oakhall.addNextStop(start);
+		Presidential.addNextStop(start);
 
 		Tile Road2 = Road1.addNextStop(Tile.DIRECTION_SOUTHEAST);
 		Road2.setName("Road2");
@@ -688,7 +677,7 @@ public class BoardSetup {
         Castle.priceUpgrades(200187.5, 375, 562.5, 750);
         //
       
-       */
+       
         
 		Tile.setJailTile(start);
 	}
