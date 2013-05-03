@@ -10,6 +10,7 @@ import android.content.Intent;
 
 import com.example.model.PlayerPiece;
 import com.example.model.Tile;
+import com.example.model.Unit;
 import com.example.monopoly.DataLoadingActivity;
 import com.example.monopoly.LoadingActivity;
 import com.example.monopoly.R;
@@ -156,6 +157,7 @@ public class DatabaseThread extends Thread {
 	public int[] tablePlayer_fieldNetCash;
 	public int[] tablePlayer_fieldTradeCount;
 	
+	int[] tableTile_fieldTileID;
 	int[] tableTile_fieldOwnerID;
 	int[] tableTile_fieldElectricalBought;
 	int[] tableTile_fieldPlumbingBought;
@@ -445,6 +447,7 @@ public class DatabaseThread extends Thread {
 		/////////////////////////////
 		
 		//Instantiate tile data fields where the index represents a different tile row
+		tableTile_fieldTileID = new int[tileQuery.getCount()];
 		tableTile_fieldOwnerID = new int[tileQuery.getCount()];
 		tableTile_fieldElectricalBought = new int[tileQuery.getCount()];
 		tableTile_fieldPlumbingBought = new int[tileQuery.getCount()];
@@ -454,6 +457,7 @@ public class DatabaseThread extends Thread {
 		//fill in the above tile data fields
 		tileQuery.moveToFirst();
 		for(int i = 0; i < tileQuery.getCount(); i++){
+			tableTile_fieldTileID[i] = tileQuery.getInt(0);
 			tableTile_fieldOwnerID[i] = tileQuery.getInt(1);
 			tableTile_fieldElectricalBought[i] = tileQuery.getInt(2);
 			tableTile_fieldPlumbingBought[i] = tileQuery.getInt(3);
@@ -562,8 +566,8 @@ public class DatabaseThread extends Thread {
 		EventSetup.setupEvents();
 		
 		//Set up Game and GameThread
-		new GameThread();
-		GameThread.gt.isFromSavedGame = true;
+		GameThread.gt = new GameThread();
+		GameThread.isFromSavedGame = true;
 		//new Game("");
 		dt.makeGame();
 		Game.name = tableGame_fieldAll[0];
@@ -584,9 +588,26 @@ public class DatabaseThread extends Thread {
 		// Set up Players
 		// TODO: Bad idea to use the length of your field results. the size of this array should always be the max amount of players supported
 		//Player.entities = new Player[tablePlayer_fieldPlayerName.length];
-		Player.entities = new Player[Device.player.length]; //I changed it
+		Player.entities = new Player[tablePlayer_fieldPlayerName.length]; //I changed it
 		for(int i = 0; i < tablePlayer_fieldPlayerName.length; i++){
-			int color = Integer.parseInt(tablePlayer_fieldPlayerColor[i]);
+			int color;
+			String colorString = tablePlayer_fieldPlayerColor[i];
+			if(colorString.equals("Red")){
+				color = Color.rgb(255, 0, 0);
+			}
+			else if(colorString.equals("Green")){
+				color = Color.rgb(0, 255, 0);
+			}
+			else if(colorString.equals("Blue")){
+				color = Color.rgb(0, 0, 255);
+			}
+			else if(colorString.equals("Cyan")){
+				color = Color.rgb(0, 255, 255);
+			}
+			else {
+				color = Color.rgb(0, 0, 0);
+			}
+
 			Player p = new Player(Device.player[i], tablePlayer_fieldPlayerNumber[i], color);
 			// Set player name
 			// TODO: The name of the player exists in PlayerDevice, I added the line below
@@ -598,12 +619,33 @@ public class DatabaseThread extends Thread {
 			Player.entities[i] = p;
 		}
 		
+		// Set up property ownerships
+		Tile thisTile;
+		for(int i = 0; i < Unit.entity.size(); i++){
+			if(Unit.entity.get(i) instanceof Tile){
+				thisTile = (Tile) Unit.entity.get(i);
+				
+				for(int j = 0; j < tableTile_fieldTileID.length; j++){
+					
+					if(thisTile.id == tableTile_fieldTileID[j]){
+						
+						for(int k = 0; k < Player.entities.length; k++){
+							if(tableTile_fieldOwnerID[j] == k){
+								thisTile.setOwner(k);
+							}
+						}
+					}		
+				}			
+			}
+		}
+		
 		// Set up PlayerPieces, Current Location, and Previous Location
 		for(int i = 0; i < Player.entities.length; i++){
+			
 			int currentLocID = Integer.parseInt(tablePlayer_fieldCurrentLocation[i]);
 			
 			Tile currentLocTile;
-			
+			/*
 			for(int j = 0; j < Tile.entity.length; j++){
 				
 				for(int k = 0; k < Tile.entity[j].length; k++){
@@ -616,6 +658,18 @@ public class DatabaseThread extends Thread {
 					}
 				}
 				
+			}
+			*/
+			
+			for(int j = 0; j < Unit.entity.size(); j++){
+				if(Unit.entity.get(j) instanceof Tile){
+					currentLocTile = (Tile)Unit.entity.get(j);
+					if(currentLocTile.id == currentLocID){
+						Player.entities[i].setPiece(new PlayerPiece(currentLocTile, tablePlayer_fieldPlayerNumber[i]));
+						Log.i("","Player " + i + "has new piece at Tile " + currentLocTile.id);
+					}
+			
+				}
 			}
 			
 		}		
@@ -798,9 +852,11 @@ public class DatabaseThread extends Thread {
 		//broadcastIntent.putExtra("Controller", "connect");
 		Log.i("", "Sending broadcast");
 		DataLoadingActivity.context.sendBroadcast(myObserverSender);
+		int count = 0;
 		while(gameMade != true){
-			Log.i("", "Game under construction");
+			count++;
 		}
+		Log.i("","" + count);
 		gameMade = false; //reset for next time
 	}
 	
