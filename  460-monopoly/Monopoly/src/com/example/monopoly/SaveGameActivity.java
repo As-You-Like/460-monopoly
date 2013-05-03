@@ -33,8 +33,8 @@ public class SaveGameActivity extends Activity {
 	
 	public ListView lstGames;
 	public Button btnStart;
-	SQLHelper helper;
-	Context context;
+	public SQLHelper helper;
+	public static Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class SaveGameActivity extends Activity {
 		activity = this;
 		context = this;
 		
-		DatabaseThread dbt = new DatabaseThread(null);
+		DatabaseThread dbt = new DatabaseThread();
 		helper = new SQLHelper(context);
 		dbt.db = helper.getWritableDatabase();
 		
