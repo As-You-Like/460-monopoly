@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -71,5 +72,20 @@ public class CreateHostActivity extends Activity {
 		gamelist.add("League of Legend");
 		gamelist.add("Diablo");
 		gamelist.add("Simcity");
+	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
 	}
 }
