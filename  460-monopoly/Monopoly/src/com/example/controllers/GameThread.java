@@ -502,7 +502,7 @@ public class GameThread extends Thread{
 			
 			if((Game.subturn % Game.numberOfPlayers) == 0){
 				//DBHandle handle = new DBHandle();
-				MapActivity.activity.openDatabase();
+				//MapActivity.activity.openDatabase();
 				Game.turn++;
 			}
 			

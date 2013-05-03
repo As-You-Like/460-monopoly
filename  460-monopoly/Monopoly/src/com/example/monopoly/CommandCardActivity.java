@@ -390,7 +390,13 @@ public class CommandCardActivity extends TabActivity {
 					//do a check
 					if (Device.currentPlayer == tradeReceiver){
 						//if the current player is the trade recipient
-						Intent intent = new Intent(TabInteractActivity.activity, TradeActivity.class);
+						Intent 
+						intent = 
+								new Intent(
+								CommandCardActivity
+								.activity,
+								TradeActivity
+								.class);
 						intent.putExtra("Tiles", tiles);
 						intent.putExtra("TileNames", tileNames);
 						intent.putExtra("OtherTiles", otherTiles);
@@ -401,7 +407,7 @@ public class CommandCardActivity extends TabActivity {
 					} else {
 						//If the current player is the trade starter (will already be in TradeActivity)
 						TradeActivity.activity.populateList(tiles, tileNames, otherTiles, otherTileNames);
-					}
+					} 
 					//ADD TO LISTVIEW
 					
 				} catch (JSONException e) {
@@ -411,6 +417,8 @@ public class CommandCardActivity extends TabActivity {
 			}
 			
 		});
+		
+		
 		
 	}
 	

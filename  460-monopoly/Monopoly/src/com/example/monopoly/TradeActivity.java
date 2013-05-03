@@ -124,6 +124,7 @@ public class TradeActivity extends Activity {
 				//GhostTile.myList.add(t);
 				
 				mySelectAdapter.notifyDataSetChanged();
+				//myAdapter.notifyDataSetChanged();
 				
 				HostDevice.host.sendMessage(Message.TRADE_CHANGE_DETAILS, t.id + ":" + 0);
 			}
@@ -170,24 +171,40 @@ public class TradeActivity extends Activity {
 									id = i;
 								}
 							}
-							GhostTile t = GhostTile.myOfferList.get(id);
-							GhostTile.myOfferList.remove(t);
-							GhostTile.myList.add(t);
 							
-							myPropertyList.add(t.name);
-							mySelectList.remove(t.name);
+							if (id >= 0){
+								GhostTile t = GhostTile.myOfferList.get(id);
+								GhostTile.myOfferList.remove(t);
+								GhostTile.myList.add(t);
+								
+								myPropertyList.add(t.name);
+								mySelectList.remove(t.name);
+								
+								mySelectAdapter.notifyDataSetChanged();
+								myAdapter.notifyDataSetChanged();
+								playerSelectAdapter.notifyDataSetChanged();
+								playerAdapter.notifyDataSetChanged();
+							}
 						} else { //add to offer list
 							for (int i=0; i<GhostTile.myList.size(); i++){
 								if (GhostTile.myList.get(i).id == tile){
 									id = i;
 								}
 							}
-							GhostTile t = GhostTile.myList.get(id);
-							GhostTile.myOfferList.add(t);
-							GhostTile.myList.remove(t);
 							
-							myPropertyList.remove(t.name);
-							mySelectList.add(t.name);
+							if (id >= 0){
+								GhostTile t = GhostTile.myList.get(id);
+								GhostTile.myOfferList.add(t);
+								GhostTile.myList.remove(t);
+								
+								myPropertyList.remove(t.name);
+								mySelectList.add(t.name);
+								
+								mySelectAdapter.notifyDataSetChanged();
+								myAdapter.notifyDataSetChanged();
+								playerSelectAdapter.notifyDataSetChanged();
+								playerAdapter.notifyDataSetChanged();
+							}
 						}
 					} else {
 						//If the data is about the other player
@@ -197,24 +214,41 @@ public class TradeActivity extends Activity {
 									id = i;
 								}
 							}
-							GhostTile t = GhostTile.otherOfferList.get(id);
-							GhostTile.otherOfferList.remove(t);
-							GhostTile.otherList.add(t);
 							
-							playerPropertyList.add(t.name);
-							playerSelectList.remove(t.name);
+							if (id >= 0){
+								GhostTile t = GhostTile.otherOfferList.get(id);
+								GhostTile.otherOfferList.remove(t);
+								GhostTile.otherList.add(t);
+								
+								playerPropertyList.add(t.name);
+								playerSelectList.remove(t.name);
+								
+								mySelectAdapter.notifyDataSetChanged();
+								myAdapter.notifyDataSetChanged();
+								playerSelectAdapter.notifyDataSetChanged();
+								playerAdapter.notifyDataSetChanged();
+							}
 						} else { //add to offer list
+							Log.e("Tile", "Tile: "+tile);
 							for (int i=0; i<GhostTile.otherList.size(); i++){
+								Log.e("Tile", ""+GhostTile.otherList.get(i).id);
 								if (GhostTile.otherList.get(i).id == tile){
 									id = i;
 								}
 							}
-							GhostTile t = GhostTile.otherList.get(id);
-							GhostTile.otherOfferList.add(t);
-							GhostTile.otherList.remove(t);
-							
-							playerPropertyList.remove(t.name);
-							playerSelectList.add(t.name);
+							if (id >= 0){
+								GhostTile t = GhostTile.otherList.get(id);
+								GhostTile.otherOfferList.add(t);
+								GhostTile.otherList.remove(t);
+								
+								playerPropertyList.remove(t.name);
+								playerSelectList.add(t.name);
+								
+								mySelectAdapter.notifyDataSetChanged();
+								myAdapter.notifyDataSetChanged();
+								playerSelectAdapter.notifyDataSetChanged();
+								playerAdapter.notifyDataSetChanged();
+							}
 						}
 					}
 				}
