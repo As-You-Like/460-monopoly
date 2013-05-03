@@ -17,10 +17,10 @@ public class Trade {
 	public int initiator;
 	public int recipient;
 	public static Trade entity;
-	public ArrayList <Tile> initTiles;
-	public ArrayList <Tile> recTiles;
-	public ArrayList <Tile> initOffer;
-	public ArrayList <Tile> recOffer;
+	public ArrayList <Tile> initTiles = new ArrayList<Tile>();
+	public ArrayList <Tile> recTiles= new ArrayList<Tile>();
+	public ArrayList <Tile> initOffer= new ArrayList<Tile>();
+	public ArrayList <Tile> recOffer= new ArrayList<Tile>();
 	public double initCash;
 	public double recCash;
 	public double initOfferCash=0;
@@ -29,9 +29,16 @@ public class Trade {
 	public boolean recAccept = false;
 	
 	public Trade(int rID){
+		
+		initiator=Game.currentPlayer;
+		recipient=rID;
+		getInitProperties();
+		getRecProperties();
+		
 		entity=this;
 		JSONObject json1 = new JSONObject();
 		JSONObject json2 = new JSONObject();
+		
 		try {
 			JSONArray initTileArr = new JSONArray();
 			JSONArray initTileNameArr = new JSONArray();
@@ -64,14 +71,8 @@ public class Trade {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		initiator=Game.currentPlayer;
-		recipient=rID;
-		getInitProperties();
-		getRecProperties();
-		Device.player[recipient].sendMessage(Message.TRADE_INFORM, ""+json1);		
-		Device.player[initiator].sendMessage(Message.TRADE_INFORM, ""+json2);
+		Device.player[recipient].sendMessage(Message.TRADE_INFORM, ""+json2);		
+		Device.player[initiator].sendMessage(Message.TRADE_INFORM, ""+json1);
 	}
 	
 	public void getInitProperties(){
