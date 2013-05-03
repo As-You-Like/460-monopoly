@@ -141,6 +141,7 @@ public class TileActivity extends Activity {
 	// TODO payfree
 	private void payfree(){
 		HostDevice.host.sendMessage(Message.TILE_ACTIVITY_PAY_RENT, "");
+		this.btnPurchase.setEnabled(false);
 		this.btnEndTurn.setEnabled(true);
 	}
 
