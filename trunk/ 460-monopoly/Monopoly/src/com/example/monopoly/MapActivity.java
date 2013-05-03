@@ -37,8 +37,10 @@ import com.example.controllers.DatabaseThread;
 import com.example.controllers.Game;
 import com.example.controllers.GameThread;
 import com.example.controllers.HostDevice;
+import com.example.controllers.Player;
 import com.example.controllers.SQLHelper;
 import com.example.controllers.TickerObject;
+import com.example.model.Unit;
 import com.example.monopoly.PanAndZoomListener;
 import com.example.monopoly.PanAndZoomListener.Anchor;
 
@@ -186,6 +188,10 @@ public class MapActivity extends Activity {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO Auto-generated method stub
+				Player.entities = null;
+				Game.instance = null;
+				Unit.entity = null;
+				Intent intent = new Intent(MapActivity.activity, SplashActivity.class);
 				MapActivity.activity.terminate();				
 				return true;
 			}
