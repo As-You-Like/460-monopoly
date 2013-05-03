@@ -3,6 +3,7 @@ package com.example.monopoly;
 import com.example.bluetooth.Bluetooth;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -52,6 +53,21 @@ public class WelcomeActivity extends Activity {
 		// Send player to first menu screen
 		//Intent intent = new Intent(this, WebActivity.class);
 		//startActivity(intent);
+	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
 	}
 
 }
