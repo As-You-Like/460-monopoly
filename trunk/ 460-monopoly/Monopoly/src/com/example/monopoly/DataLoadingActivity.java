@@ -18,7 +18,7 @@ public class DataLoadingActivity extends Activity {
 	public static DataLoadingActivity activity;
 	
 	SQLHelper helper;
-	Context context;
+	public static Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +27,8 @@ public class DataLoadingActivity extends Activity {
 		activity = this;
 		context = this;
 		
-		GameThread.DBHandle handle = new GameThread.DBHandle();
-		DatabaseThread dbt = new DatabaseThread(handle);
+		
+		DatabaseThread dbt = new DatabaseThread();
 		helper = new SQLHelper(context);
 		dbt.db = helper.getWritableDatabase();
 		
