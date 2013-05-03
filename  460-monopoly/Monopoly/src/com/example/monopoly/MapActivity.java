@@ -54,6 +54,7 @@ public class MapActivity extends Activity {
 	
 	public MenuItem menuExit;
 	public MenuItem menuListen;
+	public MenuItem menuQuit;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +156,7 @@ public class MapActivity extends Activity {
 		
 		menuExit = menu.add(0, 1, Menu.NONE, "Rules");
 		menuListen = menu.add(0, 2, Menu.NONE, "Listen for Joining Players");
+		menuQuit = menu.add(0, 3, Menu.NONE, "Quit Game");
 		
 		menuExit.setOnMenuItemClickListener(new OnMenuItemClickListener(){
 			
@@ -174,6 +176,17 @@ public class MapActivity extends Activity {
 				HostDevice.host.listenStart(true, Game.name);
 				MapActivity.activity.ensureDiscoverable(false);
 				
+				return true;
+			}
+			
+		});
+		
+		menuQuit.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// TODO Auto-generated method stub
+				MapActivity.activity.terminate();				
 				return true;
 			}
 			
@@ -202,4 +215,11 @@ public class MapActivity extends Activity {
 		dbt.start();
 		
 	}
+	
+	public void terminate()
+	   {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
+	   }
 }
