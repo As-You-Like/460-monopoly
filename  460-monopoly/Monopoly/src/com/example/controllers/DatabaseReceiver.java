@@ -20,6 +20,7 @@ public class DatabaseReceiver extends BroadcastReceiver {
            if(intent.getAction() == "Bentley.action.GOSERVICE"){
         	   Log.i("", "GOSERVICE - starting MapActivity");
         	   Intent intent2 = new Intent(context, MapActivity.class);
+        	   intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                context.startActivity(intent2); 
            }
            else if(intent.getAction() == "Bentley.action.POPULATELISTVIEW"){
