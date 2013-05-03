@@ -10,6 +10,7 @@ import com.example.monopoly.R.menu;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,6 +54,21 @@ public class NewLoadActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
 	}
 
 }
