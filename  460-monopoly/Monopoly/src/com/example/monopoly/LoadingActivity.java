@@ -8,10 +8,12 @@ import com.example.controllers.Game;
 import com.example.controllers.GameThread;
 import com.example.controllers.HostDevice;
 import com.example.controllers.LoadThread;
+import com.example.monopoly.PanAndZoomListener.Anchor;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -89,6 +91,15 @@ public class LoadingActivity extends Activity {
 		return true;
 	}
 	
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
 	//
 	public static void startGameModule(){
 		boolean playersPresent = false;
@@ -107,6 +118,12 @@ public class LoadingActivity extends Activity {
 			
 			
 		}
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
 	}
 
 }
