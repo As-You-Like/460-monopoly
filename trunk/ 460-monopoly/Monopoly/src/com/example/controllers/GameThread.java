@@ -35,6 +35,7 @@ public class GameThread extends Thread{
 	
 	// isFromSavedGame: determines if game was loaded from New Game (false) or from Saved Game (true)
 	public static boolean isFromSavedGame = false;
+	public boolean isQuitting = false;
 	
 	// Determines if victory has been achieved by a player
 	//public boolean gameWon = false;
@@ -223,6 +224,9 @@ public class GameThread extends Thread{
 		 * 
 		 * <<<<<Temporary - determined by index order>>>>>
 		 */
+		
+		
+		
 		if(isFromSavedGame == false){
 			this.setUpBoard();
 		}
@@ -239,47 +243,57 @@ public class GameThread extends Thread{
 			}
 		}
 		
-		while(Game.gameWon == false){
-			/**
-			 * Note: reset all global variables you use between turns (to avoid raw data of one turn interfering with another turn)
-			 */
-			// Movement Phase
-
-			//Figure out who's turn it is
-			Game.instance.determineCurrentTurnPlayer();
-			
-			/*
-			//Weekly Stipends and other start of turn events
-			EventGenerator.executeTriggeredEvents("newTurn");
-			*/
-			
-				//Override Home Tab
-				this.startSubTurn();
+		while(Game.gameWon == false && this.isQuitting == false){
+			try {
 				
-				// Player Movement Subphase
-				this.startMovementPhase();
-			if (!Player.entities[Game.currentPlayer].isJailed()){
-				// Decision Phase
-				this.startDecisionPhase();
-			}
-			// Conclusion Phase
-			this.startConclusionPhase();
-			/**
-			 * End turn
-			 * If necessary, update turn and subturn counts
-			 * Wipe turn booleans
-			 * Update Entity classes
-			 * Check victory conditions
-			 * 		if elimination game, check if one player remains. if yes, gameWon = true
-			 * 		if turn limit game, check if turnsExecuted = turnLimit.
-			 * 			if yes, gameWon = true and flag player with highest Net Assets as winner
-			 */
+				/**
+				 * Note: reset all global variables you use between turns (to avoid raw data of one turn interfering with another turn)
+				 */
+				// Movement Phase
+
+				//Figure out who's turn it is
+				Game.instance.determineCurrentTurnPlayer();
+				
+				/*
+				//Weekly Stipends and other start of turn events
+				EventGenerator.executeTriggeredEvents("newTurn");
+				*/
+				
+					//Override Home Tab
+					this.startSubTurn();
+					
+					// Player Movement Subphase
+					this.startMovementPhase();
+				if (!Player.entities[Game.currentPlayer].isJailed()){
+					// Decision Phase
+					this.startDecisionPhase();
+				}
+				// Conclusion Phase
+				this.startConclusionPhase();
+				/**
+				 * End turn
+				 * If necessary, update turn and subturn counts
+				 * Wipe turn booleans
+				 * Update Entity classes
+				 * Check victory conditions
+				 * 		if elimination game, check if one player remains. if yes, gameWon = true
+				 * 		if turn limit game, check if turnsExecuted = turnLimit.
+				 * 			if yes, gameWon = true and flag player with highest Net Assets as winner
+				 */
+				
 			
-		}
-		
-		/**
-		 * Victory
-		 */
+			/**
+			 * Victory
+			 */
+				
+				
+			} catch (Exception e) {			
+				e.printStackTrace();
+				this.isQuitting = true;
+				Game.timer.cancel();
+				
+			}
+		}	
 		
 	}
 	
