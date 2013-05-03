@@ -60,8 +60,8 @@ public class Game extends TimerTask{
 	
 	//method to be run during loading of game module
 	public static void start(){
-		//Game.timer = new Timer();
-		//Game.timer.scheduleAtFixedRate(Game.instance, 20, 20);
+		Game.timer = new Timer();
+		Game.timer.scheduleAtFixedRate(Game.instance, 20, 20);
 	}
 
 	@Override
