@@ -6,16 +6,19 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
 public class SplashActivity extends Activity { 
 	 
 	public static SplashActivity activity;
+	public boolean cascadeQuitBool;
 	public static final int REQUEST_ENABLE_BT = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		this.cascadeQuitBool = false;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		
@@ -56,6 +59,21 @@ public class SplashActivity extends Activity {
             }
 			break;
 		}
+	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
 	}
 
 }
