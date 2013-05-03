@@ -46,7 +46,6 @@ public class LoadThread extends Thread {
 			EventSetup.setupEvents();
 			//initialize the main game thread (it gets started later)
 			new GameThread();
-			new Game("");
 		} else {
 			//loading code for player goes here
 		}
