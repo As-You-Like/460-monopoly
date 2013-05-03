@@ -33,9 +33,11 @@ import android.widget.Toast;
 import com.example.bluetooth.Bluetooth;
 import com.example.content.BoardSetup;
 import com.example.content.Image;
+import com.example.controllers.DatabaseThread;
 import com.example.controllers.Game;
 import com.example.controllers.GameThread;
 import com.example.controllers.HostDevice;
+import com.example.controllers.SQLHelper;
 import com.example.controllers.TickerObject;
 import com.example.monopoly.PanAndZoomListener;
 import com.example.monopoly.PanAndZoomListener.Anchor;
@@ -48,6 +50,7 @@ public class MapActivity extends Activity {
 	public static Resources resources;
 	public Canvas canvas= new Canvas();
 	public RelativeLayout view;
+	public DatabaseThread dbt;
 	
 	public MenuItem menuExit;
 	public MenuItem menuListen;
@@ -184,5 +187,16 @@ public class MapActivity extends Activity {
 			}
 		})
 		.show();		
+	}
+	
+	public void openDatabase(){
+		SQLHelper helper = new SQLHelper(MapActivity.activity);
+		dbt = new DatabaseThread();
+		dbt.db = helper.getWritableDatabase();
+		if(dbt.db == null){
+			Log.e("", "NULL");
+		}
+		dbt.start();
+		
 	}
 }
