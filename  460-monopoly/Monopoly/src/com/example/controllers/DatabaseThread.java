@@ -87,6 +87,7 @@ public class DatabaseThread extends Thread {
 	public String playerTableName = "PlayerTable";
 	public String tileTableName = "TileTable";
 	public String turnEventInstanceTableName = "TurnEventInstanceTable";
+	public static boolean gameMade = false;
 	
 	//private DBHandle handler;
 	
@@ -563,7 +564,8 @@ public class DatabaseThread extends Thread {
 		//Set up Game and GameThread
 		new GameThread();
 		GameThread.gt.isFromSavedGame = true;
-		new Game("");
+		//new Game("");
+		dt.makeGame();
 		Game.name = tableGame_fieldAll[0];
 		Game.numberOfPlayers = tablePlayer_fieldPlayerNumber.length;
 		Game.type = tableGame_fieldAll[1];
@@ -780,21 +782,6 @@ public class DatabaseThread extends Thread {
 		}
 	}
 	
-	//Handling for starting game module
-	private static class Handle extends Handler {
-		public void handleMessage(Message msg){
-			// TODO: check for HostDevice.self is redundant since the device that runs this code is always the host
-			//if(HostDevice.self){
-				
-				//Toast.makeText(this, "Host Finished Loading", Toast.LENGTH_SHORT).show();
-			//} else {
-				//HostDevice.host.sendMessage(com.example.bluetooth.Message.PLAYER_READY, "");
-				//Toast.makeText(this, "Player Finished Loading", Toast.LENGTH_SHORT).show();
-			//}
-		}
-	}
-	
-	//handlerReplacement = temporary name
 	public void callDatabaseReceiverBroadcast(){
 		Intent myObserverSender = new Intent(
 				"Bentley.action.GOSERVICE");
@@ -802,6 +789,19 @@ public class DatabaseThread extends Thread {
 		//broadcastIntent.putExtra("Controller", "connect");
 		Log.i("", "Sending broadcast");
 		DataLoadingActivity.context.sendBroadcast(myObserverSender);
+	}
+	
+	public void makeGame(){
+		Intent myObserverSender = new Intent(
+				"Bentley.action.MAKEGAME");
+		//broadcastIntent.setAction(DatabaseReceiver.ACTION_RESP);
+		//broadcastIntent.putExtra("Controller", "connect");
+		Log.i("", "Sending broadcast");
+		DataLoadingActivity.context.sendBroadcast(myObserverSender);
+		while(gameMade != true){
+			Log.i("", "Game under construction");
+		}
+		gameMade = false; //reset for next time
 	}
 	
 }
