@@ -34,7 +34,7 @@ public class GameThread extends Thread{
 	public DatabaseThread dbt;
 	
 	// isFromSavedGame: determines if game was loaded from New Game (false) or from Saved Game (true)
-	public boolean isFromSavedGame = false;
+	public static boolean isFromSavedGame = false;
 	
 	// Determines if victory has been achieved by a player
 	//public boolean gameWon = false;
@@ -225,8 +225,9 @@ public class GameThread extends Thread{
 		 */
 		if(isFromSavedGame == false){
 			this.setUpBoard();
-			Game.instance.determinePlayerTurnOrder();
 		}
+		isFromSavedGame = true;
+		Game.instance.determinePlayerTurnOrder();
 		
 		//Wait 2 seconds to allow the phones to catch up
 		synchronized (this){
