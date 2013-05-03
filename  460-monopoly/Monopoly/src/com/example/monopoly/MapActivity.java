@@ -86,16 +86,19 @@ public class MapActivity extends Activity {
 		BoardSetup.setupBoard();*/
 		GameThread.gt.start();
 		
+		/*
 		TickerObject.entity.add(new TickerObject("A",3));
 		TickerObject.entity.add(new TickerObject("B",7));
 		TickerObject.entity.add(new TickerObject("C",4));
 		TickerObject.entity.add(new TickerObject("D",1));
 		TickerObject.entity.add(new TickerObject("E",6));
 		
+		
 		Thread t = new Thread(background);
 		t.start();
 		
-
+		*/
+		
 	}
 	
 	public void onStart()
