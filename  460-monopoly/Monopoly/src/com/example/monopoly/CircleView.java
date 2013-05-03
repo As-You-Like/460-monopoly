@@ -54,33 +54,40 @@ public CircleView (Context context, AttributeSet attrs, int defStyle) {
  */
 
 public void drawOnCanvas (Canvas canvas) {
-	//Ensure it doesn't attempt to render before MapActivity is ready
 	
-	//Log.d(null, "CV drawOnCanvas");
-	
-	if (MapActivity.activity == null){
-		return;
+	try{
+		//Ensure it doesn't attempt to render before MapActivity is ready
+		
+		//Log.d(null, "CV drawOnCanvas");
+		
+		if (MapActivity.activity == null){
+			return;
+		}
+
+		//Initialize paint
+	    Paint paint = new Paint();
+	    //paint.setColor(Color.BLUE);
+	    
+	    //canvas.drawBitmap(b, 0, 0, paint);
+	    Unit[] tmp;
+	    synchronized (Unit.entity){
+	    	tmp = Unit.entity.toArray(new Unit[]{});
+	    	
+	    }
+	    //canvas.drawText("Unit Count: " + tmp.length, 0, 0, paint);
+	    for (Unit u : tmp){
+	    	u.draw(canvas, paint);
+	    	
+	    }   
+	    
+	    this.invalidate();
+	   // Log.e(null, "CircleView drawOnCanvas");
+		//super.onDraw(canvas);
+	}
+	catch(Exception e){
+		e.printStackTrace();
 	}
 
-	//Initialize paint
-    Paint paint = new Paint();
-    //paint.setColor(Color.BLUE);
-    
-    //canvas.drawBitmap(b, 0, 0, paint);
-    Unit[] tmp;
-    synchronized (Unit.entity){
-    	tmp = Unit.entity.toArray(new Unit[]{});
-    	
-    }
-    //canvas.drawText("Unit Count: " + tmp.length, 0, 0, paint);
-    for (Unit u : tmp){
-    	u.draw(canvas, paint);
-    	
-    }   
-    
-    this.invalidate();
-   // Log.e(null, "CircleView drawOnCanvas");
-	//super.onDraw(canvas);
     
 
 }
