@@ -339,11 +339,6 @@ public class GameThread extends Thread{
 		boolean isDouble = false;
 		do{
 			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
-			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
-			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
-			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
-			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
-			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
 			this.sleepGameThread();
 			Log.e("MovementPhase", "Execution");
 			if(Die.doubleCount < 3){
