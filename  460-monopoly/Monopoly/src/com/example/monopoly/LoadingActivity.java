@@ -97,7 +97,7 @@ public class LoadingActivity extends Activity {
 		}
 		if((playersPresent == false || done == true) && hostReady == true){
 			Device.sendMessageToAllPlayers(Message.ALL_READY, "");
-			Game.start();
+			//Game.start();
 			Intent intent = new Intent(LoadingActivity.activity, MapActivity.class);
 			LoadingActivity.activity.startActivity(intent);
 			//Toast.makeText(activity, "Intent -> to MapActivity", Toast.LENGTH_LONG)
