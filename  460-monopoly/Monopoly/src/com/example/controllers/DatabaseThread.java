@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import com.example.content.BoardSetup;
 import com.example.content.EventSetup;
 import com.example.content.Image;
-import com.example.controllers.GameThread.DBHandle;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+
 import com.example.model.PlayerPiece;
 import com.example.model.Tile;
 import com.example.monopoly.DataLoadingActivity;
@@ -69,7 +71,7 @@ public class DatabaseThread extends Thread {
 	public static DatabaseThread dt;
 	public static boolean isLoad;
 	public static boolean isGettingGameNames;
-	public static final String DATABASE_NAME = "smartstartupsdatabasedmd.db";
+	public static final String DATABASE_NAME = "smartstartupsdatabase2.db";
 	public volatile Looper mMyLooper;
 	public String selectedGameName = "";
 	public String[] listViewContents;
@@ -86,7 +88,7 @@ public class DatabaseThread extends Thread {
 	public String tileTableName = "TileTable";
 	public String turnEventInstanceTableName = "TurnEventInstanceTable";
 	
-	private DBHandle handler;
+	//private DBHandle handler;
 	
 	
 	
@@ -164,17 +166,9 @@ public class DatabaseThread extends Thread {
 	int[] tableTurnEventInstance_fieldEventTurnsLeft;
 	
 	
-	public DatabaseThread(DBHandle h){
-		dt = this;
-		handler = h;
-		
-	}
-	
-	
-	
 	
 	public void run(){
-		//Looper.prepare();
+		dt = this;
 		
 		Log.i("", "Thread start");
 		//isLoad = false;
@@ -182,25 +176,24 @@ public class DatabaseThread extends Thread {
 		if(isGettingGameNames == true){
 			dt.setUpDatabase();
 			dt.populateGameNameListView();
-			Message msg = handler.obtainMessage();
-			msg.what = 1;
-			msg.sendToTarget();
+			//Message msg = handler.obtainMessage();
+			//msg.what = 1;
+			//msg.sendToTarget();
 		}
 		
 		else if(isLoad == true){
 			dt.setUpDatabase();
 			dt.loadGame();
-			Message msg = handler.obtainMessage();
-			msg.what = 2;
-			msg.sendToTarget();
+			//Message msg = handler.obtainMessage();
+			/*msg.what = 2;
+			msg.sendToTarget();*/
+			dt.callDatabaseReceiverBroadcast();
 		}
 		
 		else if(isLoad == false){
 			dt.setUpDatabase();
 			dt.saveGame();
-			Message msg = handler.obtainMessage();
-			msg.what = 3;
-			msg.sendToTarget();
+			Log.i("", "Save Complete");
 		}
 		
 		/*dt.setUpDatabase();
@@ -282,54 +275,62 @@ public class DatabaseThread extends Thread {
 		sqlGame = "REPLACE INTO " + gameTableName + "(GameName,GameType,TurnCount) VALUES ('" +
 					 Game.name + "','" + Game.type + "'," + Game.turn + ");";
 		Log.i("", sqlGame);
+		db.execSQL(sqlGame);
 		
 		//Replace player entities
 		for(int i = 0; i < Player.entities.length; i++){
-			sqlPlayer = "REPLACE INTO " + playerTableName + "(PlayerID,GameName,PlayerNumber,PlayerName,PlayerColor,BluetoothAddress,CurrentLocation,PreviousLocation,NetCash,TradeCount) VALUES (" +
-			 		 playerID + ",'" + Game.name + "'," + Player.entities[i].getPlayerIndex() + ",'" + Player.entities[i].getName() + "','" + Player.COLOR_NAMES[i] + "','" + Device.player[i].device.getAddress() + "','" + Player.entities[i].getPiece().getCurrentTile().id +
-			 		 "','" + Player.entities[i].getPiece().getPreviousTile().id + "'," + (int)Player.entities[i].getBalance() + "," + Player.entities[i].getTradeCount() + ");";
-			db.execSQL(sqlPlayer);
-			Log.i("", sqlPlayer);
-			
-			//Replace player tile ownership data
-			for(int j = 0; j < Player.entities[i].getPlayerTiles().length; j++){
-				Tile[] tiles = Player.entities[i].getPlayerTiles();
-				int electrical = 0;
-				int plumbing = 0;
-				int vending = 0;
-				int hvac = 0;
-				boolean[] upgrades = tiles[j].upgraded;
-				if(upgrades[0] = true){
-					electrical = 1;
-				}
-				if(upgrades[1] = true){
-					plumbing = 1;
-				}
-				if(upgrades[2] = true){
-					vending = 1;
-				}
-				if(upgrades[3] = true){
-					hvac = 1;
+			if(Player.entities[i] != null){
+				sqlPlayer = "REPLACE INTO " + playerTableName + "(PlayerID,GameName,PlayerNumber,PlayerName,PlayerColor,BluetoothAddress,CurrentLocation,PreviousLocation,NetCash,TradeCount) VALUES (" +
+				 		 playerID + ",'" + Game.name + "'," + Player.entities[i].getPlayerIndex() + ",'" + Player.entities[i].getName() + "','" + Player.COLOR_NAMES[i] + "','" + Device.player[i].device.getAddress() + "','" + Player.entities[i].getPiece().getCurrentTile().id +
+				 		 "','" + Player.entities[i].getPiece().getPreviousTile().id + "'," + (int)Player.entities[i].getBalance() + "," + Player.entities[i].getTradeCount() + ");";
+				Log.i("", sqlPlayer);
+				db.execSQL(sqlPlayer);
+				
+				//Replace player tile ownership data
+				for(int j = 0; j < Player.entities[i].getPlayerTiles().length; j++){
+					if(Player.entities[i] != null){
+						Tile[] tiles = Player.entities[i].getPlayerTiles();
+						int electrical = 0;
+						int plumbing = 0;
+						int vending = 0;
+						int hvac = 0;
+						boolean[] upgrades = tiles[j].upgraded;
+						if(upgrades[0] = true){
+							electrical = 1;
+						}
+						if(upgrades[1] = true){
+							plumbing = 1;
+						}
+						if(upgrades[2] = true){
+							vending = 1;
+						}
+						if(upgrades[3] = true){
+							hvac = 1;
+						}
+						
+						sqlTile = "REPLACE INTO " + tileTableName + "(TileID,OwnerID,ElectricalBought,PlumbingBought,VendingBought,HVACBought) VALUES (" +
+						        tiles[j].id  + "," + Player.entities[i].getPlayerIndex() + "," + electrical + "," + plumbing + "," + vending + "," + hvac + ");";
+						Log.i("", sqlTile);
+						db.execSQL(sqlTile);
+					}
+					
 				}
 				
-				// TODO: Possible SQL ERROR: you are trying to fit 6 fields when you only defined 2 (ADD UPGRADES)
-				sqlTile = "REPLACE INTO " + tileTableName + "(TileID,OwnerID) VALUES (" +
-				        tiles[j].id  + "," + Player.entities[i].getPlayerIndex() + "," + electrical + "," + plumbing + "," + vending + "," + hvac + ");";
-				db.execSQL(sqlTile);
-				Log.i("", sqlTile);
+				//Replace player events
+				// TODO: Shifted the turnEvents around to reduce confusion.
+				Event[] turnEvents = Player.entities[i].getPlayerEvents();
+				for(int k = 0; k < turnEvents.length; k++){
+					if(Player.entities[i] != null){
+						sqlTurnEventInstance = "REPLACE INTO " + turnEventInstanceTableName + "(TurnEventInstanceID,PlayerID,EventNumber,EventTurnsLeft) VALUES (" +
+								 turnEventInstanceID + "," + Player.entities[i].getPlayerIndex() + "," + turnEvents[k].eventNumber + "," + (turnEvents[k].expireTurn - Game.turn) + ");";
+						Log.i("", sqlTurnEventInstance);
+						db.execSQL(sqlTurnEventInstance);
+					}
+					
+				}
+				
 			}
-			
-			//Replace player events
-			// TODO: Shifted the turnEvents around to reduce confusion.
-			Event[] turnEvents = Player.entities[i].getPlayerEvents();
-			for(int k = 0; k < turnEvents.length; k++){
-				sqlTurnEventInstance = "REPLACE INTO " + turnEventInstanceTableName + "(TurnEventInstanceID,PlayerID,EventNumber,EventTurnsLeft) VALUES (" +
-						 turnEventInstanceID + "," + Player.entities[i].getPlayerIndex() + "," + turnEvents[k].eventNumber + "," + (turnEvents[k].expireTurn - Game.turn) + ");";
-				Log.i("", sqlTurnEventInstance);
-			}
-			
-			
-			
+						
 		}
 		/*String sqlPlayer = "REPLACE INTO " + playerTableName + "(PlayerID,GameName,PlayerNumber,PlayerName,PlayerColor,BluetoothAddress,CurrentLocation,PreviousLocation,NetCash,TradeCount) VALUES (" +
 				 		 playerID + ",'" + gameName + "'," + playerNumber + ",'" + playerName + "','" + playerColor + "','" + bluetoothAddress + "','" + currentLocation +
@@ -543,17 +544,17 @@ public class DatabaseThread extends Thread {
 		
 		// Set up images
 		// TODO: Hmm, this causes a dangerous redundancy, remind me to create a setup method in the Image class.
-		Image.HEXAGON_TEXTURE = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_blue);
-		Image.HEXAGON_BOTTOM = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_layer_bot);
-		Image.HEXAGON_REGION = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_layer_rgn);
-		Image.HEXAGON_PLAYER = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_layer_plr);
+		Image.HEXAGON_TEXTURE = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.hexagon_blue);
+		Image.HEXAGON_BOTTOM = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.hexagon_layer_bot);
+		Image.HEXAGON_REGION = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.hexagon_layer_rgn);
+		Image.HEXAGON_PLAYER = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.hexagon_layer_plr);
 		
-		Image.DIE[0] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_1);
-		Image.DIE[1] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_2);
-		Image.DIE[2] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_3);
-		Image.DIE[3] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_4);
-		Image.DIE[4] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_5);
-		Image.DIE[5] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_6);
+		Image.DIE[0] = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.die_1);
+		Image.DIE[1] = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.die_2);
+		Image.DIE[2] = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.die_3);
+		Image.DIE[3] = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.die_4);
+		Image.DIE[4] = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.die_5);
+		Image.DIE[5] = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.die_6);
 		
 		// Set up board and events
 		BoardSetup.setupBoard();
@@ -709,7 +710,7 @@ public class DatabaseThread extends Thread {
 	public void populateGameNameListView(){
 		
 		// TODO: Which is there a WHERE filter on this sql statement? don't you want them all?
-		String sqlGame = "SELECT GameName FROM " + gameTableName + " WHERE GameName = " + gameName + ";";
+		String sqlGame = "SELECT GameName FROM " + gameTableName + ";";
 		Log.i("", sqlGame);
 		
 		gameQuery = db.rawQuery(sqlGame, st);
@@ -723,6 +724,12 @@ public class DatabaseThread extends Thread {
 		}
 		
 		SaveGameActivity.listViewContents = tableGame_fieldGameName;
+		Intent myObserverSender = new Intent(
+				"Bentley.action.POPULATELISTVIEW");
+		//broadcastIntent.setAction(DatabaseReceiver.ACTION_RESP);
+		//broadcastIntent.putExtra("Controller", "connect");
+		Log.i("", "Sending broadcast");
+		SaveGameActivity.context.sendBroadcast(myObserverSender);
 		
 	}
 	
@@ -773,11 +780,6 @@ public class DatabaseThread extends Thread {
 		}
 	}
 	
-	//kill Looper
-	public void killLooper(){
-		mMyLooper.quit();
-	}
-	
 	//Handling for starting game module
 	private static class Handle extends Handler {
 		public void handleMessage(Message msg){
@@ -790,6 +792,16 @@ public class DatabaseThread extends Thread {
 				//Toast.makeText(this, "Player Finished Loading", Toast.LENGTH_SHORT).show();
 			//}
 		}
+	}
+	
+	//handlerReplacement = temporary name
+	public void callDatabaseReceiverBroadcast(){
+		Intent myObserverSender = new Intent(
+				"Bentley.action.GOSERVICE");
+		//broadcastIntent.setAction(DatabaseReceiver.ACTION_RESP);
+		//broadcastIntent.putExtra("Controller", "connect");
+		Log.i("", "Sending broadcast");
+		DataLoadingActivity.context.sendBroadcast(myObserverSender);
 	}
 	
 }
