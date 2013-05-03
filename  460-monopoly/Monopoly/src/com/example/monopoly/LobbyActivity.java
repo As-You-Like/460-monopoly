@@ -315,6 +315,15 @@ public class LobbyActivity extends Activity {
 		}
 	}
 	
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
 	public void onBackPressed(){
 		super.onBackPressed();
 		if (HostDevice.self == true){
@@ -404,5 +413,11 @@ public class LobbyActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	} 
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
+	}
 
 }
