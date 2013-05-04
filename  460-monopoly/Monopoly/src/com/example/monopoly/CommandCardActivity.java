@@ -79,7 +79,7 @@ public class CommandCardActivity extends TabActivity {
 				TileActivity.activity.setPurchaseButtonStatus(PlayerDevice.currentPlayer, true);
 				TileActivity.activity.count++;
 				TileActivity.activity.txtNotice.setText("You Own " + TileActivity.activity.count + "/" + TileActivity.activity.totalCount + " Properties in This Region");
-				
+				TileActivity.activity.regionTilesOwned++;
 			}
 		});
 		
