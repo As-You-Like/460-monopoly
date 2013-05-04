@@ -41,7 +41,7 @@ public class Tile extends StaticUnit {
 		color.holo_red_dark,
 		color.holo_orange_dark,
 		Color.GREEN,
-		color.holo_purple,
+		Color.rgb(255, 0, 255),
 		color.holo_green_dark
 	};
 	

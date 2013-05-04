@@ -31,6 +31,7 @@ public class Die extends ScreenUnit {
 	
 	private Die(int count){
 		timer = new Timer();
+		this.radius *= 3;
 		this.setPosition(new Point((this.radius + 5) + 2*this.radius * count, this.radius + 5));
 		
 	}
