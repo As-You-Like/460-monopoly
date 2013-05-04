@@ -189,7 +189,7 @@ public class Player {
 				}
 			}
 		}
-		return true;
+		return result;
 	}
 	
 	public int countCompletedRegions(){
