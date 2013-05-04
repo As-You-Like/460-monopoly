@@ -112,6 +112,13 @@ public class MapActivity extends Activity {
 
 	}
 	
+	public void onDestroy()
+	{
+		super.onDestroy();
+		Log.i("", "DESTROYING MAP ACTIVITY (oh my)");
+
+	}
+	
 	Runnable background = new Runnable() {
 		public void run() {
 			try {
