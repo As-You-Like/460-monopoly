@@ -24,47 +24,47 @@ public class Tile extends StaticUnit {
 	public static final int UPGRADE_HVAC = 3;
 	
 	public static int[] REGION_COLORS = {
-		Color.RED,  
-		Color.CYAN,
-		Color.MAGENTA,
-		Color.YELLOW,
-		Color.BLUE,
-		Color.GRAY,
-		Color.LTGRAY,
-		Color.DKGRAY,
-		Color.BLACK,
-		color.holo_green_light,
-		color.holo_red_light,
-		color.holo_blue_bright,
-		color.holo_orange_light,
-		color.primary_text_dark_nodisable,
-		color.holo_red_dark,
-		color.holo_orange_dark,
-		Color.GREEN,
-		Color.rgb(255, 0, 255),
-		color.holo_green_dark
+		Color.rgb(255, 0, 0),
+		Color.rgb(255, 94, 0),
+		Color.rgb(255, 187, 0),
+		Color.rgb(255, 187, 0),
+		Color.rgb(255, 228, 0),
+		Color.rgb(171, 242, 0),
+		Color.rgb(29, 219, 22),
+		Color.rgb(0, 216, 255),
+		Color.rgb(0, 84, 255),
+		Color.rgb(1, 0, 255),
+		Color.rgb(95, 0, 255),
+		Color.rgb(255, 0, 251),
+		Color.rgb(255, 0, 127),
+		Color.rgb(0, 0, 0),
+		Color.rgb(255, 255, 255),
+		Color.rgb(103, 0, 0),
+		Color.rgb(102, 75, 0),
+		Color.rgb(34, 116, 28),
+		Color.rgb(42, 0, 102),
 	};
 	
 	public static String[] REGION_NAMES = {
 		"THE TREES",      //0
 		"Freshman Dorms", //1
-		"Shuttle",
-		"Student Center",
-		"Eateries",
-		"Special",
-		"Senior Apartments",
-		"Sophomore Suites",
-		"Falcone Apartment",
-		"Upper Campus Classic",
-		"Upper Campus Modern",
-		"Possessions",
-		"Parking Spaces",
-		"Lower Campus Suites",
-		"Athletic Complex",
-		"Dana Center",
-		"Non-Buyable properties",
-		"Pathways",
-		"Lower Campus Apartment"
+		"Shuttle", //2
+		"Student Center", //3
+		"Eateries",//4
+		"Special",//5
+		"Senior Apartments",//6
+		"Sophomore Suites",//7
+		"Falcone Apartment",//8
+		"Upper Campus Classic",//9
+		"Upper Campus Modern",//10
+		"Possessions",//11
+		"Parking Spaces",//12
+		"Lower Campus Suites",//13
+		"Athletic Complex",//14
+		"Dana Center",//15
+		"Non-Buyable properties",//16
+		"Pathways",//17
+		"Lower Campus Apartment"//18
 		
 	};
 	
