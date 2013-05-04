@@ -40,6 +40,7 @@ import com.example.controllers.HostDevice;
 import com.example.controllers.Player;
 import com.example.controllers.SQLHelper;
 import com.example.controllers.TickerObject;
+import com.example.model.Tile;
 import com.example.model.Unit;
 import com.example.monopoly.PanAndZoomListener;
 import com.example.monopoly.PanAndZoomListener.Anchor;
@@ -193,6 +194,7 @@ public class MapActivity extends Activity {
 				Player.entities = null;
 				Game.instance = null;
 				Unit.entity = null;
+				Tile.entity = null;
 				MapActivity.activity.terminate();				
 				return true;
 			}
