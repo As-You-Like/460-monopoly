@@ -26,6 +26,9 @@ public class TileActivity extends Activity {
 	int isOwned; // -1:noboy owns, 0:somebody owns
 	boolean isMine; // true:Owner is self
 	
+	int regionTilesOwned = 0;
+	int regionTilesAmount = 0;
+	
 	ImageView image;
 	TextView txtLandedOn;
 	TextView txtValue;
@@ -39,6 +42,7 @@ public class TileActivity extends Activity {
 	//this is here for property count updating purposes when properties are purchased
 	public int count;
 	public int totalCount;
+	private String region;
 	
 	public static TileActivity activity;
 
@@ -131,6 +135,10 @@ public class TileActivity extends Activity {
 	
 	// TODO update
 	private void upgrade(){
+		if (regionTilesOwned < regionTilesAmount){
+			CommandCardActivity.activity.createAlert("You must acquire the remaining " + (regionTilesAmount - regionTilesOwned) + " in the " + this.region + " region");
+			return;
+		}
 		//display upgrade activity
 		CommandCardActivity.activity.tabBar.setCurrentTab(CommandCardActivity.TAB_UPGRADE);
 		CommandCardActivity.activity.tabBar.getTabWidget().getChildTabViewAt(CommandCardActivity.TAB_UPGRADE).setVisibility(View.VISIBLE); // Upgrade tab hidden away
@@ -153,6 +161,12 @@ public class TileActivity extends Activity {
 		txtRegion.setText("Region : " + region);
 		txtStatus.setText("Status : " + status);
 		txtNotice.setText("You Own " + count + "/" + countTotal + " Properties in This Region");
+		
+		this.region = region;
+		regionTilesOwned = count;
+		regionTilesAmount = countTotal;
+		
+		
 		this.count = count;
 		this.totalCount = countTotal;
 	}

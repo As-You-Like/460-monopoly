@@ -73,7 +73,9 @@ public class FindHostActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int index,long arg3) {
 				//Ask player to type in a username (if we stay with the old design)
-				
+				if (HostDevice.connectionStatus == HostDevice.CONNECTION_CONNECTING){
+					return;
+				}
 				
 				//Attempt to connect the player
 				BluetoothDevice host = FindHostActivity.activity.devices.get(index);

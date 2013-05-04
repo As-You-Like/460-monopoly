@@ -419,7 +419,8 @@ public class CommandCardActivity extends TabActivity {
 		});
 		
 		
-		
+		TabHomeActivity.activity.clearInfo();
+		HostDevice.host.sendMessage(Message.REQUEST_HOME_DATA, "");
 	}
 	
 	private void setTab(){
