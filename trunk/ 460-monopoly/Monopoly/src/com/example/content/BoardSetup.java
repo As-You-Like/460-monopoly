@@ -356,6 +356,7 @@ public class BoardSetup {
 		Road2.setBaseRent(50);
 		Road2.setBaseRegionRent(50);
 		Road2.priceUpgrades(200, 300, 500, 700);
+		Road2.addNextStop(Road1);
 
 		//East
 		
@@ -366,6 +367,8 @@ public class BoardSetup {
 		Road3.setBaseRent(50);
 		Road3.setBaseRegionRent(50);
 		Road3.priceUpgrades(200, 300, 500, 700);
+		Road3.addNextStop(Road2);
+
 		
 		Tile Road4 = Road3.addNextStop(Tile.DIRECTION_EAST);
 		Road4.setName("Road4");
@@ -374,6 +377,8 @@ public class BoardSetup {
 		Road4.setBaseRent(50);
 		Road4.setBaseRegionRent(50);
 		Road4.priceUpgrades(200, 300, 500, 700);
+		Road4.addNextStop(Road3);
+
 
 		Tile Road5 = Road4.addNextStop(Tile.DIRECTION_EAST);
 		Road5.setName("Road5");
@@ -382,6 +387,8 @@ public class BoardSetup {
 		Road5.setBaseRent(50);
 		Road5.setBaseRegionRent(50);
 		Road5.priceUpgrades(200, 300, 500, 700);
+		Road5.addNextStop(Road4);
+
 		
 		Tile Road6 = Road5.addNextStop(Tile.DIRECTION_EAST);
 		Road6.setName("Road6");
@@ -390,6 +397,8 @@ public class BoardSetup {
 		Road6.setBaseRent(50);
 		Road6.setBaseRegionRent(50);
 		Road6.priceUpgrades(200, 300, 500, 700);
+		Road6.addNextStop(Road5);
+
 		
 		Tile Road7 = Road6.addNextStop(Tile.DIRECTION_EAST);
 		Road7.setName("Road7");
@@ -398,6 +407,8 @@ public class BoardSetup {
 		Road7.setBaseRent(50);
 		Road7.setBaseRegionRent(50);
 		Road7.priceUpgrades(200, 300, 500, 700);
+		Road7.addNextStop(Road6);
+
 		
 		Tile Road8 = Road7.addNextStop(Tile.DIRECTION_EAST);
 		Road8.setName("Road8");
@@ -406,6 +417,8 @@ public class BoardSetup {
 		Road8.setBaseRent(50);
 		Road8.setBaseRegionRent(50);
 		Road8.priceUpgrades(200, 300, 500, 700);
+		Road8.addNextStop(Road7);
+
 		
 		//North East
 		
@@ -416,6 +429,8 @@ public class BoardSetup {
 		Road9.setBaseRent(50);
 		Road9.setBaseRegionRent(50);
 		Road9.priceUpgrades(200, 300, 500, 700);
+		Road9.addNextStop(Road8);
+
 		
 		//Lowe_Campus_Greenspase
 	
@@ -426,7 +441,8 @@ public class BoardSetup {
 		Lowe_Campus.setBaseRent(84);
 		Lowe_Campus.setBaseRegionRent(42);
 		Lowe_Campus.priceUpgrades(315, 630, 945, 1260);
-		
+		Lowe_Campus.addNextStop(Road9);
+
 		
 		//Dana Center
 		//East
