@@ -1,6 +1,12 @@
 package com.example.monopoly;
 
+import java.util.ArrayList;
+
 import com.example.bluetooth.Bluetooth;
+import com.example.controllers.Game;
+import com.example.controllers.Player;
+import com.example.model.Tile;
+import com.example.model.Unit;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -18,6 +24,8 @@ public class SplashActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Unit.entity = new ArrayList<Unit>();
+		Tile.entity = new Tile[400][400];
 		this.cascadeQuitBool = false;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
