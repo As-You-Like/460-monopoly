@@ -14,6 +14,7 @@ import com.example.controllers.Player;
 import com.example.controllers.RandomEvent;
 import com.example.controllers.TriggeredEvent;
 import com.example.model.Die;
+import com.example.model.Tile;
 
 public class EventSetup {
 	
@@ -73,7 +74,8 @@ public class EventSetup {
 				Player.entities[Game.currentPlayer].subBalance(amount);
 				
 				//Inform the player of the subtraction
-				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, "You have been robbed of $" + String.format("%.2f", amount) + "");
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, "You have been robbed of $" + String.format("%.2f", amount) + 
+						" by the College Cartel");
 			}
 		});
 		
@@ -143,6 +145,396 @@ public class EventSetup {
 				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, "You have been thrown in jail for not wearing a spring day bracelet");
 			}
 		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 50;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].subBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, "You got a parking ticket and have been fined $50");
+				
+			}
+		});
+		
+		EventGenerator.registerEvent("newTurn", new RandomEvent(){
+			@Override
+			public void action() {
+				// TODO Auto-generated method stub
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT,
+						"You drank too much and got PC'd. Go to jail");
+			}
+		});
+		
+		EventGenerator.registerEvent("newTurn", new RandomEvent(){
+			@Override
+			public void action() {
+				// TODO Auto-generated method stub
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT,
+						"You got caught cheating on an exam. Go to jail");
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 50;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].addBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"You got an A on an exam.  Gain $50");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 200;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].addBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Joined a Bentley organization. Gain $200");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 100;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].addBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Help out on a service project.  Gain $100");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 1000;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].addBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Achieve President's list.  Gain $1000");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT,
+						"You turned yourself in. Go to jail");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT,
+						"Threw nuggets at the Seasons manager. Go to jail");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 50;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].subBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Overdue library book.  Pay $50");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 100;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].subBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Spill soda on your laptop.  Pay $100");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 200;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].subBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Spill beer on your roommate's laptop, pay $200");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 100;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].subBalance(amount);
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Throw TV out the window because it goes out during your" +
+						" favorite team's game.  Go to jail and pay $100");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Throw roommate out window.  Go to jail.");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Throw roommate out window.  Go to jail.");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 50;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].addBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Climb up smith stairs in 2 minutes.  Gain $50");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 20;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].addBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Attend academic advising.  Gain $20");
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 50;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].addBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Declared your major.  Gain $50");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 100;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].subBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Get caught insider trading. Pay $100");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 20;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].subBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Long line at Einstein's, you're late for class.  Pay $20");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Got caught trying to steal the Bentley Falcon.  Go to jail.");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Got caught skinny dipping in the pond.  Go to jail.");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Crash party at the Pres Villa.  Go to jail.");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Throw roommate out window.  Go to jail.");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 50;
+				
+				Player.entities[Game.currentPlayer].subBalance(amount);
+				
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Attack someone with a pool cue at" +
+						" Bentley Pub.  Go to jail and pay $50.");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = 50;
+				
+				Player.entities[Game.currentPlayer].addBalance(amount);
+								
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Pledge a frat, gain $50");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Caught taking 5 pieces of fruit from seasons.  Go to jail.");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				double amount = (Player.entities[Game.currentPlayer].getBalance())*.9;
+						
+				//subtract the generated value from the player who's turn it currently is
+				Player.entities[Game.currentPlayer].subBalance(amount);
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Bank invests your cash in money market mutual funds " +
+						"AAAAAAAAAAAAAAND it's gone.  Lose 90% of cash.");
+				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].getPiece().move(Tile.getClinicTile());
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Got food poisoning at Seasons, go to Health and Wellness.");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].getPiece().move(Tile.getClinicTile());
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Got bit by a goose at the pond, go to Health and Wellness.");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].getPiece().move(Tile.getClinicTile());
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Fell off the treadmill at the gym, go to Health and Wellness.");				
+			}
+		});
+		
 		
 	}
 }
