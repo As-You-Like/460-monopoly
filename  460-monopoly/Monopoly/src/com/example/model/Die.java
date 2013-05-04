@@ -33,12 +33,8 @@ public class Die extends ScreenUnit {
 		timer = new Timer();
 		this.radius *= 3;
 		this.setPosition(new Point((this.radius + 5) + 2*this.radius * count, this.radius + 5));
-		Log.e("DicePosition", ""+this.getPosition().x);
-		Log.e("DicePosition", ""+this.getPosition().y);
 		this.getPosition().x += 7*this.radius;
-		this.getPosition().y += 4*this.radius+1000;
-		Log.e("DicePosition2", ""+this.getPosition().x);
-		Log.e("DicePosition2", ""+this.getPosition().y);
+		this.getPosition().y += 4*this.radius;
 		
 	}
 	
@@ -95,7 +91,10 @@ public class Die extends ScreenUnit {
 		}
 		for (int i=0; i<diceCount; i++){
 			try {
-				dice[i].timer.scheduleAtFixedRate(new TimerTask(){
+				dice[i]
+						.timer
+						.scheduleAtFixedRate(
+								new TimerTask(){
 					@Override
 					public void run() {
 						//cycle through random values
@@ -109,6 +108,8 @@ public class Die extends ScreenUnit {
 					}
 				}, 0, 100);
 			} catch (IllegalStateException e){
+				roll();
+			} catch (Exception e){
 				roll();
 			}
 		}

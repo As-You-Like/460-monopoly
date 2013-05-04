@@ -403,6 +403,7 @@ public class LobbyActivity extends Activity {
 				// TODO
 			}
 		})
+		.setCancelable(false)
 		.show();		
 	}
 		
