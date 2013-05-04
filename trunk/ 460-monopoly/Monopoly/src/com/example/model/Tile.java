@@ -37,7 +37,7 @@ public class Tile extends StaticUnit {
 		Color.rgb(95, 0, 255),//10
 		Color.rgb(255, 0, 251),//11
 		Color.rgb(255, 0, 127),//12
-		Color.rgb(0, 0, 0),//13
+		Color.rgb(201, 255, 195),//13
 		Color.rgb(255, 255, 255),//14
 		Color.rgb(103, 0, 0),//15
 		Color.rgb(102, 75, 0),//16
