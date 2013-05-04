@@ -300,7 +300,7 @@ public class GameThread extends Thread{
 	public void setUpBoard(){
 		for(int i = 0; i < Player.entities.length; i++){
 			if (Player.entities[i] != null){
-				Player.entities[i].setPiece(new PlayerPiece(Tile.entity[3][0], i));
+				Player.entities[i].setPiece(new PlayerPiece(Tile.entity[10][0], i));
 			}
 		}
 	}
