@@ -434,7 +434,7 @@ public class BoardSetup {
 		
 		//Lowe_Campus_Greenspase
 	
-		Tile Lowe_Campus = MadFalcon.addNextStop(Tile.DIRECTION_NORTHEAST);
+		Tile Lowe_Campus = Road9.addNextStop(Tile.DIRECTION_NORTHEAST);
 		Lowe_Campus.setName("Lowe_Campus_Greenspase");
 		Lowe_Campus.setPrice(420);
 		Lowe_Campus.setRegion(Tile.REGION_NON_BUYABLE);
@@ -508,7 +508,7 @@ public class BoardSetup {
         
         //North West
         
-        Tile Facilities_Management = Athletic2.addNextStop(Tile.DIRECTION_SOUTHWEST);
+        Tile Facilities_Management = Athletic2.addNextStop(Tile.DIRECTION_NORTHWEST);
         Facilities_Management.setName("Facilities_Management");
         Facilities_Management.setRegion(Tile.REGION_SPECIAL);
         Facilities_Management.setPrice(300);
@@ -519,7 +519,7 @@ public class BoardSetup {
         // parking space right side
         //North East
         
-        Tile Parking1 = Athletic2.addNextStop(Tile.DIRECTION_NORTHEAST);
+        Tile Parking1 = Facilities_Management.addNextStop(Tile.DIRECTION_NORTHEAST);
         Parking1.setName("Parking1");
         Parking1.setRegion(Tile.REGION_PARKING_SPACES);
         Parking1.setPrice(300);
@@ -527,9 +527,9 @@ public class BoardSetup {
         Parking1.setBaseRegionRent(30);
         Parking1.priceUpgrades(200, 300, 400, 500);
         
-        //South West
+        //North West
         
-        Tile Parking2 = Parking1.addNextStop(Tile.DIRECTION_SOUTHWEST);
+        Tile Parking2 = Parking1.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking2.setName("Parking2");
         Parking2.setRegion(Tile.REGION_PARKING_SPACES);
         Parking2.setPrice(300);
@@ -537,7 +537,7 @@ public class BoardSetup {
         Parking2.setBaseRegionRent(30);
         Parking2.priceUpgrades(200, 300, 400, 500);
         
-        Tile Parking3 = Athletic2.addNextStop(Tile.DIRECTION_SOUTHWEST);
+        Tile Parking3 = Parking2.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking3.setName("Parking3");
         Parking3.setRegion(Tile.REGION_PARKING_SPACES);
         Parking3.setPrice(300);
@@ -545,7 +545,7 @@ public class BoardSetup {
         Parking3.setBaseRegionRent(30);
         Parking3.priceUpgrades(200, 300, 400, 500);
         
-        Tile Parking4 = Parking3.addNextStop(Tile.DIRECTION_SOUTHWEST);
+        Tile Parking4 = Parking3.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking4.setName("Parking4");
         Parking4.setRegion(Tile.REGION_PARKING_SPACES);
         Parking4.setPrice(300);
@@ -553,7 +553,7 @@ public class BoardSetup {
         Parking4.setBaseRegionRent(30);
         Parking4.priceUpgrades(200, 300, 400, 500);
         
-        Tile Parking5 = Parking4.addNextStop(Tile.DIRECTION_SOUTHEAST);
+        Tile Parking5 = Parking4.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking5.setName("Parking5");
         Parking5.setRegion(Tile.REGION_PARKING_SPACES);
         Parking5.setPrice(300);
@@ -563,7 +563,7 @@ public class BoardSetup {
         
         // parking space left side
         
-        Tile Parking6 = Parking4.addNextStop(Tile.DIRECTION_WEST);
+        Tile Parking6 = Facilities_Management.addNextStop(Tile.DIRECTION_WEST);
         Parking6.setName("Parking6");
         Parking6.setRegion(Tile.REGION_PARKING_SPACES);
         Parking6.setPrice(300);
@@ -573,7 +573,7 @@ public class BoardSetup {
         
         //North West
         
-        Tile Parking7 = Parking6.addNextStop(Tile.DIRECTION_SOUTHWEST);
+        Tile Parking7 = Parking6.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking7.setName("Parking7");
         Parking7.setRegion(Tile.REGION_PARKING_SPACES);
         Parking7.setPrice(300);
@@ -581,7 +581,7 @@ public class BoardSetup {
         Parking7.setBaseRegionRent(30);
         Parking7.priceUpgrades(200, 300, 400, 500);
         
-        Tile Parking8 = Parking7.addNextStop(Tile.DIRECTION_SOUTHEAST);
+        Tile Parking8 = Parking7.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking8.setName("Parking8");
         Parking8.setRegion(Tile.REGION_PARKING_SPACES);
         Parking8.setPrice(300);
@@ -589,7 +589,7 @@ public class BoardSetup {
         Parking8.setBaseRegionRent(30);
         Parking8.priceUpgrades(200, 300, 400, 500);
         
-        Tile Parking9 = Parking8.addNextStop(Tile.DIRECTION_SOUTHEAST);
+        Tile Parking9 = Parking8.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking9.setName("Parking9");
         Parking9.setRegion(Tile.REGION_PARKING_SPACES);
         Parking9.setPrice(300);
@@ -597,7 +597,7 @@ public class BoardSetup {
         Parking9.setBaseRegionRent(30);
         Parking9.priceUpgrades(200, 300, 400, 500);
         
-        Tile Parking10 = Parking9.addNextStop(Tile.DIRECTION_SOUTHEAST);
+        Tile Parking10 = Parking9.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking10.setName("Parking10");
         Parking10.setRegion(Tile.REGION_PARKING_SPACES);
         Parking10.setPrice(300);
@@ -608,7 +608,7 @@ public class BoardSetup {
         // Athletic
         //North East
         
-        Tile Athletic3 = Parking10.addNextStop(Tile.DIRECTION_NORTHEAST);
+        Tile Athletic3 = Parking5.addNextStop(Tile.DIRECTION_WEST);
         Athletic3.setName("Athletic3");
         Athletic3.setRegion(Tile.REGION_ATHLETIC_COMPLEX);
         Athletic3.setPrice(250);
@@ -702,7 +702,7 @@ public class BoardSetup {
         Road11.addNextStop(Road10);
         
         
-        Tile Callahan = Greenspace.addNextStop(Tile.DIRECTION_WEST);
+        Tile Callahan = Road11.addNextStop(Tile.DIRECTION_WEST);
         Callahan.setName("Callahan Police Station");
         Callahan.setRegion(Tile.REGION_SPECIAL);
         Callahan.setPrice(300);
