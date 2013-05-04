@@ -143,6 +143,8 @@ public class BoardSetup {
 		Health.setBaseRegionRent(30);
 		Health.priceUpgrades(225, 450, 675, 900);
 		
+		Tile.setClinicTile(Health);
+		
 		                            //green space...............
 		
 		Tile Greenspace = Health.addNextStop(Tile.DIRECTION_SOUTHEAST);

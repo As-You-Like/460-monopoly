@@ -98,6 +98,7 @@ public class Tile extends StaticUnit {
 	public int id;
 	public static int totalTileCount = 0;
 	private static Tile jailTile = null;
+	private static Tile clinicTile;
 	
 	private double width;
 	private double side;
@@ -449,6 +450,14 @@ public class Tile extends StaticUnit {
 
 	public void setBaseRegionRent(double baseRegionRent) {
 		this.baseRegionRent = baseRegionRent;
+	}
+	
+	public static void setClinicTile(Tile tile){
+		Tile.clinicTile = tile;
+	}
+	
+	public static Tile getClinicTile(){
+		return Tile.clinicTile;
 	}
 
 }
