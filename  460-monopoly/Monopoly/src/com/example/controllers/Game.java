@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.model.*;
 import com.example.monopoly.MapActivity; 
+import com.example.monopoly.SplashActivity;
 
 public class Game extends TimerTask{
 	public static Game instance;
@@ -67,6 +68,7 @@ public class Game extends TimerTask{
 	@Override
 	public void run() {
 		if (MapActivity.activity == null) return;
+		if (SplashActivity.activity == null) {this.cancel(); return;}
 		
 		ms += 20;
 		Unit[] tmp;

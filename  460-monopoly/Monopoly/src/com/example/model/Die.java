@@ -33,8 +33,12 @@ public class Die extends ScreenUnit {
 		timer = new Timer();
 		this.radius *= 3;
 		this.setPosition(new Point((this.radius + 5) + 2*this.radius * count, this.radius + 5));
+		Log.e("DicePosition", ""+this.getPosition().x);
+		Log.e("DicePosition", ""+this.getPosition().y);
 		this.getPosition().x += 7*this.radius;
-		this.getPosition().y += 4*this.radius;
+		this.getPosition().y += 4*this.radius+1000;
+		Log.e("DicePosition2", ""+this.getPosition().x);
+		Log.e("DicePosition2", ""+this.getPosition().y);
 		
 	}
 	
