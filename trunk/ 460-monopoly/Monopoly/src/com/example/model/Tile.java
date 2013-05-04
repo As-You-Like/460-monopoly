@@ -24,25 +24,25 @@ public class Tile extends StaticUnit {
 	public static final int UPGRADE_HVAC = 3;
 	
 	public static int[] REGION_COLORS = {
-		Color.rgb(255, 0, 0),
-		Color.rgb(255, 94, 0),
-		Color.rgb(255, 187, 0),
-		Color.rgb(255, 187, 0),
-		Color.rgb(255, 228, 0),
-		Color.rgb(171, 242, 0),
-		Color.rgb(29, 219, 22),
-		Color.rgb(0, 216, 255),
-		Color.rgb(0, 84, 255),
-		Color.rgb(1, 0, 255),
-		Color.rgb(95, 0, 255),
-		Color.rgb(255, 0, 251),
-		Color.rgb(255, 0, 127),
-		Color.rgb(0, 0, 0),
-		Color.rgb(255, 255, 255),
-		Color.rgb(103, 0, 0),
-		Color.rgb(102, 75, 0),
-		Color.rgb(34, 116, 28),
-		Color.rgb(42, 0, 102),
+		Color.rgb(255, 0, 0),//0
+		Color.rgb(255, 94, 0),//1
+		Color.rgb(255, 187, 0),//2
+		Color.rgb(255, 187, 0),//3
+		Color.rgb(255, 228, 0),//4
+		Color.rgb(171, 242, 0),//5
+		Color.rgb(29, 219, 22),//6
+		Color.rgb(0, 216, 255),//7
+		Color.rgb(0, 84, 255),//8
+		Color.rgb(1, 0, 255),//9
+		Color.rgb(95, 0, 255),//10
+		Color.rgb(255, 0, 251),//11
+		Color.rgb(255, 0, 127),//12
+		Color.rgb(0, 0, 0),//13
+		Color.rgb(255, 255, 255),//14
+		Color.rgb(103, 0, 0),//15
+		Color.rgb(102, 75, 0),//16
+		Color.rgb(34, 116, 28),//17
+		Color.rgb(42, 0, 102),//18
 	};
 	
 	public static String[] REGION_NAMES = {
