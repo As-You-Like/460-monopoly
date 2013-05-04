@@ -90,18 +90,115 @@ public class MapActivity extends Activity {
 		BoardSetup.setupBoard();*/
 		GameThread.gt.start();
 		
-		/*
-		TickerObject.entity.add(new TickerObject("A",3));
-		TickerObject.entity.add(new TickerObject("B",7));
-		TickerObject.entity.add(new TickerObject("C",4));
-		TickerObject.entity.add(new TickerObject("D",1));
-		TickerObject.entity.add(new TickerObject("E",6));
 		
+		TickerObject.entity.add(new TickerObject("A fine elm hall girl was found " +
+				"projectile vomiting all over the bathroom walls",3));
+		TickerObject.entity.add(new TickerObject("Bentley center for business " +
+				"ethics reports receiving large donation from Charles Taylor",7));
+		TickerObject.entity.add(new TickerObject("Reports of glass bottles " +
+				"being thrown from the 4th floor of The Trees",4));
+		TickerObject.entity.add(new TickerObject("Alarm clock reported to have" +
+				" been going off all morning in Trees",1));
+		TickerObject.entity.add(new TickerObject("AZP Fraternity has been " +
+				"kicked off campus for poor behavior.",6));
+		TickerObject.entity.add(new TickerObject("Bentley English professor " +
+				"embarasses himself at spelling be",5));
+		TickerObject.entity.add(new TickerObject("All incoming freshmen will " +
+				"be required to take GB320, says Academic coordinators",5));
+		TickerObject.entity.add(new TickerObject("Super fast wi-fi to open" +
+				" new doors for business consumers",5));
+		TickerObject.entity.add(new TickerObject("Falcon Awards honors community " +
+				"achievements",5));
+		TickerObject.entity.add(new TickerObject("Everyone's a winner: No " +
+				"competition for student leader positions",5));
+		TickerObject.entity.add(new TickerObject("Bentley men's hockey obtains " +
+				"new home arena at Babson College",5));
+		TickerObject.entity.add(new TickerObject("The CLIC lab has begun offering " +
+				"English classes",5));
+		TickerObject.entity.add(new TickerObject("\"Bonjour\" from the " +
+				"CLIC lab",5));
+		TickerObject.entity.add(new TickerObject("Sodexo begins drone delivery " +
+				"service from Currito",5));
+		TickerObject.entity.add(new TickerObject("Bentley student reported stabbed " +
+				"by a \"woman of the night\"",5));
+		TickerObject.entity.add(new TickerObject("The CIS sandbox will now offer " +
+				"tutoring in sandcastle architecture",5));
+		TickerObject.entity.add(new TickerObject("$165 million Powerball Tonight",5));
+		TickerObject.entity.add(new TickerObject("Bentley begins offering major " +
+				"in Art History",5));
+		TickerObject.entity.add(new TickerObject("Students siege campus in " +
+				"snowball war",5));
+		TickerObject.entity.add(new TickerObject("Large paint party thrown on " +
+				"GreenSpace, now known as RainbowSpace",5));
+		TickerObject.entity.add(new TickerObject("Andy Fastow reportedly is " +
+				"the new head of the Ethics Department",5));
+		TickerObject.entity.add(new TickerObject("Bentley gains fire department " +
+				"to deal with the recent firework problem at Collins",5));
+		TickerObject.entity.add(new TickerObject("Bentley set to audit Babson " +
+				"College",5));
+		TickerObject.entity.add(new TickerObject("Marketing department to " +
+				"build bridge from North Campus to Dana Center",5));
+		TickerObject.entity.add(new TickerObject("All books eliminated by bonfire " +
+				"from Bentley Library.  Put on one shareable disc",5));
+		TickerObject.entity.add(new TickerObject("Ilya Bryzgalov hired as new " +
+				"astronomy professor",5));
+		TickerObject.entity.add(new TickerObject("White walkers reportedly seen " +
+				"on Bentley campus",5));
+		TickerObject.entity.add(new TickerObject("Winter is coming",5));
+		TickerObject.entity.add(new TickerObject("Spring is here, attendance" +
+				" drops",5));
+		TickerObject.entity.add(new TickerObject("North Campus announces its " +
+				"secession from the Resident Hall Association",5));
+		TickerObject.entity.add(new TickerObject("Bentley announces Water Park " +
+				"plans on RainbowSpace",5));
+		TickerObject.entity.add(new TickerObject("Bentley loop arrives 24 hours " +
+				"late, campus in outrage",5));
+		TickerObject.entity.add(new TickerObject("Harvard shuttle arrives on " +
+				"schedule, Today Only, July 5th",5));
+		TickerObject.entity.add(new TickerObject("Joffrey Baratheon elected " +
+				"as Class of 2015 President",5));
+		TickerObject.entity.add(new TickerObject("Bentley to add a Los Pollos" +
+				" Hermanos restaurant on campus",5));
+		TickerObject.entity.add(new TickerObject("ISIS Agents arrive on Bentley " +
+				"campus to investigate toilet paper theft",5));
+		TickerObject.entity.add(new TickerObject("Microsoft unexpectedly forces " +
+				"update of all computers-immediately",5));
+		TickerObject.entity.add(new TickerObject("Google found on campus " +
+				"recruiting Accounting majors.  CIS majors distraught",5));
+		TickerObject.entity.add(new TickerObject("Bacteria found growing in " +
+				"Trees-students forced to move",5));
+		TickerObject.entity.add(new TickerObject("Bentley to air commercials " +
+				"during Super Bowl-on the Food Network",5));
+		TickerObject.entity.add(new TickerObject("Alligators found in pond," +
+				" swimmers beware!",5));
+		TickerObject.entity.add(new TickerObject("Bentley announces new high " +
+				"class hair salon, located in Smith",5));
+		TickerObject.entity.add(new TickerObject("Registrar announces MK 402: " +
+				"Rebuilding the Bentley Brand",5));
+		TickerObject.entity.add(new TickerObject("Campus police investigating " +
+				"a wide-scale computer mouse theft",5));
+		TickerObject.entity.add(new TickerObject("Bentley Police investigating " +
+				"license plate theft-Out of staters beware",5));
+		TickerObject.entity.add(new TickerObject("Tires being stolen from cars in" +
+				" all parking areas",5));
+		TickerObject.entity.add(new TickerObject("Tyga: Spring Day no show",5));
+		TickerObject.entity.add(new TickerObject("Help desk announces campus-wide " +
+				"reimaging on Reading Day",5));
+		TickerObject.entity.add(new TickerObject("Campus-wide lockdown: Campus police " +
+				"dogs going wild",5));
+		TickerObject.entity.add(new TickerObject("Bentley Police to use Segways, " +
+				"stairs an issue",5));
+		TickerObject.entity.add(new TickerObject("Campus board decides on spending " +
+				"$10,000 on new escalator system on Smith stairs",5));
+		TickerObject.entity.add(new TickerObject("Monsoon coming in- Graduation " +
+				"postponed",5));
+		TickerObject.entity.add(new TickerObject("Spiritual life center announces " +
+				"hiring of new Scientology Chaplain",5));
 		
 		Thread t = new Thread(background);
 		t.start();
 		
-		*/
+		
 		
 	}
 	
@@ -132,7 +229,7 @@ public class MapActivity extends Activity {
 					{
 						i=-1;
 					}
-					Thread.sleep(2000);
+					Thread.sleep(3000);
 					
 				}
 			} catch (InterruptedException e) {
