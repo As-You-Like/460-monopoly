@@ -177,12 +177,13 @@ public class Player {
 	}
 	
 	public boolean isRegionComplete(int region){
+		boolean result = false;
 		for (int a=0; a<Unit.entity.size(); a++){
 			Unit u = Unit.entity.get(a);
 			if (u instanceof Tile){
 				Tile t = (Tile)u;
 				if (t.getRegion() == region && this.isTileOwnedByPlayer(t)){
-					
+					result = true;
 				} else if(t.getRegion() == region){
 					return false;
 				}
