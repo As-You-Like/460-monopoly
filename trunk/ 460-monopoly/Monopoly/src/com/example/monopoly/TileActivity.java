@@ -26,8 +26,8 @@ public class TileActivity extends Activity {
 	int isOwned; // -1:noboy owns, 0:somebody owns
 	boolean isMine; // true:Owner is self
 	
-	int regionTilesOwned = 0;
-	int regionTilesAmount = 0;
+	public int regionTilesOwned = 0;
+	public int regionTilesAmount = 0;
 	
 	ImageView image;
 	TextView txtLandedOn;
