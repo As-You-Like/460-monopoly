@@ -52,7 +52,7 @@ public class TabPropertiesActivity extends Activity {
 		
 		HostDevice.host.sendMessage(Message.REQUEST_PROPERTIES_DATA, "");
 		
-		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+		/*Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
 
 			@Override
 			public boolean typeValid(int type) {
@@ -88,7 +88,7 @@ public class TabPropertiesActivity extends Activity {
 				
 			}
 			
-		});
+		});*/
 		
 		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
 
@@ -166,6 +166,10 @@ public class TabPropertiesActivity extends Activity {
 			mChildList.add(mChildListContent);
 		}
 	}
+	
+	//private void setChildList(){
+		
+	//}
 	
 	// mGroudList add Item
 	public void addItem(TileProperty item) {

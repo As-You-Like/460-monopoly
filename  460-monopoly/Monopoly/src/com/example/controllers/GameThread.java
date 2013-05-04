@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -180,6 +181,36 @@ public class GameThread extends Thread{
 
 			@Override
 			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.REQUEST_PROPERTIES_DATA;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				Tile[] properties = Player.entities[sender].getPlayerTiles();
+				JSONArray json = new JSONArray();
+				for (Tile t : properties){
+					JSONObject tile = new JSONObject();
+					try {
+						tile.put("id", t.id);
+						tile.put("name", t.getName());
+						tile.put("region", Tile.REGION_NAMES[t.getRegion()]);
+						json.put(tile.toString());
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				Device.player[sender].sendMessage(Message.REQUEST_PROPERTIES_DATA_ACCEPT, json.toString());
+			}
+			
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
 				return type == Message.TILE_ACTIVITY_UPGRADE_PROPERTY;
 			}
 
@@ -254,10 +285,11 @@ public class GameThread extends Thread{
 				//Figure out who's turn it is
 				Game.instance.determineCurrentTurnPlayer();
 				
-				/*
+				
 				//Weekly Stipends and other start of turn events
 				EventGenerator.executeTriggeredEvents("newTurn");
-				*/
+				EventGenerator.chooseAndExecuteRandomEvent("newTurn", 0.1);
+				
 				
 					//Override Home Tab
 					this.startSubTurn();

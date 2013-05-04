@@ -277,6 +277,7 @@ public class LobbyActivity extends Activity {
 			LayoutInflater inflater = this.getLayoutInflater();
 			alertBuilder = new AlertDialog.Builder(this);
 			View dialogView = inflater.inflate(R.layout.dialoglayout, null);
+			alertBuilder.setCancelable(false);
 			alertBuilder.setView(dialogView);
 			final EditText userInput = (EditText)dialogView.findViewById(R.id.playerName);
 			alertBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -403,7 +404,6 @@ public class LobbyActivity extends Activity {
 				// TODO
 			}
 		})
-		.setCancelable(false)
 		.show();		
 	}
 		
