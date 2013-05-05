@@ -423,7 +423,7 @@ public class GameThread extends Thread{
 							//currentPlayerPiece.move(newTileLocation);
 							
 							for(int i = 0; i < forksAL.size(); i++){
-								if(forksAL.get(i).equals(Player.entities[Game.currentPlayer].getPiece().getPreviousTile())){
+								if(forksAL.get(i).id == (Player.entities[Game.currentPlayer].getPiece().getPreviousTile().id)){
 									forksAL.remove(i);
 								}
 							}
