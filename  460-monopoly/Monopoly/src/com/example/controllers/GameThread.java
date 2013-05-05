@@ -439,6 +439,10 @@ public class GameThread extends Thread{
 								this.sleepGameThread();
 								// DecisionActivity awakens GameThread
 							}
+							else{
+								newTileLocation = tileLocation.getNextStop();
+								currentPlayerPiece.move(newTileLocation);
+							}
 		
 						}
 						else {
