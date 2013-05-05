@@ -84,7 +84,7 @@ public class BoardSetup {
 		Slade.priceUpgrades(37.5, 75, 112.5, 150);
 		
 		Tile Shuttle = Slade.addNextStop(Tile.DIRECTION_SOUTHEAST);
-		Shuttle.setName("Tree Dorm Shuttle Stop ");
+		Shuttle.setName("Tree Dorm Shuttle Stop");
 		Shuttle.setRegion(Tile.REGION_SHUTTLE);
 		Shuttle.setPrice(250);
 		Shuttle.setBaseRent(50);
@@ -110,7 +110,7 @@ public class BoardSetup {
 		// South West
 		
 		Tile BackBay = Seasons.addNextStop(Tile.DIRECTION_SOUTHWEST);
-		BackBay.setName("BackBay");
+		BackBay.setName("Back Bay");
 		BackBay.setRegion(Tile.REGION_STUDENT_CENTER);
 		BackBay.setPrice(200);
 		BackBay.setBaseRent(40);
@@ -160,7 +160,7 @@ public class BoardSetup {
 		//South West
 		
 		Tile Boyston = Greenspace.addNextStop(Tile.DIRECTION_SOUTHWEST);
-		Boyston.setName("Boylston Apartment");
+		Boyston.setName("Boylston Apartments");
 		Boyston.setPrice(300);
 		Boyston.setRegion(Tile.REGION_SENIAL_ART);
 		Boyston.setBaseRent(60);
@@ -194,7 +194,7 @@ public class BoardSetup {
 		Collins.priceUpgrades(225, 450, 675, 900);
 		
 		Tile Road1 = Collins.addNextStop(Tile.DIRECTION_SOUTHWEST);
-		Road1.setName("Road1");
+		Road1.setName("Forest Street Bridge - Kresge Pathway");
 		Road1.setRegion(Tile.REGION_PATHWAYS);
 		Road1.setPrice(50);
 		Road1.setBaseRent(50);
@@ -223,7 +223,7 @@ public class BoardSetup {
 		//North West
 		
 		Tile Falcone_west = Forest.addNextStop(Tile.DIRECTION_NORTHWEST);
-		Falcone_west.setName("Falcone_west ");
+		Falcone_west.setName("Falcone West");
 		Falcone_west.setRegion(Tile.REGION_FALCONE_ART);
 		Falcone_west.setPrice(350);
 		Falcone_west.setBaseRent(70);
@@ -231,7 +231,7 @@ public class BoardSetup {
 		Falcone_west.priceUpgrades(262.5, 525, 787.5, 1050);
 		
 		Tile Falcone_East = Falcone_west.addNextStop(Tile.DIRECTION_NORTHWEST);
-		Falcone_East.setName("Falcone_East ");
+		Falcone_East.setName("Falcone East");
 		Falcone_East.setRegion(Tile.REGION_FALCONE_ART);
 		Falcone_East.setPrice(350);
 		Falcone_East.setBaseRent(70);
@@ -239,7 +239,7 @@ public class BoardSetup {
 		Falcone_East.priceUpgrades(262.5, 525, 787.5, 1050);
 		
 		Tile Falcone_North = Falcone_East.addNextStop(Tile.DIRECTION_NORTHWEST);
-		Falcone_North.setName("Falcone_North ");
+		Falcone_North.setName("Falcone North");
 		Falcone_North.setRegion(Tile.REGION_FALCONE_ART);
 		Falcone_North.setPrice(350);
 		Falcone_North.setBaseRent(70);
@@ -248,7 +248,7 @@ public class BoardSetup {
 		
 		
 		Tile Rauch = Falcone_North.addNextStop(Tile.DIRECTION_NORTHWEST);
-		Rauch.setName("Rauch Adminstrative Center");
+		Rauch.setName("Rauch Administrative Center");
 		Rauch.setRegion(Tile.REGION_UPPER_CAMPUS_CLASSIC);
 		Rauch.setPrice(400);
 		Rauch.setBaseRent(80);
@@ -264,7 +264,7 @@ public class BoardSetup {
 		LaCava.priceUpgrades(300, 600, 900, 1200);
 		
 		Tile LaCava_Shuttle = LaCava.addNextStop(Tile.DIRECTION_NORTHWEST);
-		LaCava_Shuttle.setName("LaCava_Shuttle Stop");
+		LaCava_Shuttle.setName("LaCava Shuttle Stop");
 		LaCava_Shuttle.setRegion(Tile.REGION_SHUTTLE);
 		LaCava_Shuttle.setPrice(250);
 		LaCava_Shuttle.setBaseRent(50);
@@ -272,7 +272,7 @@ public class BoardSetup {
 		LaCava_Shuttle.priceUpgrades(187.5, 375, 562.5, 750);
 		
 		Tile Jenision = LaCava_Shuttle.addNextStop(Tile.DIRECTION_NORTHWEST);
-		Jenision.setName("Jenision Hall");
+		Jenision.setName("Jennison Hall");
 		Jenision.setRegion(Tile.REGION_UPPER_CAMPUS_CLASSIC);
 		Jenision.setPrice(400);
 		Jenision.setBaseRent(80);
@@ -353,7 +353,7 @@ public class BoardSetup {
 		//main root end
         //South East
 		Tile Road2 = Road1.addNextStop(Tile.DIRECTION_SOUTHEAST);
-		Road2.setName("Road2");
+		Road2.setName("Forest Street Bridge - Mid-Kresge Pathway");
 		Road2.setRegion(Tile.REGION_PATHWAYS);
 		Road2.setPrice(50);
 		Road2.setBaseRent(50);
@@ -365,7 +365,7 @@ public class BoardSetup {
 		//East
 		
 		Tile Road3 = Road2.addNextStop(Tile.DIRECTION_EAST);
-		Road3.setName("Road3");
+		Road3.setName("Forest Street Bridge - Kresge-Side Stairs");
 		Road3.setRegion(Tile.REGION_PATHWAYS);
 		Road3.setPrice(50);
 		Road3.setBaseRent(50);
@@ -376,7 +376,7 @@ public class BoardSetup {
 
 		
 		Tile Road4 = Road3.addNextStop(Tile.DIRECTION_EAST);
-		Road4.setName("Road4");
+		Road4.setName("Forest Street Bridge - Kresge-Side Bridge Section");
 		Road4.setRegion(Tile.REGION_PATHWAYS);
 		Road4.setPrice(50);
 		Road4.setBaseRent(50);
@@ -386,7 +386,7 @@ public class BoardSetup {
 		Road4.setOwner(Tile.OWNER_UNOWNABLE);
 
 		Tile Road5 = Road4.addNextStop(Tile.DIRECTION_EAST);
-		Road5.setName("Road5");
+		Road5.setName("Forest Street Bridge - Middle Bridge Section");
 		Road5.setRegion(Tile.REGION_PATHWAYS);
 		Road5.setPrice(50);
 		Road5.setBaseRent(50);
@@ -396,7 +396,7 @@ public class BoardSetup {
 		Road5.setOwner(Tile.OWNER_UNOWNABLE);
 
 		Tile Road6 = Road5.addNextStop(Tile.DIRECTION_EAST);
-		Road6.setName("Road6");
+		Road6.setName("Forest Street Bridge - Lower Campus-Side Bridge Section");
 		Road6.setRegion(Tile.REGION_PATHWAYS);
 		Road6.setPrice(50);
 		Road6.setBaseRent(50);
@@ -407,7 +407,7 @@ public class BoardSetup {
 
 		
 		Tile Road7 = Road6.addNextStop(Tile.DIRECTION_EAST);
-		Road7.setName("Road7");
+		Road7.setName("Forest Street Bridge - Lower Campus-Side Stairs");
 		Road7.setRegion(Tile.REGION_PATHWAYS);
 		Road7.setPrice(50);
 		Road7.setBaseRent(50);
@@ -418,7 +418,7 @@ public class BoardSetup {
 
 		
 		Tile Road8 = Road7.addNextStop(Tile.DIRECTION_EAST);
-		Road8.setName("Road8");
+		Road8.setName("Forest Street Bridge - Mid-Lower Campus Pathway");
 		Road8.setRegion(Tile.REGION_PATHWAYS);
 		Road8.setPrice(50);
 		Road8.setBaseRent(50);
@@ -431,7 +431,7 @@ public class BoardSetup {
 		//North East
 		
 		Tile Road9 = Road8.addNextStop(Tile.DIRECTION_NORTHEAST);
-		Road9.setName("Road9");
+		Road9.setName("Forest Street Bridge - Lower Campus Pathway");
 		Road9.setRegion(Tile.REGION_PATHWAYS);
 		Road9.setPrice(50);
 		Road9.setBaseRent(50);
@@ -451,13 +451,14 @@ public class BoardSetup {
 		Lowe_Campus.setBaseRegionRent(42);
 		Lowe_Campus.priceUpgrades(315, 630, 945, 1260);
 		Lowe_Campus.addNextStop(Road9);
+		Lowe_Campus.setOwner(Tile.OWNER_UNOWNABLE);
 
 		
 		//Dana Center
 		//East
 		
 		Tile Swimming = Lowe_Campus.addNextStop(Tile.DIRECTION_EAST);
-		Swimming.setName("Swimming pool");
+		Swimming.setName("Swimming Pool");
 		Swimming.setPrice(300);
 		Swimming.setRegion(Tile.REGION_DANA_CENTER);
 		Swimming.setBaseRent(60);
@@ -465,7 +466,7 @@ public class BoardSetup {
 		Swimming.priceUpgrades(225, 450, 675, 900);
 		
 		Tile Fitness = Swimming.addNextStop(Tile.DIRECTION_EAST);
-		Fitness.setName("Fitness center");
+		Fitness.setName("Fitness Center");
 		Fitness.setPrice(300);
 		Fitness.setRegion(Tile.REGION_DANA_CENTER);
 		Fitness.setBaseRent(60);
@@ -490,7 +491,7 @@ public class BoardSetup {
         Burrito.priceUpgrades(187.5, 375, 562.5, 750);
         
         Tile Dana_Shuttle = Burrito.addNextStop(Tile.DIRECTION_EAST);
-        Dana_Shuttle.setName("Dana Center Shuttle Stop ");
+        Dana_Shuttle.setName("Dana Center Shuttle Stop");
         Dana_Shuttle.setRegion(Tile.REGION_SHUTTLE);
         Dana_Shuttle.setPrice(250);
         Dana_Shuttle.setBaseRent(50);
@@ -518,8 +519,8 @@ public class BoardSetup {
         //North West
         
         Tile Facilities_Management = Athletic2.addNextStop(Tile.DIRECTION_NORTHWEST);
-        Facilities_Management.setName("Facilities_Management");
-        Facilities_Management.setRegion(Tile.REGION_SPECIAL);
+        Facilities_Management.setName("Facilities Management");
+        Facilities_Management.setRegion(Tile.REGION_FACILITIES_MANAGEMENT);
         Facilities_Management.setPrice(300);
         Facilities_Management.setBaseRent(60);
         Facilities_Management.setBaseRegionRent(30);
@@ -529,7 +530,7 @@ public class BoardSetup {
         //North East
         
         Tile Parking1 = Facilities_Management.addNextStop(Tile.DIRECTION_NORTHEAST);
-        Parking1.setName("Parking1");
+        Parking1.setName("Parking Garage Level 1 - Section A");
         Parking1.setRegion(Tile.REGION_PARKING_SPACES);
         Parking1.setPrice(300);
         Parking1.setBaseRent(60);
@@ -540,7 +541,7 @@ public class BoardSetup {
         //North West
         
         Tile Parking2 = Parking1.addNextStop(Tile.DIRECTION_NORTHWEST);
-        Parking2.setName("Parking2");
+        Parking2.setName("Parking Garage Level 1 - Section B");
         Parking2.setRegion(Tile.REGION_PARKING_SPACES);
         Parking2.setPrice(300);
         Parking2.setBaseRent(60);
@@ -549,7 +550,7 @@ public class BoardSetup {
         Parking2.setOwner(Tile.OWNER_UNOWNABLE);
         
         Tile Parking3 = Parking2.addNextStop(Tile.DIRECTION_NORTHWEST);
-        Parking3.setName("Parking3");
+        Parking3.setName("Parking Garage Level 1 - Section C");
         Parking3.setRegion(Tile.REGION_PARKING_SPACES);
         Parking3.setPrice(300);
         Parking3.setBaseRent(60);
@@ -558,7 +559,7 @@ public class BoardSetup {
         Parking3.setOwner(Tile.OWNER_UNOWNABLE);
         
         Tile Parking4 = Parking3.addNextStop(Tile.DIRECTION_NORTHWEST);
-        Parking4.setName("Parking4");
+        Parking4.setName("Parking Garage Level 1 - Section D");
         Parking4.setRegion(Tile.REGION_PARKING_SPACES);
         Parking4.setPrice(300);
         Parking4.setBaseRent(60);
@@ -567,7 +568,7 @@ public class BoardSetup {
         Parking4.setOwner(Tile.OWNER_UNOWNABLE);
         
         Tile Parking5 = Parking4.addNextStop(Tile.DIRECTION_NORTHWEST);
-        Parking5.setName("Parking5");
+        Parking5.setName("Parking Garage Level 1 - Section E");
         Parking5.setRegion(Tile.REGION_PARKING_SPACES);
         Parking5.setPrice(300);
         Parking5.setBaseRent(60);
@@ -578,7 +579,7 @@ public class BoardSetup {
         // parking space left side
         
         Tile Parking6 = Facilities_Management.addNextStop(Tile.DIRECTION_WEST);
-        Parking6.setName("Parking6");
+        Parking6.setName("Parking Garage Level 2 - Section A");
         Parking6.setRegion(Tile.REGION_PARKING_SPACES);
         Parking6.setPrice(300);
         Parking6.setBaseRent(60);
@@ -589,7 +590,7 @@ public class BoardSetup {
         //North West
         
         Tile Parking7 = Parking6.addNextStop(Tile.DIRECTION_NORTHWEST);
-        Parking7.setName("Parking7");
+        Parking7.setName("Parking Garage Level 2 - Section B");
         Parking7.setRegion(Tile.REGION_PARKING_SPACES);
         Parking7.setPrice(300);
         Parking7.setBaseRent(60);
@@ -598,7 +599,7 @@ public class BoardSetup {
         Parking7.setOwner(Tile.OWNER_UNOWNABLE);
         
         Tile Parking8 = Parking7.addNextStop(Tile.DIRECTION_NORTHWEST);
-        Parking8.setName("Parking8");
+        Parking8.setName("Parking Garage Level 2 - Section C");
         Parking8.setRegion(Tile.REGION_PARKING_SPACES);
         Parking8.setPrice(300);
         Parking8.setBaseRent(60);
@@ -607,7 +608,7 @@ public class BoardSetup {
         Parking8.setOwner(Tile.OWNER_UNOWNABLE);
         
         Tile Parking9 = Parking8.addNextStop(Tile.DIRECTION_NORTHWEST);
-        Parking9.setName("Parking9");
+        Parking9.setName("Parking Garage Level 2 - Section D");
         Parking9.setRegion(Tile.REGION_PARKING_SPACES);
         Parking9.setPrice(300);
         Parking9.setBaseRent(60);
@@ -616,7 +617,7 @@ public class BoardSetup {
         Parking9.setOwner(Tile.OWNER_UNOWNABLE);
         
         Tile Parking10 = Parking9.addNextStop(Tile.DIRECTION_NORTHWEST);
-        Parking10.setName("Parking10");
+        Parking10.setName("Parking Garage Level 2 - Section E");
         Parking10.setRegion(Tile.REGION_PARKING_SPACES);
         Parking10.setPrice(300);
         Parking10.setBaseRent(60);
@@ -665,7 +666,7 @@ public class BoardSetup {
         Athletic6.priceUpgrades(187.5, 375, 562.5, 750);
         
         Tile Field_Road_Shuttle = Athletic6.addNextStop(Tile.DIRECTION_WEST);
-        Field_Road_Shuttle.setName("Field_Road_Shuttle Stop");
+        Field_Road_Shuttle.setName("Field Road Shuttle Stop");
         Field_Road_Shuttle.setRegion(Tile.REGION_SHUTTLE);
         Field_Road_Shuttle.setPrice(250);
         Field_Road_Shuttle.setBaseRent(50);
@@ -704,7 +705,7 @@ public class BoardSetup {
         //Bridge
         
         Tile Road10 = Copley_South.addNextStop(Tile.DIRECTION_SOUTHWEST);
-        Road10.setName("Road10");
+        Road10.setName("Field Road");
         Road10.setRegion(Tile.REGION_PATHWAYS);
         Road10.setPrice(50);
         Road10.setBaseRent(50);
@@ -713,7 +714,7 @@ public class BoardSetup {
         Road10.setOwner(Tile.OWNER_UNOWNABLE);
                 
         Tile Road11 = Road10.addNextStop(Tile.DIRECTION_WEST);
-        Road11.setName("Road11");
+        Road11.setName("College Drive");
         Road11.setRegion(Tile.REGION_PATHWAYS);
         Road11.setPrice(50);
         Road11.setBaseRent(50);
