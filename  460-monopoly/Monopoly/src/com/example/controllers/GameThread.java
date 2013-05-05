@@ -445,6 +445,7 @@ public class GameThread extends Thread{
 				isDouble = Die.isDouble();
 			}
 			else{
+				Device.player[Game.currentPlayer].sendMessage(Message.IN_JAIL, "You are in jail! ");
 				Log.i("", Player.entities[Game.currentPlayer] + " IS IN JAIL!");
 			}
 			
