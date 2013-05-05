@@ -432,6 +432,7 @@ public class GameThread extends Thread{
 								forks[i] = forksAL.get(i);
 							}
 							
+							Log.i("", "Forks.length = " + forks.length);
 							if(forks.length > 1){
 								Log.i("", "Send message");
 								Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
