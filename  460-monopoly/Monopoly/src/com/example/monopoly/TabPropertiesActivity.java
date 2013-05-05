@@ -11,6 +11,7 @@ import com.example.bluetooth.Bluetooth;
 import com.example.bluetooth.BluetoothEvent;
 import com.example.bluetooth.Message;
 import com.example.controllers.HostDevice;
+import com.example.model.Tile;
 
 import android.app.Activity;
 import android.content.Context;
@@ -174,7 +175,7 @@ public class TabPropertiesActivity extends Activity {
 	// mGroudList add Item
 	public void addItem(TileProperty item) {
 		mGroudList.add(item);
-		setChildList();
+		//setChildList();
 	}
 
 	// mGroudList remove Item by name
@@ -358,6 +359,24 @@ public class TabPropertiesActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		this.getParent().onBackPressed(); // Call CommandCardActivity.class onBackPressed()
+	}
+
+	public static void populate() {
+		TabPropertiesActivity.activity.clear();
+		TabPropertiesActivity.activity.mChildList.clear();
+		
+		for (int i=0; i<CommandCardActivity.activity.propertyRegions.size(); i++){
+			int region = CommandCardActivity.activity.propertyRegions.get(i);
+			TileProperty property = TabPropertiesActivity.activity.new TileProperty();
+			property.setName(Tile.REGION_NAMES[region]);
+			TabPropertiesActivity.activity.addItem(property);
+			
+			TabPropertiesActivity.activity.mChildListContent = new ArrayList<String>();
+			for (Tile t: CommandCardActivity.activity.properties.get(i)){
+				TabPropertiesActivity.activity.mChildListContent.add(t.getName());
+			}
+			TabPropertiesActivity.activity.mChildList.add(TabPropertiesActivity.activity.mChildListContent);
+		}
 	}
 
 }
