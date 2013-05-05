@@ -84,7 +84,7 @@ public class EventSetup {
 		EventGenerator.registerEvent("newTurn", new TriggeredEvent(){
 			@Override
 			public boolean condition() {
-				return Game.getWeekDay() == 0; //if the day is sunday
+				return Game.getWeekDay() == 0 && Game.subturn == 0; //if the day is sunday
 			}
 			
 			public void action() {
