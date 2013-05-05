@@ -634,7 +634,6 @@ public class BoardSetup {
         Athletic3.setBaseRent(50);
         Athletic3.setBaseRegionRent(25);
         Athletic3.priceUpgrades(187.5, 375, 562.5, 750);
-        Parking5.addNextStop(Athletic3);
         Parking10.addNextStop(Athletic3);
         
         //North West
@@ -746,8 +745,7 @@ public class BoardSetup {
         Orchard_North.setBaseRent(50);
         Orchard_North.setBaseRegionRent(25);
         Orchard_North.priceUpgrades(187.5, 375, 562.5, 750);
-        Road10.addNextStop(Orchard_North);
-		
+        		
         Tile Orchard_South = Orchard_North.addNextStop(Tile.DIRECTION_SOUTHEAST);
         Orchard_South.setName("Orchard South");
         Orchard_South.setRegion(Tile.REGION_LOWER_CAMPUS_APT);
