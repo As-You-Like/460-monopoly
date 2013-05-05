@@ -3,6 +3,7 @@ package com.example.monopoly;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -57,5 +58,21 @@ public class DecisionActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_decision, menu);
 		return true;
 	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
+	}
+
 
 }

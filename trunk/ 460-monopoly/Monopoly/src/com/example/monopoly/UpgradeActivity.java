@@ -130,5 +130,21 @@ public class UpgradeActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_upgrade, menu);
 		return true;
 	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
+	}
+
 
 }

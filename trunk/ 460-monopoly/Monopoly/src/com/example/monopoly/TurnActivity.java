@@ -2,12 +2,16 @@ package com.example.monopoly;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.Menu;
 
 public class TurnActivity extends Activity {
+	
+	TurnActivity activity;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		activity = this;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_turn);
 	}
@@ -18,5 +22,21 @@ public class TurnActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_turn, menu);
 		return true;
 	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
+	}
+
 
 }

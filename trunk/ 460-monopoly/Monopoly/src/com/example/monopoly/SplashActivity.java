@@ -78,10 +78,12 @@ public class SplashActivity extends Activity {
 
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void terminate() {
 	      Log.i("","terminated!!");
 	      super.onDestroy();
-	      this.finish();
+	      System.exit(0);
+	      //this.finish();
 	}
 
 }
