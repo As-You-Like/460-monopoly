@@ -468,6 +468,23 @@ public class CommandCardActivity extends TabActivity {
 			
 		});
 		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				return type == Message.IN_JAIL;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				CommandCardActivity.turn = false;
+				CommandCardActivity.activity.tabBar.setCurrentTab(CommandCardActivity.TAB_HOME);
+				CommandCardActivity.activity.tabBar.getTabWidget().getChildTabViewAt(CommandCardActivity.TAB_TURN).setVisibility(View.VISIBLE);
+				CommandCardActivity.activity.tabBar.getTabWidget().getChildTabViewAt(CommandCardActivity.TAB_TILE).setVisibility(View.GONE);
+				CommandCardActivity.activity.tabBar.getTabWidget().getChildTabViewAt(CommandCardActivity.TAB_TURN).setEnabled(false);
+			}
+		});
+		
 		
 		TabHomeActivity.activity.clearInfo();
 		HostDevice.host.sendMessage(Message.REQUEST_HOME_DATA, "");
