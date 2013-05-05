@@ -440,7 +440,7 @@ public class GameThread extends Thread{
 								// DecisionActivity awakens GameThread
 							}
 							else{
-								newTileLocation = tileLocation.getNextStop();
+								newTileLocation = forks[0];
 								currentPlayerPiece.move(newTileLocation);
 							}
 		
