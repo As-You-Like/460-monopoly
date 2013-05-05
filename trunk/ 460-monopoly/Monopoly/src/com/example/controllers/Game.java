@@ -67,21 +67,33 @@ public class Game extends TimerTask{
 
 	@Override
 	public void run() {
-		if (MapActivity.activity == null) return;
-		if (SplashActivity.activity == null) {this.cancel(); return;}
 		
-		ms += 20;
-		Unit[] tmp;
-		synchronized (Unit.entity){
-			tmp = Unit.entity.toArray(new Unit[]{});
-		}
-		for (Unit u : tmp){
-			if (u instanceof MobileUnit){
-				MobileUnit mu = (MobileUnit)u;
-				mu.update();
+		// Surrounded in try catch and tries to go to GameThread to force an exception if the app has crashed
+		try{
+			if (MapActivity.activity == null) return;
+			if (SplashActivity.activity == null) {this.cancel(); return;}
+			
+			ms += 20;
+			Unit[] tmp;
+			synchronized (Unit.entity){
+				tmp = Unit.entity.toArray(new Unit[]{});
 			}
+			for (Unit u : tmp){
+				if (u instanceof MobileUnit){
+					MobileUnit mu = (MobileUnit)u;
+					mu.update();
+				}
+			}
+			Game.mHandler.obtainMessage().sendToTarget();
+			
+			int cancelChecker = GameThread.gt.turnNumber;
+			
 		}
-		Game.mHandler.obtainMessage().sendToTarget();
+		catch(Exception e){
+			Log.e("", "Application crash: timer cancelled");
+			this.cancel();
+		}
+		
 	}
 	
 	public static class Handle extends Handler {
