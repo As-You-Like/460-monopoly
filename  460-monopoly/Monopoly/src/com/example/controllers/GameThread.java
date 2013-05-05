@@ -427,8 +427,13 @@ public class GameThread extends Thread{
 									forksAL.remove(i);
 								}
 							}
-							forks = forksAL.toArray(new Tile[]{});
+							forks = new Tile[forksAL.size()];
+							for(int i = 0; i < forks.length; i++){
+								forks[i] = forksAL.get(i);
+							}
+							
 							if(forks.length > 1){
+								Log.i("", "Send message");
 								Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
 								this.sleepGameThread();
 								// DecisionActivity awakens GameThread
@@ -436,6 +441,7 @@ public class GameThread extends Thread{
 		
 						}
 						else {
+							Log.i("", "Going to next stop // no fork");
 							newTileLocation = tileLocation.getNextStop();
 							currentPlayerPiece.move(newTileLocation);
 						}
