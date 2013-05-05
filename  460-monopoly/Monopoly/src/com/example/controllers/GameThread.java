@@ -1,5 +1,7 @@
 package com.example.controllers;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -332,7 +334,7 @@ public class GameThread extends Thread{
 	public void setUpBoard(){
 		for(int i = 0; i < Player.entities.length; i++){
 			if (Player.entities[i] != null){
-				Player.entities[i].setPiece(new PlayerPiece(Tile.entity[10][0], i));
+				Player.entities[i].setPiece(new PlayerPiece(Tile.entity[3][0], i));
 			}
 		}
 	}
@@ -410,14 +412,26 @@ public class GameThread extends Thread{
 					tileLocation = currentPlayerPiece.getCurrentTile();
 					if(tileLocation.hasFork()){
 						Tile[] forks = tileLocation.getForkTiles();
+						ArrayList<Tile> forksAL = new ArrayList<Tile>();
+						for(int i = 0; i < forks.length; i++){
+							forksAL.add(forks[i]);
+						}
 						
 						//temporary random movement code until DecisionActivity is ready
 						//newTileLocation = forks[(int) (Math.random()*forks.length)];
 						//currentPlayerPiece.move(newTileLocation);
 						
-						Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
-						this.sleepGameThread();
-						// DecisionActivity awakens GameThread
+						for(int i = 0; i < forksAL.size(); i++){
+							if(forksAL.get(i).equals(Player.entities[Game.currentPlayer].getPiece().getPreviousTile())){
+								forksAL.remove(i);
+							}
+						}
+						forks = (Tile[]) forksAL.toArray();
+						if(forks.length > 1){
+							Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
+							this.sleepGameThread();
+							// DecisionActivity awakens GameThread
+						}
 	
 					}
 					else {
