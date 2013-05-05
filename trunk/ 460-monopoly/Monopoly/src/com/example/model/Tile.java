@@ -43,6 +43,7 @@ public class Tile extends StaticUnit {
 		Color.rgb(102, 75, 0),//16
 		Color.rgb(34, 116, 28),//17
 		Color.rgb(42, 0, 102),//18
+		Color.rgb(171, 242, 0), //19
 	};
 	
 	public static String[] REGION_NAMES = {
@@ -64,7 +65,8 @@ public class Tile extends StaticUnit {
 		"Dana Center",//15
 		"Non-Buyable Properties",//16
 		"Pathways",//17
-		"Lower Campus Apartments"//18
+		"Lower Campus Apartments",//18
+		"Facilities Management" //19
 		
 	};
 	
@@ -87,6 +89,7 @@ public class Tile extends StaticUnit {
 	public static final int REGION_NON_BUYABLE=16;
 	public static final int REGION_PATHWAYS=17;
 	public static final int REGION_LOWER_CAMPUS_APT=18;
+	public static final int REGION_FACILITIES_MANAGEMENT=19;
 	
 	public static final int DIRECTION_NORTHEAST = 0;
 	public static final int DIRECTION_EAST      = 1;
