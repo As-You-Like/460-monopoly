@@ -152,6 +152,9 @@ public class Message {
 	
 	// The host informs the player who accepted a trade that their partner has rejected it
 	public static final int TRADE_REJECT_INFORM = 47;
+
+	// The host informs the player that he/she is still in jail.
+	public static final int IN_JAIL = 48;
 	
 	
 }
