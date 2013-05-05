@@ -389,59 +389,65 @@ public class GameThread extends Thread{
 			Device.player[Game.currentPlayer].sendMessage(Message.MOVEMENT_ROLL, isDouble ? "You have rolled a double, roll again" : "It's your turn, press to roll dice");
 			this.sleepGameThread();
 			Log.e("MovementPhase", "Execution");
-			if(Die.doubleCount < 3){
-				//get the player piece
-				PlayerPiece currentPlayerPiece = Player.entities[Game.currentPlayer].getPiece();
-				
-				//calculate how much to move
-				int spaceMovementDistance = Die.getTotalValue();
-				
-				//create tracker for how much player has moved
-				int spacesMoved = 0;
-				
-				//get the current location of the player
-				Tile tileLocation = currentPlayerPiece.getCurrentTile();
-				
-				//create tracker for the new location of the player
-				Tile newTileLocation;
-//				int tileLocation = PlayerEntity.getPlayer(currentTurnPlayer).getCurrentLocation();
-//				int newTileLocation;
-				
-				while(spacesMoved != spaceMovementDistance){
+			if(Player.entities[Game.currentPlayer].isJailed() == false){
+				if(Die.doubleCount < 3){
+					//get the player piece
+					PlayerPiece currentPlayerPiece = Player.entities[Game.currentPlayer].getPiece();
 					
-					tileLocation = currentPlayerPiece.getCurrentTile();
-					if(tileLocation.hasFork()){
-						Tile[] forks = tileLocation.getForkTiles();
-						ArrayList<Tile> forksAL = new ArrayList<Tile>();
-						for(int i = 0; i < forks.length; i++){
-							forksAL.add(forks[i]);
-						}
+					//calculate how much to move
+					int spaceMovementDistance = Die.getTotalValue();
+					
+					//create tracker for how much player has moved
+					int spacesMoved = 0;
+					
+					//get the current location of the player
+					Tile tileLocation = currentPlayerPiece.getCurrentTile();
+					
+					//create tracker for the new location of the player
+					Tile newTileLocation;
+//					int tileLocation = PlayerEntity.getPlayer(currentTurnPlayer).getCurrentLocation();
+//					int newTileLocation;
+					
+					while(spacesMoved != spaceMovementDistance){
 						
-						//temporary random movement code until DecisionActivity is ready
-						//newTileLocation = forks[(int) (Math.random()*forks.length)];
-						//currentPlayerPiece.move(newTileLocation);
-						
-						for(int i = 0; i < forksAL.size(); i++){
-							if(forksAL.get(i).equals(Player.entities[Game.currentPlayer].getPiece().getPreviousTile())){
-								forksAL.remove(i);
+						tileLocation = currentPlayerPiece.getCurrentTile();
+						if(tileLocation.hasFork()){
+							Tile[] forks = tileLocation.getForkTiles();
+							ArrayList<Tile> forksAL = new ArrayList<Tile>();
+							for(int i = 0; i < forks.length; i++){
+								forksAL.add(forks[i]);
 							}
+							
+							//temporary random movement code until DecisionActivity is ready
+							//newTileLocation = forks[(int) (Math.random()*forks.length)];
+							//currentPlayerPiece.move(newTileLocation);
+							
+							for(int i = 0; i < forksAL.size(); i++){
+								if(forksAL.get(i).equals(Player.entities[Game.currentPlayer].getPiece().getPreviousTile())){
+									forksAL.remove(i);
+								}
+							}
+							forks = (Tile[]) forksAL.toArray();
+							if(forks.length > 1){
+								Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
+								this.sleepGameThread();
+								// DecisionActivity awakens GameThread
+							}
+		
 						}
-						forks = (Tile[]) forksAL.toArray();
-						if(forks.length > 1){
-							Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
-							this.sleepGameThread();
-							// DecisionActivity awakens GameThread
+						else {
+							newTileLocation = tileLocation.getNextStop();
+							currentPlayerPiece.move(newTileLocation);
 						}
-	
+						spacesMoved++;
 					}
-					else {
-						newTileLocation = tileLocation.getNextStop();
-						currentPlayerPiece.move(newTileLocation);
-					}
-					spacesMoved++;
 				}
+				isDouble = Die.isDouble();
 			}
-			isDouble = Die.isDouble();
+			else{
+				Log.i("", Player.entities[Game.currentPlayer] + " IS IN JAIL!");
+			}
+			
 		}while(isDouble && (Die.doubleCount < 3));
 		
 	}
