@@ -733,6 +733,7 @@ public class BoardSetup {
         Callahan.addNextStop(Greenspace);
         Callahan.addNextStop(Road11);
         Greenspace.addNextStop(Callahan);
+        Callahan.setOwner(Tile.OWNER_UNOWNABLE);
         
         
         //Lower Campus APT

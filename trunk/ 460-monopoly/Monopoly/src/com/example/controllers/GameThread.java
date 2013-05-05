@@ -427,7 +427,7 @@ public class GameThread extends Thread{
 									forksAL.remove(i);
 								}
 							}
-							forks = (Tile[]) forksAL.toArray();
+							forks = forksAL.toArray(new Tile[]{});
 							if(forks.length > 1){
 								Device.player[Game.currentPlayer].sendMessage(Message.CHOOSE_FORK_PATH, forks[0] + ":" + forks[1]);
 								this.sleepGameThread();
