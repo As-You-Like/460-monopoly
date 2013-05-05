@@ -25,6 +25,7 @@ public class EventSetup {
 		
 		public EventJailRelease(int time, int player){
 			this.expireTurn = Game.turn + time;
+			this.player = player;
 		}
 		
 		@Override
