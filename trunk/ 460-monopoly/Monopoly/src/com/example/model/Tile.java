@@ -46,25 +46,25 @@ public class Tile extends StaticUnit {
 	};
 	
 	public static String[] REGION_NAMES = {
-		"THE TREES",      //0
+		"The Trees",      //0
 		"Freshman Dorms", //1
-		"Shuttle", //2
+		"Bentley Loop Shuttle", //2
 		"Student Center", //3
 		"Eateries",//4
 		"Special",//5
 		"Senior Apartments",//6
 		"Sophomore Suites",//7
-		"Falcone Apartment",//8
+		"Falcone Apartments",//8
 		"Upper Campus Classic",//9
 		"Upper Campus Modern",//10
-		"Possessions",//11
+		"Bentley Possessions",//11
 		"Parking Spaces",//12
 		"Lower Campus Suites",//13
 		"Athletic Complex",//14
 		"Dana Center",//15
-		"Non-Buyable properties",//16
+		"Non-Buyable Properties",//16
 		"Pathways",//17
-		"Lower Campus Apartment"//18
+		"Lower Campus Apartments"//18
 		
 	};
 	
