@@ -617,8 +617,8 @@ public class BoardSetup {
         Athletic3.setBaseRent(50);
         Athletic3.setBaseRegionRent(25);
         Athletic3.priceUpgrades(187.5, 375, 562.5, 750);
-        Parking5.addNextStop(Athletic3);
-        
+        //Parking5.addNextStop(Athletic3);
+        Parking10.addNextStop(Athletic3);
         //North West
         
         Tile Athletic4 = Athletic3.addNextStop(Tile.DIRECTION_NORTHWEST);
@@ -712,6 +712,7 @@ public class BoardSetup {
         Callahan.setBaseRegionRent(30);
         Callahan.priceUpgrades(225, 450, 675, 900);
         Callahan.addNextStop(Greenspace);
+        Greenspace.addNextStop(Callahan);
         
         
         //Lower Campus APT

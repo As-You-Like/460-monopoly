@@ -195,7 +195,7 @@ public class GameThread extends Thread{
 					try {
 						tile.put("id", t.id);
 						tile.put("name", t.getName());
-						tile.put("region", Tile.REGION_NAMES[t.getRegion()]);
+						tile.put("region", t.getRegion());
 						json.put(tile.toString());
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
