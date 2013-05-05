@@ -535,6 +535,17 @@ public class EventSetup {
 						"Fell off the treadmill at the gym, go to Health and Wellness.");				
 			}
 		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].goToJail();
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Stayed in Smith after it closed.  Go to jail.");				
+			}
+		});
 		
 		
 	}
