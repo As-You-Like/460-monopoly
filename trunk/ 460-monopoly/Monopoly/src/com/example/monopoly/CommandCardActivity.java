@@ -1,5 +1,8 @@
 package com.example.monopoly;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,6 +45,9 @@ public class CommandCardActivity extends TabActivity {
 	public static double cash;
 	public static double rent;
 	public static boolean turn = false;
+	
+	ArrayList<Integer> propertyRegions = new ArrayList<Integer>();
+	ArrayList<ArrayList<Tile>> properties = new ArrayList<ArrayList<Tile>>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -362,6 +368,50 @@ public class CommandCardActivity extends TabActivity {
 					
 					UpgradeActivity.activity.setCashValues(cash, rent);
 				}
+				if (tabId.equals("Properties")){
+					HostDevice.host.sendMessage(Message.REQUEST_PROPERTIES_DATA, "");
+				}
+			}
+			
+		});
+		
+		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
+
+			@Override
+			public boolean typeValid(int type) {
+				// TODO Auto-generated method stub
+				return type == Message.REQUEST_PROPERTIES_DATA_ACCEPT;
+			}
+
+			@Override
+			public void processMessage(int sender, int reciever, String message) {
+				// TODO Auto-generated method stub
+				Tile.entity = new Tile[400][400];
+				properties.clear();
+				propertyRegions.clear();
+				try {
+					JSONArray json = new JSONArray(message);
+					for (int i=0; i<json.length(); i++){
+						JSONObject tile = new JSONObject(json.getString(i));
+						Tile t = new Tile(Tile.entity.length, 0, 0);
+						t.setName(tile.getString("name"));
+						t.setRegion(tile.getInt("region"));
+						t.id = tile.getInt("id");
+						if (!propertyRegions.contains(t.getRegion())){
+							propertyRegions.add(t.getRegion());
+							properties.add(new ArrayList<Tile>());
+						}
+						properties.get(propertyRegions.indexOf(t.getRegion())).add(t);
+						
+						
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				TabPropertiesActivity.populate();
+				
 			}
 			
 		});
