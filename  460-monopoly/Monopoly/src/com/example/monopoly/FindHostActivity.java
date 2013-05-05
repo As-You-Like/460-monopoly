@@ -369,5 +369,20 @@ public class FindHostActivity extends Activity {
 		})
 		.show();		
 	}
+    
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
+	}
 
 }

@@ -2,6 +2,7 @@ package com.example.monopoly;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -94,6 +95,21 @@ public class TabHomeActivity extends Activity {
 	@Override
 	public void onBackPressed() { 
 		this.getParent().onBackPressed(); // Call CommandCardActivity.class onBackPressed()
+	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
 	}
 
 }

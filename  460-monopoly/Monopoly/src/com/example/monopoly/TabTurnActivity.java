@@ -50,5 +50,21 @@ public class TabTurnActivity extends Activity {
 	public void onBackPressed() {
 		this.getParent().onBackPressed(); // Call CommandCardActivity.class onBackPressed()
 	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
+	}
+
 
 }

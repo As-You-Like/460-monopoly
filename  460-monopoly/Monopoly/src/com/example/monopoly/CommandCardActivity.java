@@ -14,7 +14,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 
@@ -45,6 +48,8 @@ public class CommandCardActivity extends TabActivity {
 	public static double cash;
 	public static double rent;
 	public static boolean turn = false;
+	
+	public MenuItem menuQuit;
 	
 	ArrayList<Integer> propertyRegions = new ArrayList<Integer>();
 	ArrayList<ArrayList<Tile>> properties = new ArrayList<ArrayList<Tile>>();
@@ -595,6 +600,30 @@ public class CommandCardActivity extends TabActivity {
 		boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
 		return (xlarge || large);
 	}
-
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		
+		menuQuit = menu.add(0, 1, Menu.NONE, "Quit Game");
+		
+		menuQuit.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+					// TODO Auto-generated method stub
+					SplashActivity.activity.cascadeQuitBool = true;
+					CommandCardActivity.activity.terminate();				
+					return true;
+			}
+		});
+		return true;
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
+	}
 
 }

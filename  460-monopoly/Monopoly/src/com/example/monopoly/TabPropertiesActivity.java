@@ -16,6 +16,7 @@ import com.example.model.Tile;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -378,5 +379,21 @@ public class TabPropertiesActivity extends Activity {
 			TabPropertiesActivity.activity.mChildList.add(TabPropertiesActivity.activity.mChildListContent);
 		}
 	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		if(SplashActivity.activity.cascadeQuitBool == true){
+			activity.terminate();
+		}
+
+	}
+	
+	public void terminate() {
+	      Log.i("","terminated!!");
+	      super.onDestroy();
+	      this.finish();
+	}
+
 
 }
