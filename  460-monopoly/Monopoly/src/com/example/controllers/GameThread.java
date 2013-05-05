@@ -545,6 +545,10 @@ public class GameThread extends Thread{
 		 * Update Entity classes
 		 */
 		Log.e("ConclusionPhase", "Check Defeat");
+		
+		//Force exception
+		/*Player.entities = null; */
+		
 		//Check defeat condition
 		if(Player.entities[Game.currentPlayer].getBalance() <= 0){
 			Player.entities[Game.currentPlayer].setLost(true);
