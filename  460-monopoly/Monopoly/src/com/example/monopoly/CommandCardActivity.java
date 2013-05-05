@@ -393,7 +393,7 @@ public class CommandCardActivity extends TabActivity {
 					JSONArray json = new JSONArray(message);
 					for (int i=0; i<json.length(); i++){
 						JSONObject tile = new JSONObject(json.getString(i));
-						Tile t = new Tile(Tile.entity.length, 0, 0);
+						Tile t = new Tile(0, 0, 0);
 						t.setName(tile.getString("name"));
 						t.setRegion(tile.getInt("region"));
 						t.id = tile.getInt("id");
