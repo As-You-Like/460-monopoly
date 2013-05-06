@@ -408,8 +408,9 @@ public class CommandCardActivity extends TabActivity {
 						}
 						properties.get(propertyRegions.indexOf(t.getRegion())).add(t);
 						
-						
+						Log.e("Tile Data", t.getRegion()+""+t.getName());
 					}
+					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
