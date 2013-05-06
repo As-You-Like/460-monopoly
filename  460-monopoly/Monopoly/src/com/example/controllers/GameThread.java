@@ -560,7 +560,7 @@ public class GameThread extends Thread{
 			//Check victory condition
 			if(Game.numberOfPlayersRemaining == 1){
 				Log.e("ConclusionPhase", "GameWon = true");
-				//Game.gameWon = true;
+				Game.gameWon = true;
 			}
 		}
 		

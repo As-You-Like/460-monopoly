@@ -765,7 +765,7 @@ public class BoardSetup {
         Castle.addNextStop(Lowe_Campus);
       
        
-        
+        Tile.setFacilitiesTile(Facilities_Management);
 		Tile.setJailTile(Callahan);
 	}
 }
