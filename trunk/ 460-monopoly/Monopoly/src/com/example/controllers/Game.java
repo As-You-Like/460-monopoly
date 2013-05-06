@@ -62,9 +62,7 @@ public class Game extends TimerTask{
 	//method to be run during loading of game module
 	public static void start(){
 		Game.timer = new Timer();
-		Game.timer.schedule(Game.instance, 20);
-		Log.e("TIMER", "EXECUTING ORIGINAL");
-		//Game.timer.scheduleAtFixedRate(Game.instance, 20, 20);
+		Game.timer.scheduleAtFixedRate(Game.instance, 20, 20);
 	}
 
 	@Override
@@ -88,21 +86,13 @@ public class Game extends TimerTask{
 			}
 			Game.mHandler.obtainMessage().sendToTarget();
 			
-			int cancelChecker = GameThread.gt.turnNumber;
-			
-			//if (Game.timer != null){
-				Log.e("TIMER", "EXECUTING");
-				Game.timer = new Timer();
-				Game.timer.schedule(Game.instance, 20);
-			//}
+			boolean cancelChecker = SplashActivity.activity.cascadeQuitBool;
 			
 		}
 		catch(Exception e){
 			Log.e("", "Application crash: timer cancelled");
 			this.cancel();
 		}
-		
-		
 		
 	}
 	
