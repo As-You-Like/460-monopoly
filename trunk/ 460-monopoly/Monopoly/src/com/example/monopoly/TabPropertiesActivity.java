@@ -54,44 +54,6 @@ public class TabPropertiesActivity extends Activity {
 		
 		HostDevice.host.sendMessage(Message.REQUEST_PROPERTIES_DATA, "");
 		
-		/*Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
-
-			@Override
-			public boolean typeValid(int type) {
-				// TODO Auto-generated method stub
-				return type == Message.REQUEST_PROPERTIES_DATA_ACCEPT;
-			}
-
-			@Override
-			public void processMessage(int sender, int reciever, String message) {
-				// TODO Auto-generated method stub
-				JSONArray jsonArr = null;
-				activity.mGroudList.clear();
-				try {
-					jsonArr = new JSONArray(message);
-					
-					for (int i=0; i<jsonArr.length(); i++){
-						String tileJSON = jsonArr.getString(0);
-						JSONObject jsonObj = new JSONObject(tileJSON);
-						TileProperty item = new TileProperty();
-						item.setId(jsonObj.getString("id"));
-						item.setName(jsonObj.getString("n"));
-						item.setRegion(jsonObj.getString("r"));
-						item.setValue(jsonObj.getString("v"));
-						
-						activity.mGroudList.add(item);
-						activity.setChildList();
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
-			}
-			
-		});*/
-		
 		Bluetooth.registerBluetoothEvent(new BluetoothEvent(){
 
 			@Override
@@ -118,7 +80,7 @@ public class TabPropertiesActivity extends Activity {
 		
 		mGroudList.add(item);*/
 
-		setChildList();
+		//setChildList();
 		
 		adapter = new BaseExpandableAdapter(this, mGroudList, mChildList);
 		mListView.setAdapter(adapter);
@@ -137,7 +99,7 @@ public class TabPropertiesActivity extends Activity {
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 				//Toast.makeText(getApplicationContext(), "child click = " + childPosition, Toast.LENGTH_SHORT).show();
-				HostDevice.host.sendMessage(Message.REQUEST_TILE_DATA, mGroudList.get(groupPosition).getId());
+				//HostDevice.host.sendMessage(Message.REQUEST_TILE_DATA, mGroudList.get(groupPosition).getId());
 				return false;
 			}
 		});
@@ -366,18 +328,29 @@ public class TabPropertiesActivity extends Activity {
 		TabPropertiesActivity.activity.clear();
 		TabPropertiesActivity.activity.mChildList.clear();
 		
+		Log.e("Populate", "Starts Populate");
 		for (int i=0; i<CommandCardActivity.activity.propertyRegions.size(); i++){
-			int region = CommandCardActivity.activity.propertyRegions.get(i);
-			TileProperty property = TabPropertiesActivity.activity.new TileProperty();
-			property.setName(Tile.REGION_NAMES[region]);
-			TabPropertiesActivity.activity.addItem(property);
+			Log.e("Populate", "index: " + i);
+			int regionId = CommandCardActivity.activity.propertyRegions.get(i);
+			TileProperty region = TabPropertiesActivity.activity.new TileProperty();
+			region.setName(Tile.REGION_NAMES[regionId]);
+			TabPropertiesActivity.activity.addItem(region);
 			
-			TabPropertiesActivity.activity.mChildListContent = new ArrayList<String>();
-			for (Tile t: CommandCardActivity.activity.properties.get(i)){
-				TabPropertiesActivity.activity.mChildListContent.add(t.getName());
+			ArrayList<String> childList = new ArrayList<String>();
+			for (String s: CommandCardActivity.activity.properties.get(i)){
+				Log.e("Populate", "child: " + i + ": " + s);
+				childList.add(s);
 			}
-			TabPropertiesActivity.activity.mChildList.add(TabPropertiesActivity.activity.mChildListContent);
+			TabPropertiesActivity.activity.mChildList.add(childList);
 		}
+		
+		TabPropertiesActivity.activity.adapter.notifyDataSetChanged();
+		
+		/*
+		adapter = new BaseExpandableAdapter(this, mGroudList, mChildList);
+		mListView.setAdapter(adapter);
+		
+		*/
 	}
 	
 	public void onResume()
