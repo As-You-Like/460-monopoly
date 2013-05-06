@@ -79,17 +79,39 @@ public class Die extends ScreenUnit {
 		}
 		
 		//roll the dice
-		dice = new Die[diceCount];
-		timerReset = false;
-		executionCountTimesDice = executionCount * diceCount;
-		for (int i=0; i<diceCount; i++){
-			if (dice[i] != null){
-				//dice[i].timer = null;
-				dice[i].destroy();
-			}
-			dice[i] = new Die(i);
+		if (dice == null){
+			dice = new Die[diceCount];
 		}
+		//timerReset = false;
+		//executionCountTimesDice = executionCount * diceCount;
 		for (int i=0; i<diceCount; i++){
+			//if (dice[i] != null){
+				//dice[i].timer = null;
+				//dice[i].destroy();
+			//}
+			if (dice[i] == null){
+				dice[i] = new Die(i);
+			}
+		}
+		
+		//roll new
+		for (int i=0; i<diceCount; i++){
+			if (dice[i]!=null)
+				dice[i].value = (int)(Math.random() * 6);
+		}
+		
+		//if there is a double, say so, and trigger an event
+		if (dice[0].value == dice[1].value){
+			doubleCount++;
+			EventGenerator.executeTriggeredEvents("diceRoll");
+		}
+		
+		//GAME THREAD CODE GOES HERE FOR RESUMING GAME AFTER DICE ROLL
+		
+		GameThread.gt.awaken();
+		
+		
+		/*for (int i=0; i<diceCount; i++){
 			try {
 				dice[i]
 						.timer
@@ -112,7 +134,7 @@ public class Die extends ScreenUnit {
 			} catch (Exception e){
 				roll();
 			}
-		}
+		}*/
 	}
 	
 	/**
