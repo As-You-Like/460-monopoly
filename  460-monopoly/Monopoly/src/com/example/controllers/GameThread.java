@@ -15,6 +15,7 @@ import com.example.bluetooth.Message;
 import com.example.model.Die;
 import com.example.model.PlayerPiece;
 import com.example.model.Tile;
+import com.example.model.Unit;
 import com.example.monopoly.DataLoadingActivity;
 import com.example.monopoly.LoadingActivity;
 import com.example.monopoly.MapActivity;
@@ -557,6 +558,12 @@ public class GameThread extends Thread{
 			// Ticker inject to include news headline that player lost (dark humor possibilities...)
 			Game.playerTurnOrder[Game.playerTurnOrderCounter] = 666;
 			Game.numberOfPlayersRemaining--;
+			
+			Tile[] tiles = Player.entities[Game.currentPlayer].getPlayerTiles();
+			for(int i = 0; i < tiles.length; i++){
+				tiles[i].setOwner(-1);
+			}
+			
 			
 			//Check victory condition
 			if(Game.numberOfPlayersRemaining == 1){
