@@ -85,5 +85,9 @@ public class SplashActivity extends Activity {
 	      //System.exit(0);
 	      this.finish();
 	}
+	
+	public void checkTimer(){
+		int i = 0;
+	}
 
 }
