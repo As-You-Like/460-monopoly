@@ -3,8 +3,11 @@ package com.example.model;
 import java.util.ArrayList;
 
 import com.example.content.Image;
+import com.example.monopoly.SplashActivity;
 
+import android.R;
 import android.R.color;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
@@ -123,6 +126,7 @@ public class Tile extends StaticUnit {
 	private ArrayList<MobileUnit> visitors = new ArrayList<MobileUnit>();
 	private ArrayList<Tile> nextStops = new ArrayList<Tile>();
 	private double baseRegionRent;
+	private Object image;
 	
 	public Tile(int hexX, int hexY, int owner){
 		super(Tile.getCartesianPositionFromHexPoint(hexX, hexY), owner, Tile.TILE_RADIUS);
@@ -404,6 +408,22 @@ public class Tile extends StaticUnit {
 
 	public void setName(String name) {
 		this.name = name;
+		
+		String adjustedName = this.name.toLowerCase();
+		
+		try {
+			int file = (Integer) R.drawable.class.getField(adjustedName).get("");
+			this.image = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), file);
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static int getTileCountInRegion(int region){
