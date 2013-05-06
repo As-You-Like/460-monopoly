@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="BentleyDev"
+        android:text="Smart Startups"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#0000ff"
         android:textSize="40sp" />
