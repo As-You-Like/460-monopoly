@@ -143,6 +143,7 @@ public class Tile extends StaticUnit {
 		
 		try {
 			int file = (Integer) R.drawable.class.getField("i"+this.id).get("");
+			Log.e("TileImageId", ""+file);
 			this.image = file;
 		} catch (NoSuchFieldException e) {
 			// TODO Auto-generated catch block
