@@ -157,7 +157,6 @@ public class DatabaseThread extends Thread {
 	public int[] tablePlayer_fieldNetCash;
 	public int[] tablePlayer_fieldTradeCount;
 	
-	int[] tableTile_fieldTileID;
 	int[] tableTile_fieldOwnerID;
 	int[] tableTile_fieldElectricalBought;
 	int[] tableTile_fieldPlumbingBought;
@@ -301,13 +300,13 @@ public class DatabaseThread extends Thread {
 						if(upgrades[0] = true){
 							electrical = 1;
 						}
-						if(upgrades[1] = true){
+						if(upgrades[1] == true){
 							plumbing = 1;
 						}
-						if(upgrades[2] = true){
+						if(upgrades[2] == true){
 							vending = 1;
 						}
-						if(upgrades[3] = true){
+						if(upgrades[3] == true){
 							hvac = 1;
 						}
 						
@@ -447,7 +446,6 @@ public class DatabaseThread extends Thread {
 		/////////////////////////////
 		
 		//Instantiate tile data fields where the index represents a different tile row
-		tableTile_fieldTileID = new int[tileQuery.getCount()];
 		tableTile_fieldOwnerID = new int[tileQuery.getCount()];
 		tableTile_fieldElectricalBought = new int[tileQuery.getCount()];
 		tableTile_fieldPlumbingBought = new int[tileQuery.getCount()];
@@ -457,12 +455,12 @@ public class DatabaseThread extends Thread {
 		//fill in the above tile data fields
 		tileQuery.moveToFirst();
 		for(int i = 0; i < tileQuery.getCount(); i++){
-			tableTile_fieldTileID[i] = tileQuery.getInt(0);
 			tableTile_fieldOwnerID[i] = tileQuery.getInt(1);
 			tableTile_fieldElectricalBought[i] = tileQuery.getInt(2);
 			tableTile_fieldPlumbingBought[i] = tileQuery.getInt(3);
 			tableTile_fieldVendingBought[i] = tileQuery.getInt(4);
 			tableTile_fieldHVACBought[i] = tileQuery.getInt(5);
+			tileQuery.moveToNext();
 		}
 		
 		// === Turn Event Entity ===
@@ -478,6 +476,7 @@ public class DatabaseThread extends Thread {
 			tableTurnEventInstance_fieldPlayerID[i] = turnEventInstanceQuery.getInt(1);
 			tableTurnEventInstance_fieldEventNumber[i] = turnEventInstanceQuery.getInt(2);
 			tableTurnEventInstance_fieldEventTurnsLeft[i] = turnEventInstanceQuery.getInt(3);
+			turnEventInstanceQuery.moveToNext();
 		}
 		
 		// === Testing Code ===
@@ -542,10 +541,10 @@ public class DatabaseThread extends Thread {
 		
 		// constants for initial settings
 		ArrayList<Integer> LIST_COLORS = new ArrayList<Integer>();
-		LIST_COLORS.add(Color.rgb(255, 0, 0));
-		LIST_COLORS.add(Color.rgb(0, 255, 0));
-		LIST_COLORS.add(Color.rgb(0, 0, 255));
-		LIST_COLORS.add(Color.rgb(0, 255, 255));
+		LIST_COLORS.add(Color.rgb(255, 0, 0)); // Red
+		LIST_COLORS.add(Color.rgb(0, 255, 0)); // Green
+		LIST_COLORS.add(Color.rgb(0, 0, 255)); // Blue
+		LIST_COLORS.add(Color.rgb(0, 255, 255)); // Cyan
 		
 		// Set up images
 		// TODO: Hmm, this causes a dangerous redundancy, remind me to create a setup method in the Image class.
@@ -561,13 +560,9 @@ public class DatabaseThread extends Thread {
 		Image.DIE[4] = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.die_5);
 		Image.DIE[5] = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.die_6);
 		
-		// Set up board and events
-		BoardSetup.setupBoard();
-		EventSetup.setupEvents();
-		
 		//Set up Game and GameThread
-		GameThread.gt = new GameThread();
-		GameThread.isFromSavedGame = true;
+		new GameThread();
+		GameThread.gt.isFromSavedGame = true;
 		//new Game("");
 		dt.makeGame();
 		Game.name = tableGame_fieldAll[0];
@@ -588,24 +583,23 @@ public class DatabaseThread extends Thread {
 		// Set up Players
 		// TODO: Bad idea to use the length of your field results. the size of this array should always be the max amount of players supported
 		//Player.entities = new Player[tablePlayer_fieldPlayerName.length];
-		Player.entities = new Player[tablePlayer_fieldPlayerName.length]; //I changed it
+		Player.entities = new Player[Device.player.length]; //I changed it
 		for(int i = 0; i < tablePlayer_fieldPlayerName.length; i++){
-			int color;
-			String colorString = tablePlayer_fieldPlayerColor[i];
-			if(colorString.equals("Red")){
-				color = Color.rgb(255, 0, 0);
-			}
-			else if(colorString.equals("Green")){
-				color = Color.rgb(0, 255, 0);
-			}
-			else if(colorString.equals("Blue")){
-				color = Color.rgb(0, 0, 255);
-			}
-			else if(colorString.equals("Cyan")){
-				color = Color.rgb(0, 255, 255);
-			}
-			else {
-				color = Color.rgb(0, 0, 0);
+			int color = Color.rgb(0, 0, 0);
+			for(int c = 0; c < tablePlayer_fieldPlayerColor.length; c++){
+				
+				if(tablePlayer_fieldPlayerColor[c].equals("Red")){
+					color = LIST_COLORS.get(c);
+				}
+				else if(tablePlayer_fieldPlayerColor[c].equals("Green")){
+					color = LIST_COLORS.get(c);
+				}
+				else if(tablePlayer_fieldPlayerColor[c].equals("Blue")){
+					color = LIST_COLORS.get(c);
+				}
+				else if(tablePlayer_fieldPlayerColor[c].equals("Cyan")){
+					color = LIST_COLORS.get(c);
+				}
 			}
 
 			Player p = new Player(Device.player[i], tablePlayer_fieldPlayerNumber[i], color);
@@ -619,32 +613,16 @@ public class DatabaseThread extends Thread {
 			Player.entities[i] = p;
 		}
 		
-		// Set up property ownerships
-		Tile thisTile;
-		for(int i = 0; i < Unit.entity.size(); i++){
-			if(Unit.entity.get(i) instanceof Tile){
-				thisTile = (Tile) Unit.entity.get(i);
-				
-				for(int j = 0; j < tableTile_fieldTileID.length; j++){
-					
-					if(thisTile.id == tableTile_fieldTileID[j]){
-						
-						for(int k = 0; k < Player.entities.length; k++){
-							if(tableTile_fieldOwnerID[j] == k){
-								thisTile.setOwner(k);
-							}
-						}
-					}		
-				}			
-			}
-		}
+		//Set up board and images
+		BoardSetup.setupBoard();
+		//Image
 		
 		// Set up PlayerPieces, Current Location, and Previous Location
-		for(int i = 0; i < Player.entities.length; i++){
-			
+		for(int i = 0; i < tablePlayer_fieldCurrentLocation.length; i++){
 			int currentLocID = Integer.parseInt(tablePlayer_fieldCurrentLocation[i]);
 			
 			Tile currentLocTile;
+			
 			/*
 			for(int j = 0; j < Tile.entity.length; j++){
 				
@@ -664,8 +642,10 @@ public class DatabaseThread extends Thread {
 			for(int j = 0; j < Unit.entity.size(); j++){
 				if(Unit.entity.get(j) instanceof Tile){
 					currentLocTile = (Tile)Unit.entity.get(j);
+					Log.i("", "CURRENTLOCTILE.ID = " + currentLocTile.id + "    :    currentLocID = " + currentLocID);
 					if(currentLocTile.id == currentLocID){
 						Player.entities[i].setPiece(new PlayerPiece(currentLocTile, tablePlayer_fieldPlayerNumber[i]));
+						Player.entities[i].getPiece().move(currentLocTile);
 						Log.i("","Player " + i + "has new piece at Tile " + currentLocTile.id);
 					}
 			
@@ -674,7 +654,8 @@ public class DatabaseThread extends Thread {
 			
 		}		
 		
-		for(int i = 0; i < Player.entities.length; i++){
+		
+		for(int i = 0; i < tablePlayer_fieldPreviousLocation.length; i++){
 			int previousLocID = Integer.parseInt(tablePlayer_fieldPreviousLocation[i]);
 			
 			Tile previousLocTile;
@@ -698,62 +679,67 @@ public class DatabaseThread extends Thread {
 		
 		// Set upgrades and turn-based events in players
 		for(int i = 0; i < Player.entities.length; i++){
-			for(int j = 0; j < Player.entities[i].getPlayerTiles().length; j++){
+			if(Player.entities[i] != null){
 				
-				boolean elecUpgradeBool;
-				boolean plumUpgradeBool;
-				boolean vendUpgradeBool;
-				boolean hvacUpgBool;
-				
-				int elecUpgrade = tableTile_fieldElectricalBought[i];
-				int plumUpgrade = tableTile_fieldPlumbingBought[i];
-				int vendUpgrade = tableTile_fieldVendingBought[i];
-				int hvacUpg = tableTile_fieldHVACBought[i];
-				
-				if (elecUpgrade == 1){
-					elecUpgradeBool = true;
-				} else {
-					elecUpgradeBool = false;
+				for(int j = 0; j < Player.entities[i].getPlayerTiles().length; j++){
+					
+					boolean elecUpgradeBool;
+					boolean plumUpgradeBool;
+					boolean vendUpgradeBool;
+					boolean hvacUpgBool;
+					
+					int elecUpgrade = tableTile_fieldElectricalBought[i];
+					int plumUpgrade = tableTile_fieldPlumbingBought[i];
+					int vendUpgrade = tableTile_fieldVendingBought[i];
+					int hvacUpg = tableTile_fieldHVACBought[i];
+					
+					if (elecUpgrade == 1){
+						elecUpgradeBool = true;
+					} else {
+						elecUpgradeBool = false;
+					}
+					// TODO: Here is a 1-liner if statement that is the exact same as the above 5 liner
+					elecUpgradeBool = elecUpgrade == 1 ? true : false;
+					
+					if (plumUpgrade == 1){
+						plumUpgradeBool = true;
+					} else {
+						plumUpgradeBool = false;
+					}
+					
+					if (vendUpgrade == 1){
+						vendUpgradeBool = true;
+					} else {
+						vendUpgradeBool = false;
+					}
+					
+					if (hvacUpg == 1){
+						hvacUpgBool = true;
+					} else {
+						hvacUpgBool = false;
+					}
+					
+					
+					Player.entities[i].getPlayerTiles()[j].upgraded[0] = elecUpgradeBool;
+					Player.entities[i].getPlayerTiles()[j].upgraded[1] = plumUpgradeBool;
+					Player.entities[i].getPlayerTiles()[j].upgraded[2] = vendUpgradeBool;
+					Player.entities[i].getPlayerTiles()[j].upgraded[3] = hvacUpgBool;
+					
 				}
-				// TODO: Here is a 1-liner if statement that is the exact same as the above 5 liner
-				elecUpgradeBool = elecUpgrade == 1 ? true : false;
 				
-				if (plumUpgrade == 1){
-					plumUpgradeBool = true;
-				} else {
-					plumUpgradeBool = false;
+				for(int k = 0; k < tableTurnEventInstance_fieldPlayerID.length; k++){
+					
+					//If: Event Jail Release
+					if(tableTurnEventInstance_fieldEventNumber[k] == 0){
+						EventGenerator.registerEvent("newTurn", new EventSetup.EventJailRelease(tableTurnEventInstance_fieldEventTurnsLeft[k], tableTurnEventInstance_fieldPlayerID[k]));
+					}
+					
+					//else if()
+					
 				}
-				
-				if (vendUpgrade == 1){
-					vendUpgradeBool = true;
-				} else {
-					vendUpgradeBool = false;
-				}
-				
-				if (hvacUpg == 1){
-					hvacUpgBool = true;
-				} else {
-					hvacUpgBool = false;
-				}
-				
-				
-				Player.entities[i].getPlayerTiles()[j].upgraded[0] = elecUpgradeBool;
-				Player.entities[i].getPlayerTiles()[j].upgraded[1] = plumUpgradeBool;
-				Player.entities[i].getPlayerTiles()[j].upgraded[2] = vendUpgradeBool;
-				Player.entities[i].getPlayerTiles()[j].upgraded[3] = hvacUpgBool;
 				
 			}
 			
-			for(int k = 0; k < tableTurnEventInstance_fieldPlayerID.length; k++){
-				
-				//If: Event Jail Release
-				if(tableTurnEventInstance_fieldEventNumber[k] == 0){
-					EventGenerator.registerEvent("newTurn", new EventSetup.EventJailRelease(tableTurnEventInstance_fieldEventTurnsLeft[k], tableTurnEventInstance_fieldPlayerID[k]));
-				}
-				
-				//else if()
-				
-			}
 		}
 		
 	}
@@ -856,6 +842,7 @@ public class DatabaseThread extends Thread {
 		while(gameMade != true){
 			count++;
 		}
+		Game.start();
 		Log.i("","" + count);
 		gameMade = false; //reset for next time
 	}
