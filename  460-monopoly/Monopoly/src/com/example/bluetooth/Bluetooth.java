@@ -358,9 +358,11 @@ public class Bluetooth {
 			            				msg.arg1 = 0; //identify which playerdevice has the current activethread
 			            				for (int i=0; i<Device.player.length; i++){
 			            					if (Device.player[i] != null){
-			            						if (Device.player[i].active.getId() == this.getId()){
-			            							Log.d("getId()", "i = " + i);
-			            							msg.arg1 = i;
+			            						if(Device.player[i].active !=null){
+				            						if (Device.player[i].active.getId() == this.getId()){
+				            							Log.d("getId()", "i = " + i);
+				            							msg.arg1 = i;
+				            						}
 			            						}
 			            					}
 			            				}
