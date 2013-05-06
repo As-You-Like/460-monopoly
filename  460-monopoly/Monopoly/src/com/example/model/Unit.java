@@ -3,6 +3,7 @@ package com.example.model;
 import java.util.ArrayList;
 
 import com.example.controllers.Device;
+import com.example.controllers.HostDevice;
 import com.example.controllers.Player;
 
 import android.graphics.Bitmap;
@@ -99,13 +100,15 @@ public abstract class Unit {
 	}
 	
 	public void setOwner(int o){
-		this.owner = o;
-		if (this.owner < 
-				Player.entities
-				.length){
-			this.colorFilter = new LightingColorFilter(Player.entities[owner].getColor(), 1);
-		} else {
-			this.colorFilter = new LightingColorFilter(Color.WHITE, 1);
+		if (HostDevice.self == true){
+			this.owner = o;
+			if (this.owner < 
+					Player.entities
+					.length){
+				this.colorFilter = new LightingColorFilter(Player.entities[owner].getColor(), 1);
+			} else {
+				this.colorFilter = new LightingColorFilter(Color.WHITE, 1);
+			}
 		}
 	}
 	
