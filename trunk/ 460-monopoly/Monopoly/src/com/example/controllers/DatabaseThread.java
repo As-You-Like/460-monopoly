@@ -602,16 +602,16 @@ public class DatabaseThread extends Thread {
 			for(int c = 0; c < tablePlayer_fieldPlayerColor.length; c++){
 				
 				if(tablePlayer_fieldPlayerColor[c].equals("Red")){
-					color = LIST_COLORS.get(c);
+					color = LIST_COLORS.get(0);
 				}
 				else if(tablePlayer_fieldPlayerColor[c].equals("Green")){
-					color = LIST_COLORS.get(c);
+					color = LIST_COLORS.get(1);
 				}
 				else if(tablePlayer_fieldPlayerColor[c].equals("Blue")){
-					color = LIST_COLORS.get(c);
+					color = LIST_COLORS.get(2);
 				}
 				else if(tablePlayer_fieldPlayerColor[c].equals("Cyan")){
-					color = LIST_COLORS.get(c);
+					color = LIST_COLORS.get(3);
 				}
 			}
 
