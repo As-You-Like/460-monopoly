@@ -238,7 +238,7 @@ public class DatabaseThread extends Thread {
         db.execSQL(sql);
         //CREATE = create table query
         
-        sql = "CREATE TABLE IF NOT EXISTS " + tileTableName + "(TileID INTEGER PRIMARY KEY,OwnerID INTEGER,ElectricalBought INTEGER,PlumbingBought INTEGER, VendingBought INTEGER, HVACBought INTEGER)";
+        sql = "CREATE TABLE IF NOT EXISTS " + tileTableName + "(TileID INTEGER PRIMARY KEY AUTOINCREMENT,OwnerID INTEGER,ElectricalBought INTEGER,PlumbingBought INTEGER, VendingBought INTEGER, HVACBought INTEGER)";
         db.execSQL(sql);
         //CREATE = create table query
         
