@@ -72,7 +72,7 @@ public class DatabaseThread extends Thread {
 	public static DatabaseThread dt;
 	public static boolean isLoad;
 	public static boolean isGettingGameNames;
-	public static final String DATABASE_NAME = "smartstartupsdatabase2.db";
+	public static final String DATABASE_NAME = "smartstartupsdatabase3.db";
 	public volatile Looper mMyLooper;
 	public String selectedGameName = "";
 	public String[] listViewContents;
