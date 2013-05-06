@@ -142,7 +142,7 @@ public class Tile extends StaticUnit {
 		this.id = totalTileCount;
 		totalTileCount++;
 		
-		try {
+		/*try {
 			int file = (Integer) R.drawable.class.getField("i"+this.id).get("");
 			Log.e("TileImageId", ""+file);
 			this.image = file;
@@ -155,7 +155,7 @@ public class Tile extends StaticUnit {
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		this.hexX = hexX;
 		this.hexY = hexY;
