@@ -136,7 +136,7 @@ public class BoardSetup {
 		//South East
 		
 		Tile Health = MadFalcon.addNextStop(Tile.DIRECTION_SOUTHEAST);
-		Health.setName("Health & Welness Center");
+		Health.setName("Health & Wellness Center");
 		Health.setRegion(Tile.REGION_SPECIAL);
 		Health.setPrice(300);
 		Health.setBaseRent(60);
@@ -332,7 +332,7 @@ public class BoardSetup {
 		Baker.priceUpgrades(375, 750, 1125, 1500);
 
 		Tile Falcon_Statue = Baker.addNextStop(Tile.DIRECTION_NORTHWEST);
-		Falcon_Statue.setName("Baker Library");
+		Falcon_Statue.setName("Falcon Statue");
 		Falcon_Statue.setRegion(Tile.REGION_POSSESSIONS);
 		Falcon_Statue.setPrice(500);
 		Falcon_Statue.setBaseRent(100);
@@ -444,7 +444,7 @@ public class BoardSetup {
 		//Lowe_Campus_Greenspase
 	
 		Tile Lowe_Campus = Road9.addNextStop(Tile.DIRECTION_NORTHEAST);
-		Lowe_Campus.setName("Lower Campus Greenspase");
+		Lowe_Campus.setName("Lower Campus Greenspace");
 		Lowe_Campus.setPrice(420);
 		Lowe_Campus.setRegion(Tile.REGION_NON_BUYABLE);
 		Lowe_Campus.setBaseRent(84);
