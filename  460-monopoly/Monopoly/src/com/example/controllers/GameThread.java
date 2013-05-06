@@ -453,11 +453,13 @@ public class GameThread extends Thread{
 						}
 						spacesMoved++;
 						
-						if(newTileLocation.id == 0){
-							Player p = Player.entities[Game.currentPlayer];
-							p.setBalance(p.getBalance() + 200);
-							Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
-									"You passed the Pond. You collect $200.");
+						if (newTileLocation != null){
+							if(newTileLocation.id == 0){
+								Player p = Player.entities[Game.currentPlayer];
+								p.setBalance(p.getBalance() + 200);
+								Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+										"You passed the Pond. You collect $200.");
+							} 
 						}
 					}
 				}
