@@ -221,6 +221,9 @@ public class DatabaseThread extends Thread {
 	
 	public void setUpDatabase(){
 		
+		//
+		HostDevice.host.self = true;
+		
 		 //create database and tables
 		
 		 
