@@ -82,8 +82,8 @@ public class SplashActivity extends Activity {
 	public void terminate() {
 	      Log.i("","terminated!!");
 	      super.onDestroy();
-	      System.exit(0);
-	      //this.finish();
+	      //System.exit(0);
+	      this.finish();
 	}
 
 }
