@@ -72,7 +72,7 @@ public class DatabaseThread extends Thread {
 	public static DatabaseThread dt;
 	public static boolean isLoad;
 	public static boolean isGettingGameNames;
-	public static final String DATABASE_NAME = "smartstartupsdatabase3.db";
+	public static final String DATABASE_NAME = "smartstartupsdatabase4.db";
 	public volatile Looper mMyLooper;
 	public String selectedGameName = "";
 	public String[] listViewContents;
@@ -80,9 +80,10 @@ public class DatabaseThread extends Thread {
 	public static String[][][] relationship = {
 		//  {{parent_table  | parent_key | child_table              | child_key    }, {cascade_delete}}
 			{{"GameTable"   , "GameName" , "PlayerTable"            , "GameName"   }, {"true"        }},
-			{{"PlayerTable" , "PlayerID" , "TileTable"              , "OwnerID"    }, {"true"        }},
 			{{"PlayerTable" , "PlayerID" , "TurnEventInstanceTable" , "PlayerID"   }, {"true"        }}
 	};
+	
+	//{{"PlayerTable" , "PlayerID" , "TileTable"              , "OwnerID"    }, {"true"        }},
 	
 	public String gameTableName = "GameTable";
 	public String playerTableName = "PlayerTable";
@@ -238,9 +239,11 @@ public class DatabaseThread extends Thread {
         db.execSQL(sql);
         //CREATE = create table query
         
+        /*
         sql = "CREATE TABLE IF NOT EXISTS " + tileTableName + "(TileID INTEGER PRIMARY KEY AUTOINCREMENT,OwnerID INTEGER,ElectricalBought INTEGER,PlumbingBought INTEGER, VendingBought INTEGER, HVACBought INTEGER)";
         db.execSQL(sql);
         //CREATE = create table query
+        */
         
         sql = "CREATE TABLE IF NOT EXISTS " + turnEventInstanceTableName + "(TurnEventInstanceID INTEGER PRIMARY KEY AUTOINCREMENT,PlayerID INTEGER,EventNumber INTEGER,EventTurnsLeft INTEGER)";
         db.execSQL(sql);
@@ -289,6 +292,7 @@ public class DatabaseThread extends Thread {
 				db.execSQL(sqlPlayer);
 				
 				//Replace player tile ownership data
+				/*
 				for(int j = 0; j < Player.entities[i].getPlayerTiles().length; j++){
 					if(Player.entities[i] != null){
 						Tile[] tiles = Player.entities[i].getPlayerTiles();
@@ -317,6 +321,7 @@ public class DatabaseThread extends Thread {
 					}
 					
 				}
+				*/
 				
 				//Replace player events
 				// TODO: Shifted the turnEvents around to reduce confusion.
@@ -390,15 +395,15 @@ public class DatabaseThread extends Thread {
 		Log.i("", sqlGame);
 		String sqlPlayer = "SELECT * FROM " + playerTableName + " WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = " + gameName + ");";
 		Log.i("", sqlPlayer);
-		String sqlTile = "SELECT * FROM " + tileTableName + " WHERE OwnerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = " + gameName + "));";
-		Log.i("", sqlTile);
+		/*String sqlTile = "SELECT * FROM " + tileTableName + " WHERE OwnerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = " + gameName + "));";
+		Log.i("", sqlTile);*/
 		String sqlTurnEventInstance = "SELECT * FROM " + turnEventInstanceTableName + " WHERE PlayerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = '" + gameName + "'));";
 		Log.i("", sqlTurnEventInstance);
 		
 		//Retrieve all database data
 		gameQuery = db.rawQuery(sqlGame, st);
 		playerQuery = db.rawQuery(sqlPlayer, st);
-		tileQuery = db.rawQuery(sqlTile, st);
+		//tileQuery = db.rawQuery(sqlTile, st);
 		turnEventInstanceQuery = db.rawQuery(sqlTurnEventInstance, st);
 		
 		// String[] -----> GameTable values for one row
@@ -445,6 +450,7 @@ public class DatabaseThread extends Thread {
 		// === Tile Entity ===
 		/////////////////////////////
 		
+		/*
 		//Instantiate tile data fields where the index represents a different tile row
 		tableTile_fieldOwnerID = new int[tileQuery.getCount()];
 		tableTile_fieldElectricalBought = new int[tileQuery.getCount()];
@@ -462,6 +468,7 @@ public class DatabaseThread extends Thread {
 			tableTile_fieldHVACBought[i] = tileQuery.getInt(5);
 			tileQuery.moveToNext();
 		}
+		*/
 		
 		// === Turn Event Entity ===
 		////////////////////////
@@ -481,7 +488,6 @@ public class DatabaseThread extends Thread {
 		
 		// === Testing Code ===
 		/////////////////////////
-		// TODO: I can't for the life of me figure out what these concats are for.
 		String gamee = "Game: ";
 		for(int i = 0; i < tableGame_fieldAll.length; i++){
 			gamee = gamee.concat(tableGame_fieldAll[i] + " : ");
@@ -547,7 +553,6 @@ public class DatabaseThread extends Thread {
 		LIST_COLORS.add(Color.rgb(0, 255, 255)); // Cyan
 		
 		// Set up images
-		// TODO: Hmm, this causes a dangerous redundancy, remind me to create a setup method in the Image class.
 		Image.HEXAGON_TEXTURE = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.hexagon_blue);
 		Image.HEXAGON_BOTTOM = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.hexagon_layer_bot);
 		Image.HEXAGON_REGION = BitmapFactory.decodeResource(DataLoadingActivity.activity.getResources(), R.drawable.hexagon_layer_rgn);
@@ -571,8 +576,6 @@ public class DatabaseThread extends Thread {
 		Game.turn = Integer.parseInt(tableGame_fieldAll[2]);
 		
 		// Set up Player Devices
-		// TODO: The size of this array was already instantiated in the global scope, you don't need to do it.
-		//Device.player = new PlayerDevice[tablePlayer_fieldPlayerNumber.length];
 		for(int i = 0; i < tablePlayer_fieldPlayerNumber.length; i++){
 			Device.player[tablePlayer_fieldPlayerNumber[i]] = new PlayerDevice(false, tablePlayer_fieldPlayerNumber[i]);
 			
@@ -581,8 +584,6 @@ public class DatabaseThread extends Thread {
 		}
 		
 		// Set up Players
-		// TODO: Bad idea to use the length of your field results. the size of this array should always be the max amount of players supported
-		//Player.entities = new Player[tablePlayer_fieldPlayerName.length];
 		Player.entities = new Player[Device.player.length]; //I changed it
 		for(int i = 0; i < tablePlayer_fieldPlayerName.length; i++){
 			int color = Color.rgb(0, 0, 0);
@@ -615,7 +616,7 @@ public class DatabaseThread extends Thread {
 		
 		//Set up board and images
 		BoardSetup.setupBoard();
-		//Image
+		Image.setupImages();
 		
 		// Set up PlayerPieces, Current Location, and Previous Location
 		for(int i = 0; i < tablePlayer_fieldCurrentLocation.length; i++){
@@ -681,6 +682,7 @@ public class DatabaseThread extends Thread {
 		for(int i = 0; i < Player.entities.length; i++){
 			if(Player.entities[i] != null){
 				
+				/*
 				for(int j = 0; j < Player.entities[i].getPlayerTiles().length; j++){
 					
 					boolean elecUpgradeBool;
@@ -726,6 +728,7 @@ public class DatabaseThread extends Thread {
 					Player.entities[i].getPlayerTiles()[j].upgraded[3] = hvacUpgBool;
 					
 				}
+				*/
 				
 				for(int k = 0; k < tableTurnEventInstance_fieldPlayerID.length; k++){
 					
