@@ -1,6 +1,7 @@
 package com.example.content;
 
 import com.example.model.Tile;
+import com.example.monopoly.R;
 
 public class BoardSetup {
 	public static void setupBoard(){
@@ -14,6 +15,7 @@ public class BoardSetup {
 		start.setBaseRent(84);
 		start.setBaseRegionRent(42);
 		start.priceUpgrades(315, 630, 945, 1260);
+		start.image = R.drawable.i0;
 		
 		// Tree
 		
@@ -24,6 +26,7 @@ public class BoardSetup {
 		Spruce.setBaseRent(5);
 		Spruce.setBaseRegionRent(10);
 		Spruce.priceUpgrades(37.5, 75, 112.5, 150);
+		Spruce.image = R.drawable.i1;
 		
 		Tile Oak = Spruce.addNextStop(Tile.DIRECTION_EAST);
 		Oak.setName("Oak Hall");
@@ -32,6 +35,7 @@ public class BoardSetup {
 		Oak.setBaseRent(5);
 		Oak.setBaseRegionRent(10);
 		Oak.priceUpgrades(37.5, 75, 112.5, 150);
+		Oak.image = R.drawable.i2;
 		
 		Tile Maple = Oak.addNextStop(Tile.DIRECTION_EAST);
 		Maple.setName("Maple Hall");
@@ -40,6 +44,7 @@ public class BoardSetup {
 		Maple.setBaseRent(5);
 		Maple.setBaseRegionRent(10);
 		Maple.priceUpgrades(37.5, 75, 112.5, 150);
+		Maple.image = R.drawable.i3;
 		
 		Tile Elm = Maple.addNextStop(Tile.DIRECTION_EAST);
 		Elm.setName("Elm Hall");
@@ -48,6 +53,7 @@ public class BoardSetup {
 		Elm.setBaseRent(5);
 		Elm.setBaseRegionRent(10);
 		Elm.priceUpgrades(37.5, 75, 112.5, 150);
+		Elm.image = R.drawable.i4;
 		
 		Tile Cedar = Elm.addNextStop(Tile.DIRECTION_EAST);
 		Cedar.setName("Cedar Hall");
@@ -56,6 +62,7 @@ public class BoardSetup {
 		Cedar.setBaseRent(5);
 		Cedar.setBaseRegionRent(10);
 		Cedar.priceUpgrades(37.5, 75, 112.5, 150);
+		Cedar.image = R.drawable.i5;
 		
 		Tile Birch = Cedar.addNextStop(Tile.DIRECTION_EAST);
 		Birch.setName("Birch Hall");
@@ -64,6 +71,7 @@ public class BoardSetup {
 		Birch.setBaseRent(5);
 		Birch.setBaseRegionRent(10);
 		Birch.priceUpgrades(37.5, 75, 112.5, 150);
+		Birch.image = R.drawable.i6;
 		
 		Tile Alder = Birch.addNextStop(Tile.DIRECTION_EAST);
 		Alder.setName("Alder Hall");
@@ -72,6 +80,7 @@ public class BoardSetup {
 		Alder.setBaseRent(5);
 		Alder.setBaseRegionRent(10);
 		Alder.priceUpgrades(37.5, 75, 112.5, 150);
+		Alder.image = R.drawable.i7;
 		
 		//TOP EAST
 		
@@ -82,6 +91,7 @@ public class BoardSetup {
 		Slade.setBaseRent(10);
 		Slade.setBaseRegionRent(5);
 		Slade.priceUpgrades(37.5, 75, 112.5, 150);
+		Slade.image = R.drawable.i8;
 		
 		Tile Shuttle = Slade.addNextStop(Tile.DIRECTION_SOUTHEAST);
 		Shuttle.setName("Tree Dorm Shuttle Stop");
@@ -90,6 +100,7 @@ public class BoardSetup {
 		Shuttle.setBaseRent(50);
 		Shuttle.setBaseRegionRent(25);
 		Shuttle.priceUpgrades(187.5, 375, 562.5, 750);
+		Shuttle.image = R.drawable.i9;
 		
 		Tile Miller = Shuttle.addNextStop(Tile.DIRECTION_SOUTHEAST);
 		Miller.setName("Miller Hall");
@@ -98,6 +109,7 @@ public class BoardSetup {
 		Miller.setBaseRent(10);
 		Miller.setBaseRegionRent(5);
 		Miller.priceUpgrades(37.5, 75, 112.5, 150);
+		Miller.image = R.drawable.i10;
 		
 		Tile Seasons = Miller.addNextStop(Tile.DIRECTION_SOUTHEAST);
 		Seasons.setName("Seasons Dining Hall");
@@ -106,6 +118,7 @@ public class BoardSetup {
 		Seasons.setBaseRent(40);
 		Seasons.setBaseRegionRent(20);
 		Seasons.priceUpgrades(150, 300, 450, 600);
+		Seasons.image = R.drawable.i11;
 		
 		// South West
 		
@@ -116,6 +129,7 @@ public class BoardSetup {
 		BackBay.setBaseRent(40);
 		BackBay.setBaseRegionRent(20);
 		BackBay.priceUpgrades(150, 300, 450, 600);
+		BackBay.image = R.drawable.i12;
 		
 		Tile Harry = BackBay.addNextStop(Tile.DIRECTION_SOUTHWEST);
 		Harry.setName("Harry's Pub");
@@ -124,6 +138,7 @@ public class BoardSetup {
 		Harry.setBaseRent(40);
 		Harry.setBaseRegionRent(20);
 		Harry.priceUpgrades(150, 300, 450, 600);
+		Harry.image = R.drawable.i13;
 		
 		Tile MadFalcon = Harry.addNextStop(Tile.DIRECTION_SOUTHWEST);
 		MadFalcon.setName("Mad Falcon");
@@ -132,6 +147,7 @@ public class BoardSetup {
 		MadFalcon.setBaseRent(50);
 		MadFalcon.setBaseRegionRent(25);
 		MadFalcon.priceUpgrades(187.5, 375, 562.5, 750);
+		MadFalcon.image = R.drawable.i14;
 		
 		//South East
 		
@@ -143,6 +159,7 @@ public class BoardSetup {
 		Health.setBaseRegionRent(30);
 		Health.priceUpgrades(225, 450, 675, 900);
 		Health.setOwner(Tile.OWNER_UNOWNABLE);
+		Health.image = R.drawable.i15;
 		
 		Tile.setClinicTile(Health);
 		
@@ -156,6 +173,7 @@ public class BoardSetup {
 		Greenspace.setBaseRegionRent(42);
 		Greenspace.priceUpgrades(315, 630, 945, 1260);
 		Greenspace.setOwner(Tile.OWNER_UNOWNABLE);
+		Greenspace.image = R.drawable.i16;
 		
 		//South West
 		
@@ -166,6 +184,7 @@ public class BoardSetup {
 		Boyston.setBaseRent(60);
 		Boyston.setBaseRegionRent(30);
 		Boyston.priceUpgrades(225, 450, 675, 900);
+		Boyston.image = R.drawable.i17;
 		
 		
 		Tile Rhodes = Boyston.addNextStop(Tile.DIRECTION_SOUTHWEST);
@@ -175,6 +194,7 @@ public class BoardSetup {
 		Rhodes.setBaseRent(60);
 		Rhodes.setBaseRegionRent(30);
 		Rhodes.priceUpgrades(225, 450, 675, 900);
+		Rhodes.image = R.drawable.i18;
 		
 		Tile Donut = Rhodes.addNextStop(Tile.DIRECTION_SOUTHWEST);
 		Donut.setName("Donut Shop");
@@ -183,6 +203,7 @@ public class BoardSetup {
 		Donut.setBaseRent(50);
 		Donut.setBaseRegionRent(25);
 		Donut.priceUpgrades(187.5, 375, 562.5, 750);
+		Donut.image = R.drawable.i19;
 		
 		
 		Tile Collins = Donut.addNextStop(Tile.DIRECTION_SOUTHWEST);
@@ -192,6 +213,7 @@ public class BoardSetup {
 		Collins.setBaseRent(60);
 		Collins.setBaseRegionRent(30);
 		Collins.priceUpgrades(225, 450, 675, 900);
+		Collins.image = R.drawable.i20;
 		
 		Tile Road1 = Collins.addNextStop(Tile.DIRECTION_SOUTHWEST);
 		Road1.setName("Forest Street Bridge - Kresge Pathway");
@@ -201,6 +223,7 @@ public class BoardSetup {
 		Road1.setBaseRegionRent(50);
 		Road1.priceUpgrades(200, 300, 500, 700);
 		Road1.setOwner(Tile.OWNER_UNOWNABLE);
+		Road1.image = R.drawable.i21;
 		
 		//West 
 		
@@ -211,6 +234,7 @@ public class BoardSetup {
 		Kresge.setBaseRent(40);
 		Kresge.setBaseRegionRent(20);
 		Kresge.priceUpgrades(150, 300, 450, 600);
+		Kresge.image = R.drawable.i22;
 		
 		Tile Forest = Kresge.addNextStop(Tile.DIRECTION_WEST);
 		Forest.setName("Forest Hall");
@@ -219,6 +243,7 @@ public class BoardSetup {
 		Forest.setBaseRent(40);
 		Forest.setBaseRegionRent(20);
 		Forest.priceUpgrades(150, 300, 450, 600);
+		Forest.image = R.drawable.i23;
 		
 		//North West
 		
@@ -229,6 +254,7 @@ public class BoardSetup {
 		Falcone_west.setBaseRent(70);
 		Falcone_west.setBaseRegionRent(35);
 		Falcone_west.priceUpgrades(262.5, 525, 787.5, 1050);
+		Falcone_west.image = R.drawable.i24;
 		
 		Tile Falcone_East = Falcone_west.addNextStop(Tile.DIRECTION_NORTHWEST);
 		Falcone_East.setName("Falcone East");
@@ -237,6 +263,7 @@ public class BoardSetup {
 		Falcone_East.setBaseRent(70);
 		Falcone_East.setBaseRegionRent(35);
 		Falcone_East.priceUpgrades(262.5, 525, 787.5, 1050);
+		Falcone_East.image = R.drawable.i25;
 		
 		Tile Falcone_North = Falcone_East.addNextStop(Tile.DIRECTION_NORTHWEST);
 		Falcone_North.setName("Falcone North");
@@ -245,6 +272,7 @@ public class BoardSetup {
 		Falcone_North.setBaseRent(70);
 		Falcone_North.setBaseRegionRent(35);
 		Falcone_North.priceUpgrades(262.5, 525, 787.5, 1050);
+		Falcone_North.image = R.drawable.i26;
 		
 		
 		Tile Rauch = Falcone_North.addNextStop(Tile.DIRECTION_NORTHWEST);
@@ -254,6 +282,7 @@ public class BoardSetup {
 		Rauch.setBaseRent(80);
 		Rauch.setBaseRegionRent(40);
 		Rauch.priceUpgrades(300, 600, 900, 1200);
+		Rauch.image = R.drawable.i27;
 		
 		Tile LaCava = Rauch.addNextStop(Tile.DIRECTION_NORTHWEST);
 		LaCava.setName("LaCava Center");
@@ -262,6 +291,7 @@ public class BoardSetup {
 		LaCava.setBaseRent(80);
 		LaCava.setBaseRegionRent(40);
 		LaCava.priceUpgrades(300, 600, 900, 1200);
+		LaCava.image = R.drawable.i28;
 		
 		Tile LaCava_Shuttle = LaCava.addNextStop(Tile.DIRECTION_NORTHWEST);
 		LaCava_Shuttle.setName("LaCava Shuttle Stop");
@@ -270,6 +300,7 @@ public class BoardSetup {
 		LaCava_Shuttle.setBaseRent(50);
 		LaCava_Shuttle.setBaseRegionRent(25);
 		LaCava_Shuttle.priceUpgrades(187.5, 375, 562.5, 750);
+		LaCava_Shuttle.image = R.drawable.i29;
 		
 		Tile Jenision = LaCava_Shuttle.addNextStop(Tile.DIRECTION_NORTHWEST);
 		Jenision.setName("Jennison Hall");
@@ -278,6 +309,7 @@ public class BoardSetup {
 		Jenision.setBaseRent(80);
 		Jenision.setBaseRegionRent(40);
 		Jenision.priceUpgrades(300, 600, 900, 1200);
+		Jenision.image = R.drawable.i30;
 		
 		//North East
 		
@@ -288,6 +320,7 @@ public class BoardSetup {
 		Lindsay.setBaseRent(90);
 		Lindsay.setBaseRegionRent(45);
 		Lindsay.priceUpgrades(337.5, 675, 1012.5, 1350);
+		Lindsay.image = R.drawable.i31;
 		
 		//North West
 		
@@ -298,6 +331,7 @@ public class BoardSetup {
 		SATC.setBaseRent(90);
 		SATC.setBaseRegionRent(45);
 		SATC.priceUpgrades(337.5, 675, 1012.5, 1350);
+		SATC.image = R.drawable.i32;
 		
 		/*Tile Morrison = SATC.addNextStop(Tile.DIRECTION_NORTHWEST);
 		Morrison.setName("Morrison Hall");
@@ -314,6 +348,7 @@ public class BoardSetup {
 		AAC.setBaseRent(90);
 		AAC.setBaseRegionRent(45);
 		AAC.priceUpgrades(337.5, 675, 1012.5, 1350);
+		AAC.image = R.drawable.i33;
 		
 		Tile Bagel = AAC.addNextStop(Tile.DIRECTION_NORTHWEST);
 		Bagel.setName("Bagel Shop");
@@ -322,6 +357,7 @@ public class BoardSetup {
 		Bagel.setBaseRent(50);
 		Bagel.setBaseRegionRent(25);
 		Bagel.priceUpgrades(187.5, 375, 562.5, 750);
+		Bagel.image = R.drawable.i34;
 		
 		Tile Baker = Bagel.addNextStop(Tile.DIRECTION_NORTHWEST);
 		Baker.setName("Baker Library");
@@ -330,6 +366,7 @@ public class BoardSetup {
 		Baker.setBaseRent(100);
 		Baker.setBaseRegionRent(50);
 		Baker.priceUpgrades(375, 750, 1125, 1500);
+		Baker.image = R.drawable.i35;
 
 		Tile Falcon_Statue = Baker.addNextStop(Tile.DIRECTION_NORTHWEST);
 		Falcon_Statue.setName("Falcon Statue");
@@ -338,6 +375,7 @@ public class BoardSetup {
 		Falcon_Statue.setBaseRent(100);
 		Falcon_Statue.setBaseRegionRent(50);
 		Falcon_Statue.priceUpgrades(375, 750, 1125, 1500);
+		Falcon_Statue.image = R.drawable.i36;
 
 		//  North East
 		
@@ -349,6 +387,7 @@ public class BoardSetup {
 		Presidential.setBaseRegionRent(50);
 		Presidential.priceUpgrades(375, 750, 1125, 1500);
 		Presidential.addNextStop(start);
+		Presidential.image = R.drawable.i37;
 		
 		//main root end
         //South East
@@ -361,6 +400,7 @@ public class BoardSetup {
 		Road2.priceUpgrades(200, 300, 500, 700);
 		Road2.addNextStop(Road1);
 		Road2.setOwner(Tile.OWNER_UNOWNABLE);
+		Road2.image = R.drawable.i38;
 
 		//East
 		
@@ -373,6 +413,7 @@ public class BoardSetup {
 		Road3.priceUpgrades(200, 300, 500, 700);
 		Road3.addNextStop(Road2);
 		Road3.setOwner(Tile.OWNER_UNOWNABLE);
+		Road3.image = R.drawable.i39;
 
 		
 		Tile Road4 = Road3.addNextStop(Tile.DIRECTION_EAST);
@@ -384,6 +425,7 @@ public class BoardSetup {
 		Road4.priceUpgrades(200, 300, 500, 700);
 		Road4.addNextStop(Road3);
 		Road4.setOwner(Tile.OWNER_UNOWNABLE);
+		Road4.image = R.drawable.i40;
 
 		Tile Road5 = Road4.addNextStop(Tile.DIRECTION_EAST);
 		Road5.setName("Forest Street Bridge - Middle Bridge Section");
@@ -394,6 +436,7 @@ public class BoardSetup {
 		Road5.priceUpgrades(200, 300, 500, 700);
 		Road5.addNextStop(Road4);
 		Road5.setOwner(Tile.OWNER_UNOWNABLE);
+		Road5.image = R.drawable.i41;
 
 		Tile Road6 = Road5.addNextStop(Tile.DIRECTION_EAST);
 		Road6.setName("Forest Street Bridge - Lower Campus-Side Bridge Section");
@@ -404,6 +447,7 @@ public class BoardSetup {
 		Road6.priceUpgrades(200, 300, 500, 700);
 		Road6.addNextStop(Road5);
 		Road6.setOwner(Tile.OWNER_UNOWNABLE);
+		Road6.image = R.drawable.i42;
 
 		
 		Tile Road7 = Road6.addNextStop(Tile.DIRECTION_EAST);
@@ -415,6 +459,7 @@ public class BoardSetup {
 		Road7.priceUpgrades(200, 300, 500, 700);
 		Road7.addNextStop(Road6);
 		Road7.setOwner(Tile.OWNER_UNOWNABLE);
+		Road7.image = R.drawable.i43;
 
 		
 		Tile Road8 = Road7.addNextStop(Tile.DIRECTION_EAST);
@@ -426,6 +471,7 @@ public class BoardSetup {
 		Road8.priceUpgrades(200, 300, 500, 700);
 		Road8.addNextStop(Road7);
 		Road8.setOwner(Tile.OWNER_UNOWNABLE);
+		Road8.image = R.drawable.i44;
 
 		
 		//North East
@@ -439,6 +485,7 @@ public class BoardSetup {
 		Road9.priceUpgrades(200, 300, 500, 700);
 		Road9.addNextStop(Road8);
 		Road9.setOwner(Tile.OWNER_UNOWNABLE);
+		Road9.image = R.drawable.i45;
 
 		
 		//Lowe_Campus_Greenspase
@@ -452,6 +499,7 @@ public class BoardSetup {
 		Lowe_Campus.priceUpgrades(315, 630, 945, 1260);
 		Lowe_Campus.addNextStop(Road9);
 		Lowe_Campus.setOwner(Tile.OWNER_UNOWNABLE);
+		Lowe_Campus.image = R.drawable.i46;
 
 		
 		//Dana Center
@@ -464,6 +512,7 @@ public class BoardSetup {
 		Swimming.setBaseRent(60);
 		Swimming.setBaseRegionRent(30);
 		Swimming.priceUpgrades(225, 450, 675, 900);
+		Swimming.image = R.drawable.i47;
 		
 		Tile Fitness = Swimming.addNextStop(Tile.DIRECTION_EAST);
 		Fitness.setName("Fitness Center");
@@ -472,6 +521,7 @@ public class BoardSetup {
 		Fitness.setBaseRent(60);
 		Fitness.setBaseRegionRent(30);
 		Fitness.priceUpgrades(225, 450, 675, 900);
+		Fitness.image = R.drawable.i48;
 		
 		Tile Gymnasium = Fitness.addNextStop(Tile.DIRECTION_EAST);
 		Gymnasium.setName("Gymnasium");
@@ -480,6 +530,7 @@ public class BoardSetup {
 		Gymnasium.setBaseRent(60);
 		Gymnasium.setBaseRegionRent(30);
 		Gymnasium.priceUpgrades(225, 450, 675, 900);
+		Gymnasium.image = R.drawable.i49;
 		
 
         Tile Burrito = Gymnasium.addNextStop(Tile.DIRECTION_EAST);
@@ -489,6 +540,7 @@ public class BoardSetup {
         Burrito.setBaseRent(50);
         Burrito.setBaseRegionRent(25);
         Burrito.priceUpgrades(187.5, 375, 562.5, 750);
+        Burrito.image = R.drawable.i50;
         
         Tile Dana_Shuttle = Burrito.addNextStop(Tile.DIRECTION_EAST);
         Dana_Shuttle.setName("Dana Center Shuttle Stop");
@@ -497,6 +549,7 @@ public class BoardSetup {
         Dana_Shuttle.setBaseRent(50);
         Dana_Shuttle.setBaseRegionRent(25);
         Dana_Shuttle.priceUpgrades(187.5, 375, 562.5, 750);
+        Dana_Shuttle.image = R.drawable.i51;
         
         Tile Athletic1 = Dana_Shuttle.addNextStop(Tile.DIRECTION_EAST);
         Athletic1.setName("Baseball Field");
@@ -505,6 +558,7 @@ public class BoardSetup {
         Athletic1.setBaseRent(50);
         Athletic1.setBaseRegionRent(25);
         Athletic1.priceUpgrades(187.5, 375, 562.5, 750);
+        Athletic1.image = R.drawable.i52;
         
         //North East
         
@@ -515,6 +569,7 @@ public class BoardSetup {
         Athletic2.setBaseRent(50);
         Athletic2.setBaseRegionRent(25);
         Athletic2.priceUpgrades(187.5, 375, 562.5, 750);
+        Athletic2.image = R.drawable.i53;
         
         //North West
         
@@ -525,6 +580,7 @@ public class BoardSetup {
         Facilities_Management.setBaseRent(60);
         Facilities_Management.setBaseRegionRent(30);
         Facilities_Management.priceUpgrades(225, 450, 675, 900);
+        Facilities_Management.image = R.drawable.i54;
         
         // parking space right side
         //North East
@@ -537,6 +593,7 @@ public class BoardSetup {
         Parking1.setBaseRegionRent(30);
         Parking1.priceUpgrades(200, 300, 400, 500);
         Parking1.setOwner(Tile.OWNER_UNOWNABLE);
+        Parking1.image = R.drawable.i55;
         
         //North West
         
@@ -548,6 +605,7 @@ public class BoardSetup {
         Parking2.setBaseRegionRent(30);
         Parking2.priceUpgrades(200, 300, 400, 500);
         Parking2.setOwner(Tile.OWNER_UNOWNABLE);
+        Parking2.image = R.drawable.i56;
         
         Tile Parking3 = Parking2.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking3.setName("Parking Garage Level 1 - Section C");
@@ -557,6 +615,7 @@ public class BoardSetup {
         Parking3.setBaseRegionRent(30);
         Parking3.priceUpgrades(200, 300, 400, 500);
         Parking3.setOwner(Tile.OWNER_UNOWNABLE);
+        Parking3.image = R.drawable.i57;
         
         Tile Parking4 = Parking3.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking4.setName("Parking Garage Level 1 - Section D");
@@ -566,6 +625,7 @@ public class BoardSetup {
         Parking4.setBaseRegionRent(30);
         Parking4.priceUpgrades(200, 300, 400, 500);
         Parking4.setOwner(Tile.OWNER_UNOWNABLE);
+        Parking4.image = R.drawable.i58;
         
         Tile Parking5 = Parking4.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking5.setName("Parking Garage Level 1 - Section E");
@@ -575,6 +635,7 @@ public class BoardSetup {
         Parking5.setBaseRegionRent(30);
         Parking5.priceUpgrades(200, 300, 400, 500);
         Parking5.setOwner(Tile.OWNER_UNOWNABLE);
+        Parking5.image = R.drawable.i59;
         
         // parking space left side
         
@@ -586,6 +647,7 @@ public class BoardSetup {
         Parking6.setBaseRegionRent(30);
         Parking6.priceUpgrades(200, 300, 400, 500);
         Parking6.setOwner(Tile.OWNER_UNOWNABLE);
+        Parking6.image = R.drawable.i60;
         
         //North West
         
@@ -597,6 +659,7 @@ public class BoardSetup {
         Parking7.setBaseRegionRent(30);
         Parking7.priceUpgrades(200, 300, 400, 500);
         Parking7.setOwner(Tile.OWNER_UNOWNABLE);
+        Parking7.image = R.drawable.i61;
         
         Tile Parking8 = Parking7.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking8.setName("Parking Garage Level 2 - Section C");
@@ -606,6 +669,7 @@ public class BoardSetup {
         Parking8.setBaseRegionRent(30);
         Parking8.priceUpgrades(200, 300, 400, 500);
         Parking8.setOwner(Tile.OWNER_UNOWNABLE);
+        Parking8.image = R.drawable.i62;
         
         Tile Parking9 = Parking8.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking9.setName("Parking Garage Level 2 - Section D");
@@ -615,6 +679,7 @@ public class BoardSetup {
         Parking9.setBaseRegionRent(30);
         Parking9.priceUpgrades(200, 300, 400, 500);
         Parking9.setOwner(Tile.OWNER_UNOWNABLE);
+        Parking9.image = R.drawable.i63;
         
         Tile Parking10 = Parking9.addNextStop(Tile.DIRECTION_NORTHWEST);
         Parking10.setName("Parking Garage Level 2 - Section E");
@@ -624,6 +689,7 @@ public class BoardSetup {
         Parking10.setBaseRegionRent(30);
         Parking10.priceUpgrades(200, 300, 400, 500);
         Parking10.setOwner(Tile.OWNER_UNOWNABLE);
+        Parking10.image = R.drawable.i64;
         
         // Athletic
         //North East
@@ -636,6 +702,7 @@ public class BoardSetup {
         Athletic3.setBaseRegionRent(25);
         Athletic3.priceUpgrades(187.5, 375, 562.5, 750);
         Parking10.addNextStop(Athletic3);
+        Athletic3.image = R.drawable.i65;
         
         //North West
         
@@ -646,6 +713,7 @@ public class BoardSetup {
         Athletic4.setBaseRent(50);
         Athletic4.setBaseRegionRent(25);
         Athletic4.priceUpgrades(187.5, 375, 562.5, 750);
+        Athletic4.image = R.drawable.i66;
         
         //West
         
@@ -656,6 +724,7 @@ public class BoardSetup {
         Athletic5.setBaseRent(50);
         Athletic5.setBaseRegionRent(25);
         Athletic5.priceUpgrades(187.5, 375, 562.5, 750);
+        Athletic5.image = R.drawable.i67;
         
         Tile Athletic6 = Athletic5.addNextStop(Tile.DIRECTION_WEST);
         Athletic6.setName("Tennis Courts");
@@ -664,6 +733,7 @@ public class BoardSetup {
         Athletic6.setBaseRent(50);
         Athletic6.setBaseRegionRent(25);
         Athletic6.priceUpgrades(187.5, 375, 562.5, 750);
+        Athletic6.image = R.drawable.i68;
         
         Tile Field_Road_Shuttle = Athletic6.addNextStop(Tile.DIRECTION_WEST);
         Field_Road_Shuttle.setName("Field Road Shuttle Stop");
@@ -672,6 +742,7 @@ public class BoardSetup {
         Field_Road_Shuttle.setBaseRent(50);
         Field_Road_Shuttle.setBaseRegionRent(25);
         Field_Road_Shuttle.priceUpgrades(187.5, 375, 562.5, 750);
+        Field_Road_Shuttle.image = R.drawable.i69;
         
         
         //LOwer campus suites
@@ -684,6 +755,7 @@ public class BoardSetup {
         Fenway.setBaseRent(40);
         Fenway.setBaseRegionRent(20);
         Fenway.priceUpgrades(150, 300, 450, 600);
+        Fenway.image = R.drawable.i70;
         
         Tile Copley_North = Fenway.addNextStop(Tile.DIRECTION_SOUTHWEST);
         Copley_North.setName("Copley North");
@@ -692,6 +764,7 @@ public class BoardSetup {
         Copley_North.setBaseRent(40);
         Copley_North.setBaseRegionRent(20);
         Copley_North.priceUpgrades(150, 300, 450, 600);
+        Copley_North.image = R.drawable.i71;
         
         Tile Copley_South = Copley_North.addNextStop(Tile.DIRECTION_SOUTHWEST);
         Copley_South.setName("Copley South");
@@ -700,6 +773,7 @@ public class BoardSetup {
         Copley_South.setBaseRent(40);
         Copley_South.setBaseRegionRent(20);
         Copley_South.priceUpgrades(150, 300, 450, 600);
+        Copley_South.image = R.drawable.i72;
         
         // road
         //Bridge
@@ -712,6 +786,7 @@ public class BoardSetup {
         Road10.setBaseRegionRent(50);
         Road10.priceUpgrades(200, 300, 500, 700);
         Road10.setOwner(Tile.OWNER_UNOWNABLE);
+        Road10.image = R.drawable.i73;
                 
         Tile Road11 = Road10.addNextStop(Tile.DIRECTION_WEST);
         Road11.setName("College Drive");
@@ -722,6 +797,7 @@ public class BoardSetup {
         Road11.priceUpgrades(200, 300, 500, 700);
         Road11.addNextStop(Road10);
         Road11.setOwner(Tile.OWNER_UNOWNABLE);
+        Road11.image = R.drawable.i74;
         
         Tile Callahan = Road11.addNextStop(Tile.DIRECTION_WEST);
         Callahan.setName("Callahan Police Station");
@@ -734,6 +810,7 @@ public class BoardSetup {
         Callahan.addNextStop(Road11);
         Greenspace.addNextStop(Callahan);
         Callahan.setOwner(Tile.OWNER_UNOWNABLE);
+        Callahan.image = R.drawable.i75;
         
         
         //Lower Campus APT
@@ -746,6 +823,7 @@ public class BoardSetup {
         Orchard_North.setBaseRent(50);
         Orchard_North.setBaseRegionRent(25);
         Orchard_North.priceUpgrades(187.5, 375, 562.5, 750);
+        Orchard_North.image = R.drawable.i76;
         		
         Tile Orchard_South = Orchard_North.addNextStop(Tile.DIRECTION_SOUTHEAST);
         Orchard_South.setName("Orchard South");
@@ -754,6 +832,7 @@ public class BoardSetup {
         Orchard_South.setBaseRent(50);
         Orchard_South.setBaseRegionRent(25);
         Orchard_South.priceUpgrades(187.5, 375, 562.5, 750);
+        Orchard_South.image = R.drawable.i77;
         
         Tile Castle = Orchard_South.addNextStop(Tile.DIRECTION_SOUTHEAST);
         Castle.setName("Castle Hall");
@@ -763,6 +842,7 @@ public class BoardSetup {
         Castle.setBaseRegionRent(25);
         Castle.priceUpgrades(187.5, 375, 562.5, 750);
         Castle.addNextStop(Lowe_Campus);
+        Castle.image = R.drawable.i78;
       
        
         Tile.setFacilitiesTile(Facilities_Management);
