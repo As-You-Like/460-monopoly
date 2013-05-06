@@ -30,6 +30,7 @@ public class SaveGameActivity extends Activity {
 	
 	public static ArrayList<String> listItems = new ArrayList<String>();
 	public static String[] listViewContents;
+	public static String gameNamee;
 	
 	public ListView lstGames;
 	public Button btnStart;
@@ -66,6 +67,7 @@ public class SaveGameActivity extends Activity {
 					long id) {
 				// TODO Auto-generated method stub
 				// === Respond to clicks on a specific game here ===
+				gameNamee = listViewContents[position];
 				Intent intent = new Intent(SaveGameActivity.activity, DataLoadingActivity.class);
 				startActivity(intent);	
 			}

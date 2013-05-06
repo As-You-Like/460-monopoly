@@ -30,6 +30,7 @@ public class DataLoadingActivity extends Activity {
 		
 		DatabaseThread dbt = new DatabaseThread();
 		helper = new SQLHelper(context);
+		dbt.gameName = SaveGameActivity.gameNamee;
 		dbt.db = helper.getWritableDatabase();
 		
 		

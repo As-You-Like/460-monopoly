@@ -399,9 +399,9 @@ public class DatabaseThread extends Thread {
 					// SELECT * FROM TurnEventInstanceTable WHERE PlayerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = [get from GameName]));
 		
 		//Define all sql statements
-		String sqlGame = "SELECT * FROM " + gameTableName + " WHERE GameName = " + gameName + ";";
+		String sqlGame = "SELECT * FROM " + gameTableName + " WHERE GameName = '" + gameName + "';";
 		Log.i("", sqlGame);
-		String sqlPlayer = "SELECT * FROM " + playerTableName + " WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = " + gameName + ");";
+		String sqlPlayer = "SELECT * FROM " + playerTableName + " WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = '" + gameName + "');";
 		Log.i("", sqlPlayer);
 		/*String sqlTile = "SELECT * FROM " + tileTableName + " WHERE OwnerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = " + gameName + "));";
 		Log.i("", sqlTile);*/
@@ -598,6 +598,7 @@ public class DatabaseThread extends Thread {
 		// Set up Players
 		Player.entities = new Player[Device.player.length]; //I changed it
 		for(int i = 0; i < tablePlayer_fieldPlayerName.length; i++){
+			Log.i("", "Table Player Field Player Name Length = " + tablePlayer_fieldPlayerName.length);
 			int color = Color.rgb(0, 0, 0);
 			for(int c = 0; c < tablePlayer_fieldPlayerColor.length; c++){
 				
