@@ -282,8 +282,8 @@ public class DatabaseThread extends Thread {
 		//Replace player entities
 		for(int i = 0; i < Player.entities.length; i++){
 			if(Player.entities[i] != null){
-				sqlPlayer = "REPLACE INTO " + playerTableName + "(PlayerID,GameName,PlayerNumber,PlayerName,PlayerColor,BluetoothAddress,CurrentLocation,PreviousLocation,NetCash,TradeCount) VALUES (" +
-				 		 playerID + ",'" + Game.name + "'," + Player.entities[i].getPlayerIndex() + ",'" + Player.entities[i].getName() + "','" + Player.COLOR_NAMES[i] + "','" + Device.player[i].device.getAddress() + "','" + Player.entities[i].getPiece().getCurrentTile().id +
+				sqlPlayer = "REPLACE INTO " + playerTableName + "(GameName,PlayerNumber,PlayerName,PlayerColor,BluetoothAddress,CurrentLocation,PreviousLocation,NetCash,TradeCount) VALUES (" +
+				 		 Game.name + "'," + Player.entities[i].getPlayerIndex() + ",'" + Player.entities[i].getName() + "','" + Player.COLOR_NAMES[i] + "','" + Device.player[i].device.getAddress() + "','" + Player.entities[i].getPiece().getCurrentTile().id +
 				 		 "','" + Player.entities[i].getPiece().getPreviousTile().id + "'," + (int)Player.entities[i].getBalance() + "," + Player.entities[i].getTradeCount() + ");";
 				Log.i("", sqlPlayer);
 				db.execSQL(sqlPlayer);
@@ -310,8 +310,8 @@ public class DatabaseThread extends Thread {
 							hvac = 1;
 						}
 						
-						sqlTile = "REPLACE INTO " + tileTableName + "(TileID,OwnerID,ElectricalBought,PlumbingBought,VendingBought,HVACBought) VALUES (" +
-						        tiles[j].id  + "," + Player.entities[i].getPlayerIndex() + "," + electrical + "," + plumbing + "," + vending + "," + hvac + ");";
+						sqlTile = "REPLACE INTO " + tileTableName + "(OwnerID,ElectricalBought,PlumbingBought,VendingBought,HVACBought) VALUES (" +
+						        Player.entities[i].getPlayerIndex() + "," + electrical + "," + plumbing + "," + vending + "," + hvac + ");";
 						Log.i("", sqlTile);
 						db.execSQL(sqlTile);
 					}
@@ -323,8 +323,8 @@ public class DatabaseThread extends Thread {
 				Event[] turnEvents = Player.entities[i].getPlayerEvents();
 				for(int k = 0; k < turnEvents.length; k++){
 					if(Player.entities[i] != null){
-						sqlTurnEventInstance = "REPLACE INTO " + turnEventInstanceTableName + "(TurnEventInstanceID,PlayerID,EventNumber,EventTurnsLeft) VALUES (" +
-								 turnEventInstanceID + "," + Player.entities[i].getPlayerIndex() + "," + turnEvents[k].eventNumber + "," + (turnEvents[k].expireTurn - Game.turn) + ");";
+						sqlTurnEventInstance = "REPLACE INTO " + turnEventInstanceTableName + "(PlayerID,EventNumber,EventTurnsLeft) VALUES (" +
+								 Player.entities[i].getPlayerIndex() + "," + turnEvents[k].eventNumber + "," + (turnEvents[k].expireTurn - Game.turn) + ");";
 						Log.i("", sqlTurnEventInstance);
 						db.execSQL(sqlTurnEventInstance);
 					}
