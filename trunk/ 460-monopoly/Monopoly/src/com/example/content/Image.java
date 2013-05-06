@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.example.monopoly.LoadingActivity;
 import com.example.monopoly.R;
+import com.example.monopoly.SplashActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -39,16 +40,16 @@ public class Image {
 	
 	public static void setupImages() {
 		//b=BitmapFactory.decodeResource(getResources(), R.drawable.bruintest);
-		Image.HEXAGON_TEXTURE = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_blue);
-		Image.HEXAGON_BOTTOM = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_layer_bot);
-		Image.HEXAGON_REGION = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_layer_rgn);
-		Image.HEXAGON_PLAYER = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.hexagon_layer_plr);
+		Image.HEXAGON_TEXTURE = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), R.drawable.hexagon_blue);
+		Image.HEXAGON_BOTTOM = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), R.drawable.hexagon_layer_bot);
+		Image.HEXAGON_REGION = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), R.drawable.hexagon_layer_rgn);
+		Image.HEXAGON_PLAYER = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), R.drawable.hexagon_layer_plr);
 		
-		Image.DIE[0] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_1);
-		Image.DIE[1] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_2);
-		Image.DIE[2] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_3);
-		Image.DIE[3] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_4);
-		Image.DIE[4] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_5);
-		Image.DIE[5] = BitmapFactory.decodeResource(LoadingActivity.activity.getResources(), R.drawable.die_6);
+		Image.DIE[0] = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), R.drawable.die_1);
+		Image.DIE[1] = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), R.drawable.die_2);
+		Image.DIE[2] = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), R.drawable.die_3);
+		Image.DIE[3] = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), R.drawable.die_4);
+		Image.DIE[4] = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), R.drawable.die_5);
+		Image.DIE[5] = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), R.drawable.die_6);
 	}
 }
