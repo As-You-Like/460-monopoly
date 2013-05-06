@@ -53,7 +53,7 @@ public class CommandCardActivity extends TabActivity {
 	public MenuItem menuQuit;
 	
 	ArrayList<Integer> propertyRegions = new ArrayList<Integer>();
-	ArrayList<ArrayList<Tile>> properties = new ArrayList<ArrayList<Tile>>();
+	ArrayList<ArrayList<String>> properties = new ArrayList<ArrayList<String>>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -404,24 +404,24 @@ public class CommandCardActivity extends TabActivity {
 			@Override
 			public void processMessage(int sender, int reciever, String message) {
 				// TODO Auto-generated method stub
-				Tile.entity = new Tile[400][400];
+				//Tile.entity = new Tile[400][400];
 				properties.clear();
 				propertyRegions.clear();
 				try {
 					JSONArray json = new JSONArray(message);
 					for (int i=0; i<json.length(); i++){
 						JSONObject tile = new JSONObject(json.getString(i));
-						Tile t = new Tile(0, 0, 0);
-						t.setName(tile.getString("name"));
-						t.setRegion(tile.getInt("region"));
-						t.id = tile.getInt("id");
-						if (!propertyRegions.contains(t.getRegion())){
-							propertyRegions.add(t.getRegion());
-							properties.add(new ArrayList<Tile>());
+						String name = tile.getString("name");
+						int region = tile.getInt("region");
+						//t.id = tile.getInt("id");
+						if (!propertyRegions.contains(region)){
+							propertyRegions.add(region);
+							properties.add(new ArrayList<String>());
 						}
-						properties.get(propertyRegions.indexOf(t.getRegion())).add(t);
+						int indexOfRegion = propertyRegions.indexOf(region);
+						properties.get(indexOfRegion).add(name);
 						
-						Log.e("Tile Data", t.getRegion()+""+t.getName());
+						Log.e("Tile Data: ", region+": "+name);
 					}
 					
 				} catch (JSONException e) {
@@ -481,7 +481,7 @@ public class CommandCardActivity extends TabActivity {
 					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e.printStackTrace(); 
 				}
 			}
 			
@@ -564,7 +564,8 @@ public class CommandCardActivity extends TabActivity {
 		tabBar.getTabWidget().getChildTabViewAt(TAB_UPGRADE).setVisibility(View.GONE); // Upgrade tab hidden away
 		tabBar.getTabWidget().getChildTabViewAt(TAB_TRADE).setVisibility(View.GONE); // Upgrade tab hidden away
 		
-		//tabBar.getTabWidget().getChildTabViewAt(TAB_INTERACT).setEnabled(false); // Upgrade tab hidden away
+		tabBar.getTabWidget().getChildTabViewAt(TAB_INTERACT).setVisibility(View.GONE); // Upgrade tab hidden away
+		//tabBar.getTabWidget().getChildTabViewAt(TAB_PROPERTIES).setEnabled(false); // Properties tab hidden away
 		
 	}
 	
