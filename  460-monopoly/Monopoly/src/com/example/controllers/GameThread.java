@@ -495,6 +495,7 @@ public class GameThread extends Thread{
 		try {
 			map.put("tileName", tileName);
 			map.put("tileOwner", tileOwner);
+			map.put("tileId", currentTile.id);
 			map.put("tileOwnerName", tileOwnerName);
 			map.put("tilePrice", tilePrice);
 			map.put("tileRent", tileRent);
