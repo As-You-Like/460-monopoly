@@ -28,6 +28,7 @@ import com.example.controllers.Device;
 import com.example.controllers.HostDevice;
 import com.example.controllers.PlayerDevice;
 import com.example.model.Tile;
+import com.example.model.Unit;
 
 @SuppressWarnings("deprecation")
 public class CommandCardActivity extends TabActivity { 
@@ -272,6 +273,7 @@ public class CommandCardActivity extends TabActivity {
 				double tileRent = 0D;
 				String regionName = "";
 				int regionTileCount = 0;
+				int tileId = 0;
 				int regionOwnedTileCount = 0;
 				double currentBalance = 0;
 				JSONObject obj = null;
@@ -287,6 +289,7 @@ public class CommandCardActivity extends TabActivity {
     				tabBar.setCurrentTab(TAB_TILE);
     				
     				try {
+    					tileId = obj.getInt("tileId");
     					tileName = obj.getString("tileName");
 						tileOwner = obj.getInt("tileOwner");
 						tileOwnerName = obj.getString("tileOwnerName");
@@ -313,8 +316,18 @@ public class CommandCardActivity extends TabActivity {
 						e.printStackTrace();
 					}
         		}
-				
-        		TileActivity.activity.setLandInfo(R.drawable.sample_house, tileName, ""+tilePrice, regionName, "Owned by " + tileOwnerName, regionOwnedTileCount, regionTileCount);
+				Tile t = null;
+        		for (int i=0; i<Unit.entity.size() && t == null; i++){
+        			Unit u = Unit.entity.get(i);
+        			if (u instanceof Tile){
+        				Tile t1 = (Tile)u;
+        				if (tileId == t1.id){
+        					t = t1;
+        				}
+        			}
+        		}
+        		
+        		TileActivity.activity.setLandInfo(t.image, tileName, ""+tilePrice, regionName, "Owned by " + tileOwnerName, regionOwnedTileCount, regionTileCount);
         		TileActivity.activity.btnPurchase.setEnabled(true);
 				if (tileOwner == Tile.OWNER_NEUTRAL){
 					//if nobody owns it
