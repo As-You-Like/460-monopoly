@@ -63,6 +63,7 @@ public class Game extends TimerTask{
 	public static void start(){
 		Game.timer = new Timer();
 		Game.timer.schedule(Game.instance, 20);
+		Log.e("TIMER", "EXECUTING ORIGINAL");
 		//Game.timer.scheduleAtFixedRate(Game.instance, 20, 20);
 	}
 
@@ -89,9 +90,11 @@ public class Game extends TimerTask{
 			
 			int cancelChecker = GameThread.gt.turnNumber;
 			
-			if (Game.timer != null){
+			//if (Game.timer != null){
+				Log.e("TIMER", "EXECUTING");
+				Game.timer = new Timer();
 				Game.timer.schedule(Game.instance, 20);
-			}
+			//}
 			
 		}
 		catch(Exception e){
