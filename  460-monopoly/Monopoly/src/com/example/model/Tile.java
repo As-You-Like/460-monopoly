@@ -7,6 +7,7 @@ import com.example.monopoly.SplashActivity;
 
 import android.R;
 import android.R.color;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -127,7 +128,7 @@ public class Tile extends StaticUnit {
 	private ArrayList<MobileUnit> visitors = new ArrayList<MobileUnit>();
 	private ArrayList<Tile> nextStops = new ArrayList<Tile>();
 	private double baseRegionRent;
-	private Object image;
+	public int image;
 	
 	public Tile(int hexX, int hexY, int owner){
 		super(Tile.getCartesianPositionFromHexPoint(hexX, hexY), owner, Tile.TILE_RADIUS);
@@ -142,7 +143,7 @@ public class Tile extends StaticUnit {
 		
 		try {
 			int file = (Integer) R.drawable.class.getField("i"+this.id).get("");
-			this.image = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), file);
+			this.image = file;
 		} catch (NoSuchFieldException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
