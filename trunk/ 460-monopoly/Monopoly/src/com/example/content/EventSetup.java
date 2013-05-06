@@ -557,6 +557,39 @@ public class EventSetup {
 						"Got beaten up by Flex at Mad Falcon.  Go to Health and Wellness");				
 			}
 		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].getPiece().move(Tile.getFacilitiesTile());
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Had a crazy party in your room.  Go to facilities.");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].getPiece().move(Tile.getFacilitiesTile());
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Graffitied Seasons.  Go to facilities management.");				
+			}
+		});
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].getPiece().move(Tile.getFacilitiesTile());
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Vandalized every dorm on campus.  Go to facilities.");				
+			}
+		});
 		
 	}
 }
