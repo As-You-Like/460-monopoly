@@ -282,7 +282,7 @@ public class DatabaseThread extends Thread {
 		//Replace player entities
 		for(int i = 0; i < Player.entities.length; i++){
 			if(Player.entities[i] != null){
-				sqlPlayer = "REPLACE INTO " + playerTableName + "(GameName,PlayerNumber,PlayerName,PlayerColor,BluetoothAddress,CurrentLocation,PreviousLocation,NetCash,TradeCount) VALUES (" +
+				sqlPlayer = "REPLACE INTO " + playerTableName + "(GameName,PlayerNumber,PlayerName,PlayerColor,BluetoothAddress,CurrentLocation,PreviousLocation,NetCash,TradeCount) VALUES ('" +
 				 		 Game.name + "'," + Player.entities[i].getPlayerIndex() + ",'" + Player.entities[i].getName() + "','" + Player.COLOR_NAMES[i] + "','" + Device.player[i].device.getAddress() + "','" + Player.entities[i].getPiece().getCurrentTile().id +
 				 		 "','" + Player.entities[i].getPiece().getPreviousTile().id + "'," + (int)Player.entities[i].getBalance() + "," + Player.entities[i].getTradeCount() + ");";
 				Log.i("", sqlPlayer);
