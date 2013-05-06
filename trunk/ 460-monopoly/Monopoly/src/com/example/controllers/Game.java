@@ -89,15 +89,17 @@ public class Game extends TimerTask{
 			
 			int cancelChecker = GameThread.gt.turnNumber;
 			
+			if (Game.timer != null){
+				Game.timer.schedule(Game.instance, 20);
+			}
+			
 		}
 		catch(Exception e){
 			Log.e("", "Application crash: timer cancelled");
 			this.cancel();
 		}
 		
-		if (Game.timer != null){
-			Game.timer.schedule(Game.instance, 20);
-		}
+		
 		
 	}
 	
