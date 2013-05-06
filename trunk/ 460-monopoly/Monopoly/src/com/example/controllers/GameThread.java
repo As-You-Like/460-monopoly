@@ -405,7 +405,7 @@ public class GameThread extends Thread{
 					Tile tileLocation = currentPlayerPiece.getCurrentTile();
 					
 					//create tracker for the new location of the player
-					Tile newTileLocation;
+					Tile newTileLocation = null;
 //					int tileLocation = PlayerEntity.getPlayer(currentTurnPlayer).getCurrentLocation();
 //					int newTileLocation;
 					
@@ -452,6 +452,13 @@ public class GameThread extends Thread{
 							currentPlayerPiece.move(newTileLocation);
 						}
 						spacesMoved++;
+						
+						if(newTileLocation.id == 0){
+							Player p = Player.entities[Game.currentPlayer];
+							p.setBalance(p.getBalance() + 200);
+							Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+									"You passed the Pond. You collect $200.");
+						}
 					}
 				}
 				isDouble = Die.isDouble();
