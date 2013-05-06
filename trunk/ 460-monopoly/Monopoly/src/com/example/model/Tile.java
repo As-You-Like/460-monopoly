@@ -3,6 +3,7 @@ package com.example.model;
 import java.util.ArrayList;
 
 import com.example.content.Image;
+import com.example.controllers.HostDevice;
 import com.example.monopoly.SplashActivity;
 
 import android.R;
@@ -347,10 +348,12 @@ public class Tile extends StaticUnit {
 	}
 	
 	public void priceUpgrades(double elec, double plum, double vend, double hvac){
-		this.upgradePrices[UPGRADE_ELECTRICAL] = elec;
-		this.upgradePrices[UPGRADE_PLUMBING] = plum;
-		this.upgradePrices[UPGRADE_VENDING] = vend;
-		this.upgradePrices[UPGRADE_HVAC] = hvac;
+		if (HostDevice.self == true){
+			this.upgradePrices[UPGRADE_ELECTRICAL] = elec;
+			this.upgradePrices[UPGRADE_PLUMBING] = plum;
+			this.upgradePrices[UPGRADE_VENDING] = vend;
+			this.upgradePrices[UPGRADE_HVAC] = hvac;
+		}
 	}
 	
 	public double getUpgradePrice(int upgradeID){
@@ -402,8 +405,10 @@ public class Tile extends StaticUnit {
 	}
 
 	public void setRegion(int region) {
-		this.region = region;
-		this.regionColorFilter = new LightingColorFilter(Tile.REGION_COLORS[this.getRegion()], 1);
+		if (HostDevice.self == true){
+			this.region = region;
+			this.regionColorFilter = new LightingColorFilter(Tile.REGION_COLORS[this.getRegion()], 1);
+		}
 	}
 
 	public LightingColorFilter getRegionColorFilter() {
