@@ -570,7 +570,6 @@ public class DatabaseThreadTwo extends Thread {
 		//Set up Game and GameThread
 		GameThread.gt = new GameThread();
 		GameThread.isFromSavedGame = true;
-		//new Game("");
 		dt.makeGame();
 		Game.name = tableGame_fieldAll[0];
 		Game.numberOfPlayers = tablePlayer_fieldPlayerNumber.length;
