@@ -105,6 +105,7 @@ public class Tile extends StaticUnit {
 	public static int totalTileCount = 0;
 	private static Tile jailTile = null;
 	private static Tile clinicTile;
+	private static Tile facilitiesTile;
 	
 	private double width;
 	private double side;
@@ -138,6 +139,20 @@ public class Tile extends StaticUnit {
 		//get id and increment total
 		this.id = totalTileCount;
 		totalTileCount++;
+		
+		try {
+			int file = (Integer) R.drawable.class.getField("i"+this.id).get("");
+			this.image = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), file);
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		this.hexX = hexX;
 		this.hexY = hexY;
@@ -408,22 +423,6 @@ public class Tile extends StaticUnit {
 
 	public void setName(String name) {
 		this.name = name;
-		
-		String adjustedName = this.name.toLowerCase();
-		
-		try {
-			int file = (Integer) R.drawable.class.getField(adjustedName).get("");
-			this.image = BitmapFactory.decodeResource(SplashActivity.activity.getResources(), file);
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	public static int getTileCountInRegion(int region){
@@ -481,6 +480,14 @@ public class Tile extends StaticUnit {
 	
 	public static Tile getClinicTile(){
 		return Tile.clinicTile;
+	}
+	
+	public static void setFacilitiesTile(Tile tile){
+		Tile.facilitiesTile = tile;
+	}
+	
+	public static Tile getFacilitiesTile(){
+		return Tile.facilitiesTile;
 	}
 
 }
