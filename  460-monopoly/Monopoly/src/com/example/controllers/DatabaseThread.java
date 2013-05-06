@@ -760,8 +760,8 @@ public class DatabaseThread extends Thread {
 		gameQuery.moveToNext();		
 		tableGame_fieldGameName = new String[gameQuery.getCount()];
 		for(int i = 0; i < gameQuery.getCount(); i++){
-			tableGame_fieldGameName[i] = gameQuery.getString(i);
-			Log.i("", gameQuery.getString(i));
+			tableGame_fieldGameName[i] = gameQuery.getString(0);
+			Log.i("", gameQuery.getString(0));
 			gameQuery.moveToNext();
 		}
 		
