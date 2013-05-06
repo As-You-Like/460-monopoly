@@ -62,7 +62,8 @@ public class Game extends TimerTask{
 	//method to be run during loading of game module
 	public static void start(){
 		Game.timer = new Timer();
-		Game.timer.scheduleAtFixedRate(Game.instance, 20, 20);
+		Game.timer.schedule(Game.instance, 20);
+		//Game.timer.scheduleAtFixedRate(Game.instance, 20, 20);
 	}
 
 	@Override
@@ -92,6 +93,10 @@ public class Game extends TimerTask{
 		catch(Exception e){
 			Log.e("", "Application crash: timer cancelled");
 			this.cancel();
+		}
+		
+		if (Game.timer != null){
+			Game.timer.schedule(Game.instance, 20);
 		}
 		
 	}
