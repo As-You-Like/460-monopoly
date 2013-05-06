@@ -138,6 +138,7 @@ public class HostDevice extends Device {
 			Device.connectingPlayer.add(pd);
 			
 			//send a message to the connecting player
+			pd.sendMessage(Message.ALERT, "Connected!");
 			
 			//get all the player names into a formatted string (incoming player is to choose which one he wants to join as)
 			String message = "";
