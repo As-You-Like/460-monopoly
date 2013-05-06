@@ -79,11 +79,12 @@ public class DatabaseThread extends Thread {
 	public SQLiteDatabase db;
 	public static String[][][] relationship = {
 		//  {{parent_table  | parent_key | child_table              | child_key    }, {cascade_delete}}
-			{{"GameTable"   , "GameName" , "PlayerTable"            , "GameName"   }, {"true"        }},
-			{{"PlayerTable" , "PlayerID" , "TurnEventInstanceTable" , "PlayerID"   }, {"true"        }}
+			{{"GameTable"   , "GameName" , "PlayerTable"            , "GameName"   }, {"true"        }}
+			
 	};
 	
 	//{{"PlayerTable" , "PlayerID" , "TileTable"              , "OwnerID"    }, {"true"        }},
+	//{{"PlayerTable" , "PlayerID" , "TurnEventInstanceTable" , "PlayerID"   }, {"true"        }}
 	
 	public String gameTableName = "GameTable";
 	public String playerTableName = "PlayerTable";
@@ -245,9 +246,11 @@ public class DatabaseThread extends Thread {
         //CREATE = create table query
         */
         
+        /*
         sql = "CREATE TABLE IF NOT EXISTS " + turnEventInstanceTableName + "(TurnEventInstanceID INTEGER PRIMARY KEY AUTOINCREMENT,PlayerID INTEGER,EventNumber INTEGER,EventTurnsLeft INTEGER)";
         db.execSQL(sql);
         //CREATE = create table query
+        */
         
         // Model: CREATE TABLE inventory(StockNumber INTEGER PRIMARY KEY,Descrip VARCHAR(50),OnHandQuan INTEGER,PackQty INTEGER,PackCost FLOAT); 
    
@@ -325,7 +328,7 @@ public class DatabaseThread extends Thread {
 				
 				//Replace player events
 				// TODO: Shifted the turnEvents around to reduce confusion.
-				Event[] turnEvents = Player.entities[i].getPlayerEvents();
+				/*Event[] turnEvents = Player.entities[i].getPlayerEvents();
 				for(int k = 0; k < turnEvents.length; k++){
 					if(Player.entities[i] != null){
 						sqlTurnEventInstance = "REPLACE INTO " + turnEventInstanceTableName + "(PlayerID,EventNumber,EventTurnsLeft) VALUES (" +
@@ -333,8 +336,10 @@ public class DatabaseThread extends Thread {
 						Log.i("", sqlTurnEventInstance);
 						db.execSQL(sqlTurnEventInstance);
 					}
-					
+						
 				}
+			
+				*/
 				
 			}
 						
@@ -397,14 +402,14 @@ public class DatabaseThread extends Thread {
 		Log.i("", sqlPlayer);
 		/*String sqlTile = "SELECT * FROM " + tileTableName + " WHERE OwnerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = " + gameName + "));";
 		Log.i("", sqlTile);*/
-		String sqlTurnEventInstance = "SELECT * FROM " + turnEventInstanceTableName + " WHERE PlayerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = '" + gameName + "'));";
-		Log.i("", sqlTurnEventInstance);
+		/*String sqlTurnEventInstance = "SELECT * FROM " + turnEventInstanceTableName + " WHERE PlayerID IN (SELECT PlayerID FROM PlayerTable WHERE GameName IN (SELECT GameName FROM GameTable WHERE GameName = '" + gameName + "'));";
+		Log.i("", sqlTurnEventInstance);*/
 		
 		//Retrieve all database data
 		gameQuery = db.rawQuery(sqlGame, st);
 		playerQuery = db.rawQuery(sqlPlayer, st);
 		//tileQuery = db.rawQuery(sqlTile, st);
-		turnEventInstanceQuery = db.rawQuery(sqlTurnEventInstance, st);
+		//turnEventInstanceQuery = db.rawQuery(sqlTurnEventInstance, st);
 		
 		// String[] -----> GameTable values for one row
 		// String[][] -----> PlayerTable values for 2-4 rows
@@ -473,6 +478,8 @@ public class DatabaseThread extends Thread {
 		// === Turn Event Entity ===
 		////////////////////////
 		
+		/*
+		
 		//Instantiate event data fields where the index represents individual event instances
 		tableTurnEventInstance_fieldPlayerID = new int[turnEventInstanceQuery.getCount()];
 		tableTurnEventInstance_fieldEventNumber = new int[turnEventInstanceQuery.getCount()];
@@ -485,6 +492,8 @@ public class DatabaseThread extends Thread {
 			tableTurnEventInstance_fieldEventTurnsLeft[i] = turnEventInstanceQuery.getInt(3);
 			turnEventInstanceQuery.moveToNext();
 		}
+		
+		*/
 		
 		// === Testing Code ===
 		/////////////////////////
@@ -730,6 +739,7 @@ public class DatabaseThread extends Thread {
 				}
 				*/
 				
+				/*
 				for(int k = 0; k < tableTurnEventInstance_fieldPlayerID.length; k++){
 					
 					//If: Event Jail Release
@@ -740,6 +750,7 @@ public class DatabaseThread extends Thread {
 					//else if()
 					
 				}
+				*/
 				
 			}
 			
