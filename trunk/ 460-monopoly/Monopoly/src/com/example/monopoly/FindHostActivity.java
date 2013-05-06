@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class FindHostActivity extends Activity {
@@ -139,6 +140,7 @@ public class FindHostActivity extends Activity {
 				PlayerDevice.currentPlayerConnectionStatus = PlayerDevice.CONNECTION_ACTIVE;
 				//Device.tmpCurrentPlayer.;
 				Device.currentPlayer = reciever;
+				Toast.makeText(FindHostActivity.activity, "Connected", Toast.LENGTH_LONG).show();
 				
 				int divider1 = message.indexOf(":");
 				int divider2 = message.indexOf(":", divider1+1);
@@ -370,7 +372,7 @@ public class FindHostActivity extends Activity {
 		.show();		
 	}
     
-	public void onResume()
+    public void onResume()
 	{
 		super.onResume();
 		if(SplashActivity.activity.cascadeQuitBool == true){
