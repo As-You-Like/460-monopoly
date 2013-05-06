@@ -546,7 +546,17 @@ public class EventSetup {
 						"Stayed in Smith after it closed.  Go to jail.");				
 			}
 		});
-		
+		EventGenerator.registerEvent("newTurn", new RandomEvent() {
+			@Override
+			public void action() {
+				
+				Player.entities[Game.currentPlayer].getPiece().move(Tile.getClinicTile());
+				
+				//Inform the player of the subtraction
+				Device.player[Game.currentPlayer].sendMessage(Message.ALERT, 
+						"Got beaten up by Flex at Mad Falcon.  Go to Health and Wellness");				
+			}
+		});
 		
 	}
 }
