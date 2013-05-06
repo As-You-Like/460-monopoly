@@ -86,7 +86,7 @@ public class Game extends TimerTask{
 			}
 			Game.mHandler.obtainMessage().sendToTarget();
 			
-			boolean cancelChecker = SplashActivity.activity.cascadeQuitBool;
+			SplashActivity.activity.checkTimer();
 			
 		}
 		catch(Exception e){
