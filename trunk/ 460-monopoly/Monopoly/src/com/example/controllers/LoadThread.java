@@ -48,6 +48,7 @@ public class LoadThread extends Thread {
 			new GameThread();
 		} else {
 			//loading code for player goes here
+			BoardSetup.setupBoard();
 		}
 		
 		//ping the handler indicating the loading is done for the current device
